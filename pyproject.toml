@@ -6,7 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "QCut"
 dynamic = [ "version" ]
 authors = [
-    { name = "Joonas Nivala", email = "joonas.nivala@gmail.com" },
+    { name = "Joonas Nivala", email = "joonas.nivala@csc.fi" },
+    { name = "FiQCI", email = "servicedesk@csc.fi" },
 ]
 
 description = "QCut is a quantum circuit knitting package built on top of qiskit for performing gate cuts and resetless wire cuts allowing simulation of larger quantum circuits on smaller quantum devices or simulators at the cost of a circuit overhead."
@@ -61,10 +62,10 @@ benchmark = [
 
 
 [project.urls]
-homepage = "https://github.com/JooNiv/QCut"
-documentation = "https://jooniv.github.io/QCut/"
-repository = "https://github.com/JooNiv/QCut.git"
-changelog = "https://github.com/JooNiv/QCut/blob/main/CHANGELOG.rst"
+homepage = "https://github.com/FiQCI/QCut"
+documentation = "https://fiqci.fi/QCut/"
+repository = "https://github.com/FiQCI/QCut.git"
+changelog = "https://github.com/FiQCI/QCut/blob/main/CHANGELOG.rst"
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "ruff"]
