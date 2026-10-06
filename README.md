@@ -27,7 +27,7 @@
 
 # QCut
 
-![QCut Banner](docs/_static/images/logos/qcut-banner.png)
+<img src="docs/_static/images/diagram/qcut-diagram-left-logo.png" alt="QCut Diagram" width="1000">
 
 QCut is a quantum circuit knitting package built on top of qiskit for performing gate cuts and resetless wire cuts allowing simulation of larger quantum circuits on smaller quantum devices or simulators at the cost of a circuit overhead. QCut has been designed and tested to work with IQM's qpus, and the Finnish Quantum Computing Infrastructure ([FiQCI](https://fiqci.fi/)).
 
