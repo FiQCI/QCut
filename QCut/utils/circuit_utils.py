@@ -4,9 +4,12 @@ cutting and knitting.
 """
 
 from dataclasses import dataclass
+from functools import lru_cache
 
+import numpy as np
 from qiskit import ClassicalRegister, QuantumCircuit
-from qiskit.circuit import Barrier, Qubit
+from qiskit.circuit import Barrier, ControlFlowOp, Qubit
+from qiskit.circuit.library import get_standard_gate_name_mapping
 
 
 def _count_gates(circuit: QuantumCircuit) -> dict[Qubit, int]:
@@ -261,3 +264,129 @@ def split_markers(
         for position, marker in enumerate(members[operation.name]):
             out.append(NonCommutingGate(marker), [instruction.qubits[position]])
     return out
+
+
+@lru_cache(maxsize=1)
+def _standard_gate_names() -> frozenset[str]:
+    """Names qiskit defines itself, which therefore say what the operation does."""
+    return frozenset(get_standard_gate_name_mapping())
+
+
+def _param_key(param, cache: dict):
+    """One instruction parameter, reduced to something hashable and comparable.
+
+    Floats go in as they are. Equal QPD terms share one cached transpiled operation, so
+    their parameters are bit-identical; rounding them would only ever merge two
+    operations that are not the same one.
+    """
+    if isinstance(param, np.ndarray):
+        return (param.shape, param.dtype.str, param.tobytes())
+    if isinstance(param, QuantumCircuit):
+        return circuit_fingerprint(param, cache)
+    if isinstance(param, (int, float, complex, str)):
+        return param
+    # A ParameterExpression, or whatever else a gate chooses to carry. The type keeps
+    # two different kinds apart and the string two values of one kind.
+    return (type(param).__name__, str(param))
+
+
+def _definition_key(operation, cache: dict):
+    """What a non-standard operation does, since its name does not say.
+
+    QPD operations are custom instructions built at expansion time, and their names
+    collide across different definitions -- the local unitaries a generated KAK
+    decomposition produces are the case that matters.
+    """
+    if isinstance(operation, ControlFlowOp):
+        # The predicate is carried outside ``params``, so the blocks alone would make
+        # ``c == 0`` and ``c == 1`` look like the same operation.
+        predicate = getattr(operation, "condition", None)
+        if predicate is None:
+            predicate = getattr(operation, "target", None)
+        return (
+            str(predicate),
+            tuple(circuit_fingerprint(block, cache) for block in operation.blocks),
+        )
+    if operation.name in _standard_gate_names():
+        return None
+    try:
+        definition = operation.definition
+    except Exception:  # noqa: BLE001
+        # ``definition`` is a property that can synthesise. One that cannot be built
+        # tells us nothing, and the operation's class and parameters still have to
+        # match before anything is merged.
+        return None
+    return None if definition is None else circuit_fingerprint(definition, cache)
+
+
+def _operation_key(operation, cache: dict):
+    """A key for one operation, cached by identity.
+
+    The same operation objects recur across every experiment group, so without the
+    cache the definitions would be walked again for each. The object is stored next to
+    its key because ``id()`` is only unique among live objects: holding a reference
+    keeps this one alive, and the identity check catches a recycled address anyway.
+    """
+    hit = cache.get(id(operation))
+    if hit is not None and hit[0] is operation:
+        return hit[1]
+    key = (
+        operation.name,
+        type(operation).__name__,
+        operation.num_qubits,
+        operation.num_clbits,
+        tuple(_param_key(param, cache) for param in operation.params),
+        _definition_key(operation, cache),
+    )
+    cache[id(operation)] = (operation, key)
+    return key
+
+
+def circuit_fingerprint(circuit: QuantumCircuit, cache: dict | None = None) -> tuple:
+    """A hashable key, equal for circuits whose counts come out identically.
+
+    Two circuits sharing a fingerprint are interchangeable as far as a run is
+    concerned: they sample the same distribution and label it the same way. That is
+    what lets a run submit one of them and hand the result to every slot the others
+    would have filled.
+
+    Register layout is part of the key rather than a detail, because it decides how a
+    counts key is formatted -- one space-separated field per classical register -- and
+    because a circuit that writes nothing to ``qpd_meas`` has had it dropped by
+    :func:`compact_qpd_register`, which is a real difference in what comes back.
+
+    The global phase, the name and the metadata are left out. Qiskit's own circuit
+    equality ignores the last two; the phase is unobservable in counts, so excluding it
+    only merges more. ``metadata`` carries the transpiler layout, which is consumed
+    while the experiment circuits are being built and is vestigial by the time anything
+    is submitted.
+
+    Args:
+        circuit (QuantumCircuit): the circuit to key.
+        cache (dict): operation keys already computed, shared across a batch of
+            circuits so the operations they have in common are walked once (optional).
+
+    Returns:
+        A tuple that can be hashed and compared.
+    """
+    if cache is None:
+        cache = {}
+    qubit_index = {bit: index for index, bit in enumerate(circuit.qubits)}
+    clbit_index = {bit: index for index, bit in enumerate(circuit.clbits)}
+    return (
+        circuit.num_qubits,
+        circuit.num_clbits,
+        tuple((register.name, register.size) for register in circuit.qregs),
+        tuple(
+            (register.name, tuple(clbit_index[bit] for bit in register))
+            for register in circuit.cregs
+        ),
+        tuple(
+            (
+                _operation_key(instruction.operation, cache),
+                tuple(qubit_index[bit] for bit in instruction.qubits),
+                tuple(clbit_index[bit] for bit in instruction.clbits),
+            )
+            for instruction in circuit.data
+        ),
+    )
