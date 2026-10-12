@@ -50,6 +50,8 @@ uv add QCut
 
 If using other than the default Qiskit version (newest) it is recommended to install Qiskit first before installing QCut.
 
+QCut does not install a simulator. The examples below run on [Qiskit Aer](https://github.com/Qiskit/qiskit-aer), which needs `uv pip install qiskit-aer`.
+
 **IQM hardware and fake backends:**
 
 ```bash
