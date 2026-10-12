@@ -4,9 +4,13 @@ Options are collected once and carried on :class:`QCut.cutcircuit.CutCircuit`, w
 passes them to :class:`QCut.cutcircuit.CutExperiment`. Everything downstream reads them
 from there, so adding a knob does not mean widening five signatures.
 
-They have to be fixed before the subcircuits are built, because they decide how the
-quasiprobability decomposition is formed and therefore what the coefficients mean. A
-:class:`CutOptions` is frozen for that reason.
+Most of them have to be fixed before the subcircuits are built, because they decide how
+the quasiprobability decomposition is formed and therefore what the coefficients mean. A
+:class:`CutOptions` is frozen for that reason. ``deduplicate`` is the exception: it
+changes only how an experiment is submitted, so it can be flipped on a built
+:class:`QCut.cutcircuit.CutExperiment`. It lives here anyway, so that
+:func:`QCut.estimate_run` and :func:`QCut.run_experiments` read one setting and cannot
+disagree about what a run costs.
 """
 
 from __future__ import annotations
@@ -68,6 +72,13 @@ class CutOptions:
     ``num_samples`` draws are taken, defaulting to ``max_exact_groups``, and ``seed``
     fixes the sampler for a reproducible experiment set.
 
+    ``deduplicate`` submits each distinct experiment circuit once and shares its result
+    between every slot it fills, rather than running the same circuit once per group.
+    The slot count grows exponentially in the number of pieces while the distinct count
+    grows linearly, so this is most of the cost of a run. ``shots`` still means shots
+    per circuit, so the total spent drops by the same factor; what it bought before was
+    re-measuring circuits already measured. Turn it off to submit one circuit per slot.
+
     ``finder_candidates`` is how many candidate partitions the cut finder generates and
     costs before keeping the cheapest. METIS returns only the partitioning that
     minimises its own objective, the weighted edge cut, which stops being the true cost
@@ -89,6 +100,7 @@ class CutOptions:
     max_exact_groups: int = 1000
     num_samples: int | None = None
     seed: int | None = None
+    deduplicate: bool = True
     finder_candidates: int = 5
     finder_cut_mode: FinderCutMode = "both"
     finder_max_qubits: int | list[int] | None = None
@@ -116,6 +128,10 @@ class CutOptions:
             raise QCutError(
                 f"unknown finder_cut_mode '{self.finder_cut_mode}', expected one of "
                 "'both', 'wire', 'gate'"
+            )
+        if not isinstance(self.deduplicate, bool):
+            raise QCutError(
+                f"deduplicate must be a bool, got {type(self.deduplicate).__name__}"
             )
         if self.max_exact_groups < 1:
             raise QCutError("max_exact_groups must be at least 1")
