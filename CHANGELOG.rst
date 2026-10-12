@@ -5,7 +5,6 @@ Changelog
 **Version 2.3.0**
 =================
 
-
 Remove Qiskit-Aer dependency
 ----------------------------
 
@@ -16,6 +15,15 @@ Remove Qiskit-Aer dependency
   public :code:`target` rather than :code:`_target`, which Aer never fills in. Transpiling
   for :code:`AerSimulator` works, and :code:`run_cut_circuit()` transpiles only for a
   backend with a coupling map.
+
+VTT QX Compatibility for large jobs
+-----------------------------------
+
+- Runs on machines that withhold raw measurements for large jobs, such as VTT Q50,
+  no longer fail. :code:`IQMJob.result()` raises on such a job, so its counts are read
+  through the backend's own client, :code:`get_job_measurement_counts`, and keyed
+  exactly as :code:`job.result()` would have keyed them. Every other job is read as
+  before.
 
 **Version 2.2.0**
 =================
