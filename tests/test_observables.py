@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Pauli, SparsePauliOp, Statevector
+from qiskit_aer import AerSimulator
 
 import QCut as ck
 from QCut.execution.basis_transform import _combine_pauli_ops
@@ -53,7 +54,7 @@ def _exact(plain, observable):
 
 
 def _run(marked, observables, shots=SHOTS):
-    return ck.run(marked, observables, shots=shots)
+    return ck.run(marked, observables, AerSimulator(), shots=shots)
 
 
 # --- what the coercion accepts ------------------------------------------------------
@@ -169,7 +170,7 @@ def test_the_identity_term_costs_no_circuits_and_reads_as_one():
     cut_circuit = ck.get_locations_and_subcircuits(marked)
 
     experiment = ck.get_experiment_circuits(cut_circuit, {"III": 0.25, "ZZI": 0.75})
-    results = ck.run_experiments(experiment, shots=SHOTS)
+    results = ck.run_experiments(experiment, shots=SHOTS, backend=AerSimulator())
     value = ck.estimate_expectation_values(results)
 
     plain = _pair()[1]
