@@ -5,7 +5,6 @@ Changelog
 **Version 2.3.0**
 =================
 
-
 Remove Qiskit-Aer dependency
 ----------------------------
 
@@ -16,6 +15,23 @@ Remove Qiskit-Aer dependency
   public :code:`target` rather than :code:`_target`, which Aer never fills in. Transpiling
   for :code:`AerSimulator` works, and :code:`run_cut_circuit()` transpiles only for a
   backend with a coupling map.
+
+Deduplicated experiment circuits
+--------------------------------
+
+- A run now submits each *distinct* experiment circuit once and shares its result with
+  every slot it fills.
+- :code:`shots` still means shots per circuit, so a run spends that many on each
+  distinct circuit and the total drops by the same factor. What the old total bought
+  was re-measuring circuits already measured. Sharing a sample between groups leaves the estimate unbiased,
+  since the groups are summed rather than multiplied.
+- :code:`estimate_run()` counts the circuits and shots that are actually submitted, so
+  it still matches the run exactly.
+- :code:`CutOptions(deduplicate=False)` restores one submission per slot.
+  :code:`CutExperiment.num_circuits` is unchanged: it still counts the circuits the
+  decomposition calls for.
+- Experiments whose wire cuts communicate are unaffected for now. Their first wave
+  already shares circuits between the groups that differ only in the label they answer.
 
 **Version 2.2.0**
 =================
