@@ -68,6 +68,7 @@ After installing you can simply import what you need:
 
 ```python
 from iqm.qiskit_iqm import IQMFakeAdonis
+
 backend = IQMFakeAdonis()
 ```
 
@@ -113,7 +114,10 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.circuit.library import CXGate
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_aer import AerSimulator
-from qiskit.primitives import StatevectorEstimator as Estimator, BackendEstimatorV2 as BackendEstimator
+from qiskit.primitives import (
+    StatevectorEstimator as Estimator,
+    BackendEstimatorV2 as BackendEstimator,
+)
 from iqm.qiskit_iqm import IQMFakeAdonis
 ```
 
@@ -123,11 +127,11 @@ from iqm.qiskit_iqm import IQMFakeAdonis
 circuit = QuantumCircuit(5)
 
 for qubit in range(5):
-    circuit.ry(0.4 + 0.3*qubit, qubit)
-circuit.cx(0,1)
-circuit.cx(1,2)
-circuit.cx(2,3)
-circuit.cx(3,4)
+    circuit.ry(0.4 + 0.3 * qubit, qubit)
+circuit.cx(0, 1)
+circuit.cx(1, 2)
+circuit.cx(2, 3)
+circuit.cx(3, 4)
 
 circuit.draw("mpl")
 ```
@@ -142,12 +146,12 @@ Note that here we don't insert any measurements. Measurements will be automatica
 marked_circuit = QuantumCircuit(5)
 
 for qubit in range(5):
-    marked_circuit.ry(0.4 + 0.3*qubit, qubit)
-marked_circuit.cx(0,1)
+    marked_circuit.ry(0.4 + 0.3 * qubit, qubit)
+marked_circuit.cx(0, 1)
 marked_circuit.append(**cutGate(CXGate(), 1, 2))
-marked_circuit.cx(2,3)
+marked_circuit.cx(2, 3)
 marked_circuit.append(cut(), [3])
-marked_circuit.cx(3,4)
+marked_circuit.cx(3, 4)
 
 marked_circuit.decompose(gates_to_decompose=["CutGate"]).draw("mpl")
 ```
@@ -298,8 +302,8 @@ finder's own options and how it chooses.
 Two helpers, `transpile_subcircuits()` and `transpile_experiments()` , differing in when they run:
 
 ```python
-fake = IQMFakeAdonis() #noisy
-sim = AerSimulator() #ideal
+fake = IQMFakeAdonis()  # noisy
+sim = AerSimulator()  # ideal
 ```
 
 `transpile_circuits()` does whichever of the two the thing it is given calls for. Each
@@ -375,8 +379,11 @@ Comparing against the exact and noisy expectation values of the original circuit
 
 ```python
 estimator = Estimator()
-exact_expvals = [e.data.evs for e in
-    estimator.run([(x) for x in zip([circuit] * len(observables), observables)]).result()
+exact_expvals = [
+    e.data.evs
+    for e in estimator.run(
+        [(x) for x in zip([circuit] * len(observables), observables)]
+    ).result()
 ]
 
 tr = transpile(circuit, backend=fake)
@@ -386,8 +393,11 @@ tr_obs_separate = [
 ]
 
 fake_estimator = BackendEstimator(backend=fake)
-exps = [e.data.evs for e in
-    fake_estimator.run([(x) for x in zip([tr] * len(tr_obs_separate), tr_obs_separate)]).result()
+exps = [
+    e.data.evs
+    for e in fake_estimator.run(
+        [(x) for x in zip([tr] * len(tr_obs_separate), tr_obs_separate)]
+    ).result()
 ]
 ```
 
@@ -453,19 +463,19 @@ for how the distribution is reconstructed.
 The result is a mapping, so it indexes and plots like a dict, and carries three views:
 
 ```python
-probs['00']                     # 0.8658
-probs.quasi_probabilities()     # the same values, as a plain dict
-probs.nearest_probabilities()   # closest true distribution, negatives projected away
-probs.counts()                  # scaled by the shots the experiment ran at
-probs.counts(shots=1000)        # or by any other shots
+probs["00"]  # 0.8658
+probs.quasi_probabilities()  # the same values, as a plain dict
+probs.nearest_probabilities()  # closest true distribution, negatives projected away
+probs.counts()  # scaled by the shots the experiment ran at
+probs.counts(shots=1000)  # or by any other shots
 ```
 
 The three dict views report, by default, the ten most likely bitstrings. Pass `top` for a different
 number, or `top=None` for all of them:
 
 ```python
-probs.quasi_probabilities(top=50)      # the fifty most likely
-probs.counts(shots=1000, top=None)     # the whole distribution, as before
+probs.quasi_probabilities(top=50)  # the fifty most likely
+probs.counts(shots=1000, top=None)  # the whole distribution, as before
 ```
 
 Note that :code:`counts()` sums to :code:`shots` only with :code:`top=None` and
