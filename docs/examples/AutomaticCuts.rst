@@ -9,6 +9,7 @@ Under the hood QCut uses `pymetis <https://github.com/inducer/pymetis>`__  to fi
 .. code:: python
 
    from qiskit import QuantumCircuit
+   from qiskit_aer import AerSimulator
    import QCut as ck
    from QCut import find_cuts, CutOptions
 
@@ -32,7 +33,7 @@ Under the hood QCut uses `pymetis <https://github.com/inducer/pymetis>`__  to fi
    print(cut_circuit.cut_locations)
    print([subcircuit.num_qubits for subcircuit in cut_circuit.subcircuits])
 
-   estimated_expectation_values = ck.run_cut_circuit(cut_circuit, observables)
+   estimated_expectation_values = ck.run_cut_circuit(cut_circuit, observables, AerSimulator())
 
 Nothing here says where to cut. The finder settles on the single ``rzz`` in the middle of
 the chain, splitting the six qubits into two halves of three for 12 experiment circuits.
