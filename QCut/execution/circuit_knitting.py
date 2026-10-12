@@ -26,6 +26,7 @@ from QCut.execution.basis_transform import (
     _combine_pauli_ops,
     _get_obs_subcircuits,
 )
+from QCut.execution.iqm_counts import counts_result, withholds_measurements
 from QCut.execution.observables import (
     ObservablesLike,
     coerce_observables,
@@ -667,13 +668,23 @@ def _job_id(job) -> str:
 def _result(job):
     """A job's result, asked for twice if the results are not ready yet."""
     try:
-        return job.result()
+        return _result_once(job)
     except Exception as error:
         if "no results" not in str(error).lower():
             raise
         logger.info(f"Results not ready yet, asking again in {RESULT_RETRY_DELAY}s")
         sleep(RESULT_RETRY_DELAY)
+        return _result_once(job)
+
+
+def _result_once(job):
+    """A job's result, or its counts when the server will give nothing more."""
+    try:
         return job.result()
+    except Exception as error:
+        if not withholds_measurements(error):
+            raise
+        return counts_result(job, error)
 
 
 def _backend_shot_cap(backend) -> int | None:

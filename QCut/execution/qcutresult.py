@@ -36,6 +36,17 @@ def _counts_from(result, index: int) -> dict[str, float]:
 
 
 @dataclass(frozen=True)
+class CountsResult:
+    """A job's counts, one dict per circuit, for a job that hands back nothing else."""
+
+    counts: tuple[dict[str, int], ...]
+
+    def get_counts(self, index: int) -> dict[str, int]:
+        """The ``index``-th circuit's counts, as ``Result.get_counts`` gives them."""
+        return self.counts[index]
+
+
+@dataclass(frozen=True)
 class CircuitResult:
     """One subcircuit's result within one group, before it is turned into counts.
 
