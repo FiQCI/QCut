@@ -30,10 +30,12 @@ def withholds_measurements(error: Exception) -> bool:
     say so: ``'Raw measurem...ement_counts instead.'``. ``errors()`` holds it whole.
     """
     texts = [str(error)]
-    try:
-        texts += [str(detail.get("input")) for detail in error.errors()]
-    except Exception:  # noqa: BLE001 - not pydantic's, so the message is all there is
-        pass
+    errors = getattr(error, "errors", None)
+    if callable(errors):
+        try:
+            texts += [str(detail.get("input")) for detail in errors()]
+        except Exception:  # noqa: BLE001 - not pydantic's, so the message is all there is
+            pass
     return any("measurement_counts" in text for text in texts)
 
 
