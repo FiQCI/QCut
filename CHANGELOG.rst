@@ -5,15 +5,13 @@ Changelog
 **Version 2.3.0**
 =================
 
-Breaking changes
-----------------
+
+Remove Qiskit-Aer dependency
+-----
 
 - :code:`run()` and :code:`run_cut_circuit()` no longer default to :code:`AerSimulator()`;
   pass a backend or sampler. :code:`qiskit-aer` is no longer installed with QCut, so
   install it separately to simulate.
-
-Fixes
------
 
 - :code:`transpile_subcircuits()` and :code:`transpile_experiments()` read a backend's
   public :code:`target` rather than :code:`_target`, which Aer never fills in. Transpiling
