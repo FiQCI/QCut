@@ -348,7 +348,7 @@ print(ck.estimate_run(cut_experiment, shots=4096, max_batch_size=40))
 `Experiment will run 31 circuits in 1 jobs with a total of 126976 shots. See the returned object for the breakdown.`
 
 ```python
-{'job1': JobEstimate(circuits=31, shots=4096)}
+{"job1": JobEstimate(circuits=31, shots=4096)}
 ```
 
 31 circuits, not the 144 the decomposition calls for: a subcircuit's experiment circuit
