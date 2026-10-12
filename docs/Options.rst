@@ -205,7 +205,7 @@ drawing proportional to :math:`|c|` in the first place. The estimator is unbiase
 way, and ``CutExperiment.sampled`` says which path was taken.
 
 Submitting each distinct circuit once
-------------------------------------
+-------------------------------------
 
 ``deduplicate`` (default ``True``) submits each structurally distinct experiment circuit
 once and shares its result with every slot it fills.
