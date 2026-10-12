@@ -17,12 +17,11 @@ from qiskit.circuit import (
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 from qiskit.primitives import BaseSamplerV2
-from qiskit_aer import AerSimulator
 
 from QCut.cutcircuit import CutCircuit, CutExperiment
 from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import transpile_subcircuits
+from QCut.execution.backend_utility import has_topology, transpile_subcircuits
 from QCut.execution.basis_transform import (
     _combine_pauli_ops,
     _get_obs_subcircuits,
@@ -1163,7 +1162,7 @@ def run_experiments(  # noqa: C901
 
     """
     if backend is None:
-        backend = AerSimulator()
+        raise QCutError("a backend or sampler to run the circuits on is needed")
 
     if cut_experiment.plan is not None:
         results = _run_communicating(
@@ -1229,7 +1228,7 @@ def run_experiments(  # noqa: C901
 def run_cut_circuit(
     cut_circuit: CutCircuit,
     observables: ObservablesLike | None = None,
-    backend=AerSimulator(),
+    backend=None,
     max_batch_size: int = 100,
     options: CutOptions | None = None,
     shots: int = DEFAULT_SHOTS,
@@ -1243,7 +1242,9 @@ def run_cut_circuit(
             operations and cut locations
         observables: the observables to estimate, taken as qiskit's estimator takes
             them. See :func:`get_experiment_circuits`.
-        backend: backend to use for running experiment circuits (optional)
+        backend: backend or V2 sampler to run the experiment circuits on. A device
+            with a coupling map gets the subcircuits transpiled for it first. A
+            sampler is not transpiled for, so it must take the circuits as built.
         max_batch_size (int): maximum number of circuits submitted per backend.run
             call (optional)
         options (CutOptions): configuration, overriding what the CutCircuit carries
@@ -1269,16 +1270,13 @@ def run_cut_circuit(
     if options is not None:
         cut_circuit.options = options
 
-    if not isinstance(backend, AerSimulator):
-        transpiled_subcircuits = transpile_subcircuits(
-            cut_circuit, backend, optimization_level=3
-        )
+    if backend is None:
+        raise QCutError("a backend or sampler to run the circuits on is needed")
 
-        cut_experiment = get_experiment_circuits(
-            transpiled_subcircuits, observables, qubits
-        )
-    else:
-        cut_experiment = get_experiment_circuits(cut_circuit, observables, qubits)
+    if has_topology(backend):
+        cut_circuit = transpile_subcircuits(cut_circuit, backend, optimization_level=3)
+
+    cut_experiment = get_experiment_circuits(cut_circuit, observables, qubits)
 
     results = run_experiments(
         cut_experiment,
@@ -1297,7 +1295,7 @@ def run_cut_circuit(
 def run(
     circuit: QuantumCircuit,
     observables: ObservablesLike | None = None,
-    backend=AerSimulator(),
+    backend=None,
     max_batch_size: int = 100,
     options: CutOptions | None = None,
     shots: int = DEFAULT_SHOTS,
@@ -1310,7 +1308,9 @@ def run(
         circuit (QuantumCircuit): circuit with cut experiments
         observables: the observables to estimate, taken as qiskit's estimator takes
             them. See :func:`get_experiment_circuits`.
-        backend: backend to use for running experiment circuits (optional)
+        backend: backend or V2 sampler to run the experiment circuits on. A device
+            with a coupling map gets the subcircuits transpiled for it first. A
+            sampler is not transpiled for, so it must take the circuits as built.
         max_batch_size (int): maximum number of circuits submitted per backend.run
             call (optional)
         options (CutOptions): configuration for the run (optional)

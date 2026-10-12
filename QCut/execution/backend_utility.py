@@ -8,7 +8,8 @@ import logging
 from collections import defaultdict
 
 from qiskit import QuantumCircuit, transpile
-from qiskit.circuit import Gate
+from qiskit.circuit import Gate, Instruction
+from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.transpiler import PassManager, Target
 
 from QCut.cutcircuit import CutCircuit, CutExperiment
@@ -96,11 +97,15 @@ def _add_block_gates(target, coupling_map, members: dict[str, list[str]]) -> set
     is free to hand the marker its qubits either way round. Qiskit can turn a ``cz`` the
     right way because it knows the gate is symmetric; a marker is opaque, so an
     unsupported orientation is a transpiler error rather than something it can fix.
+
+    Without a coupling map every pair is coupled, so the marker is declared global.
     """
-    loci = {}
-    for first, second in coupling_map.get_edges():
-        loci[(first, second)] = None
-        loci[(second, first)] = None
+    loci = None
+    if coupling_map is not None:
+        loci = {}
+        for first, second in coupling_map.get_edges():
+            loci[(first, second)] = None
+            loci[(second, first)] = None
     for name, group in members.items():
         target.add_instruction(
             Gate(num_qubits=len(group), name=name, params=[], label=name),
@@ -235,6 +240,40 @@ def _placeholder_gates(cut_circuit) -> dict[str, Gate]:
     return gates
 
 
+def _target_of(backend) -> Target:
+    """A backend's target, read through the public ``target``.
+
+    Raises:
+        QCutError: the backend has no target to transpile for.
+    """
+    target = getattr(backend, "target", None)
+    if target is None:
+        raise QCutError(
+            f"{backend} has no target to transpile for. Pass a backend that has one."
+        )
+    return target
+
+
+def _basis(target: Target) -> tuple[list[str], dict[str, Instruction]]:
+    """The operations a target names, and those of them qiskit would not recognise."""
+    standard = get_standard_gate_name_mapping()
+    names: set[str] = set()
+    custom: dict[str, Instruction] = {}
+    for operation in target.operations:
+        if not isinstance(operation, Instruction):
+            continue
+        names.add(operation.name)
+        if operation.name not in standard:
+            custom[operation.name] = operation
+    return sorted(names), custom
+
+
+def has_topology(backend) -> bool:
+    """Whether running on ``backend`` needs its circuits transpiled first."""
+    target = getattr(backend, "target", None)
+    return target is not None and target.build_coupling_map() is not None
+
+
 def _iqm_transpiler_for(backend):
     """Return IQM's transpiler if it is installed and ``backend`` is one of its own.
 
@@ -312,27 +351,16 @@ def transpile_subcircuits(
     # the multi-qubit operation it is rather than as unrelated single-qubit ones.
     spans, block_members = _block_spans(cut_circuit)
 
-    target = Target()
-
-    try:
-        basis_gates = list(
-            {
-                i[0].name
-                for i in backend._target.instructions
-                if isinstance(i[0].name, str)
-            }
-        )
-
-    except Exception as e:
-        raise ValueError(f"Error accessing backend target instructions: {e}")
-
-    target = target.from_configuration(
+    backend_target = _target_of(backend)
+    coupling_map = backend_target.build_coupling_map()
+    basis_gates, backend_gates = _basis(backend_target)
+    target = Target.from_configuration(
         num_qubits=backend.num_qubits,
-        coupling_map=backend._coupling_map,
+        coupling_map=coupling_map,
         basis_gates=basis_gates + list(custom_gates.keys()),
-        custom_name_mapping=custom_gates,
+        custom_name_mapping={**backend_gates, **custom_gates},
     )
-    block_names = _add_block_gates(target, backend._coupling_map, block_members)
+    block_names = _add_block_gates(target, coupling_map, block_members)
 
     # Fenced first: a placeholder is a single-qubit gate as far as the transpiler is
     # concerned, so without barriers it gets commuted past the others and the experiment
@@ -551,20 +579,17 @@ def transpile_circuits(
             for circuit in circuits
         ]
 
-    # A simulator has no target to build one from, and needs none: it takes the
-    # circuits as they are, so it is handed itself instead.
+    # An ideal simulator has no topology to build a target from, and needs none: it
+    # takes the circuits as they are, so it is handed itself instead.
     target = None
-    if getattr(backend, "_target", None) is not None:
-        target = Target().from_configuration(
+    if has_topology(backend):
+        backend_target = _target_of(backend)
+        basis_gates, backend_gates = _basis(backend_target)
+        target = Target.from_configuration(
             num_qubits=backend.num_qubits,
-            coupling_map=backend._coupling_map,
-            basis_gates=sorted(
-                {
-                    item[0].name
-                    for item in backend._target.instructions
-                    if isinstance(item[0].name, str)
-                }
-            ),
+            coupling_map=backend_target.build_coupling_map(),
+            basis_gates=basis_gates,
+            custom_name_mapping=backend_gates,
         )
 
     return [
