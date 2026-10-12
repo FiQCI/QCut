@@ -7,7 +7,7 @@ Changelog
 
 
 Remove Qiskit-Aer dependency
------
+----------------------------
 
 - :code:`run()` and :code:`run_cut_circuit()` no longer default to :code:`AerSimulator()`;
   pass a backend or sampler. :code:`qiskit-aer` is no longer installed with QCut, so
