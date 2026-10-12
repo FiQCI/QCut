@@ -345,11 +345,17 @@ The cost of an experiment run can be checked before submission:
 print(ck.estimate_run(cut_experiment, shots=4096, max_batch_size=40))
 ```
 
-`Experiment will run 144 circuits in 4 jobs with a total of 589824 shots. See the returned object for the breakdown.`
+`Experiment will run 31 circuits in 1 jobs with a total of 126976 shots. See the returned object for the breakdown.`
 
 ```python
-{'job1': JobEstimate(circuits=40, shots=4096), 'job2': JobEstimate(circuits=40, shots=4096), ...}
+{"job1": JobEstimate(circuits=31, shots=4096)}
 ```
+
+31 circuits, not the 144 the decomposition calls for: a subcircuit's experiment circuit
+depends only on the QPD terms of the cuts touching it and on the measurement setting
+over its own qubits, so most of them repeat. Each distinct one is submitted once and its
+result shared, which is where the saving comes from. `shots` still means shots per
+circuit. Pass `CutOptions(deduplicate=False)` to submit one circuit per slot instead.
 
 Exact for non-cummunicating runs. Runs whose wire cuts communicate get executed in waves so that
 each wave after the first spends its shots on what the one before it measured. For these jobs
