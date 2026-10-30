@@ -47,6 +47,8 @@ Installation should be done via ``uv``
 
 If using other than the default Qiskit version (newest) it is recommended to install Qiskit first before installing QCut.
 
+QCut does not install a simulator. The examples run on `Qiskit Aer <https://github.com/Qiskit/qiskit-aer>`__, which needs ``uv pip install qiskit-aer``.
+
 Using uv is the recommended install method.
 
 Install from source

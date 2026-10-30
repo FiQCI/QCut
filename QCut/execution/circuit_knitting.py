@@ -17,12 +17,11 @@ from qiskit.circuit import (
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 from qiskit.primitives import BaseSamplerV2
-from qiskit_aer import AerSimulator
 
 from QCut.cutcircuit import CutCircuit, CutExperiment
 from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import transpile_subcircuits
+from QCut.execution.backend_utility import has_topology, transpile_subcircuits
 from QCut.execution.basis_transform import (
     _combine_pauli_ops,
     _get_obs_subcircuits,
@@ -56,7 +55,12 @@ from QCut.qpd.qpd_operations import (
     qpd_for_bundle,
     sample_qpd_combinations,
 )
-from QCut.utils.circuit_utils import _remove_obsm, _remove_obsm_2, compact_qpd_register
+from QCut.utils.circuit_utils import (
+    _remove_obsm,
+    _remove_obsm_2,
+    circuit_fingerprint,
+    compact_qpd_register,
+)
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -906,6 +910,13 @@ def _run_communicating(cut_experiment, shots, backend, max_batch_size, run_optio
     The budget is not divided evenly between the waves. Sharing makes a measuring shot
     worth more than a preparing one, so wave zero takes :data:`MEASURE_SHARE` of the run
     and the later waves divide the rest. The total is unchanged either way.
+
+    TODO: the waves after the first do not share circuits at all. ``_later_wave_jobs``
+    gives every group a job of its own, where :func:`_deduplicate` would collapse the
+    groups holding the same circuit as wave zero's ``plan.keys`` already does. It is not
+    the same change as the plain path's, because each group carries its own shot
+    allocation by then, so the shared job would have to run at their sum and be scaled
+    back per group.
     """
     plan = cut_experiment.plan
     results: list[list[dict[int, CircuitResult]]] = [
@@ -1049,6 +1060,83 @@ def _projected_wave_jobs(cut_experiment, wave: int, shots: int):
     ]
 
 
+#: One slot of an experiment: which group, which measurement setting, which subcircuit.
+Slot = tuple[int, int, int]
+
+
+def _runnable(cut_experiment) -> tuple[list, list]:
+    """Split an experiment's slots into the ones worth submitting and the ones not.
+
+    A QPD term that measures nothing on a subcircuit leaves a circuit with no
+    measurements at all. There is nothing to run, and its counts are known: every shot
+    reads zero. Those are filled in directly rather than submitted.
+
+    Returns:
+        The slots to submit, as ``(slot, circuit)``, and the empty ones, as
+        ``(slot, num_clbits)``. Both in group, setting, subcircuit order.
+    """
+    runnable: list[tuple[Slot, QuantumCircuit]] = []
+    empty: list[tuple[Slot, int]] = []
+    for group_idx, circuit_group in enumerate(cut_experiment.experiments):
+        for obs_idx, obs_group in enumerate(circuit_group):
+            for sub_idx, subcircuit in obs_group.items():
+                slot = (group_idx, obs_idx, sub_idx)
+                if _has_measurements(subcircuit):
+                    runnable.append((slot, subcircuit))
+                else:
+                    empty.append((slot, subcircuit.num_clbits))
+    return runnable, empty
+
+
+def _deduplicate(runnable: list, enabled: bool) -> list[tuple[list, QuantumCircuit]]:
+    """Group slots filled by the same circuit, so it is only submitted once.
+
+    A subcircuit's experiment circuit depends on the QPD terms of the cuts touching that
+    subcircuit and on the measurement setting restricted to its own qubits, neither of
+    which most of an experiment's groups change. The slot count grows exponentially in
+    the number of pieces and the distinct count linearly, so almost all of a large run
+    is the same handful of circuits submitted over and over.
+
+    The key carries the subcircuit index as well as the fingerprint. The estimator takes
+    one factor per subcircuit from each group and multiplies them, so two factors of a
+    single product sharing a sample would give ``E[X**2]`` where ``E[X]**2`` is meant.
+    Keying on the subcircuit makes that impossible, since a group holds each subcircuit
+    once. Sharing between groups is a different matter: groups are summed rather than
+    multiplied, so it leaves the estimate unbiased and moves only its variance.
+
+    Two subcircuits of a symmetric circuit really can produce identical experiment
+    circuits, so this is not a theoretical concern.
+
+    Returns:
+        ``(slots, circuit)`` per distinct circuit, in the order first seen, so two runs
+        of one experiment submit the same circuits in the same order.
+    """
+    if not enabled:
+        return [([slot], circuit) for slot, circuit in runnable]
+
+    cache: dict = {}
+    distinct: dict[tuple, tuple[list, QuantumCircuit]] = {}
+    for slot, circuit in runnable:
+        key = (slot[2], circuit_fingerprint(circuit, cache))
+        hit = distinct.get(key)
+        if hit is None:
+            distinct[key] = ([slot], circuit)
+        else:
+            hit[0].append(slot)
+    return list(distinct.values())
+
+
+def _submission(cut_experiment) -> tuple[list[tuple[list, QuantumCircuit]], list]:
+    """What a run of this experiment actually submits, and what it fills in itself."""
+    runnable, empty = _runnable(cut_experiment)
+    jobs = _deduplicate(runnable, cut_experiment.options.deduplicate)
+    if len(jobs) < len(runnable):
+        logger.info(
+            f"{len(runnable)} experiment circuits hold {len(jobs)} distinct ones"
+        )
+    return jobs, empty
+
+
 def estimate_run(
     cut_experiment: CutExperiment,
     shots: int = DEFAULT_SHOTS,
@@ -1079,18 +1167,14 @@ def estimate_run(
     cap = _backend_shot_cap(backend) if backend is not None else None
 
     if cut_experiment.plan is None:
-        runnable = [
-            circuit
-            for group in cut_experiment.experiments
-            for obs_group in group
-            for circuit in obs_group.values()
-            if _has_measurements(circuit)
-        ]
+        # Counted through the same pair the run uses, so an estimate cannot drift from
+        # what is submitted.
+        jobs, _empty = _submission(cut_experiment)
         return RunEstimate(
             _named(
                 [
-                    JobEstimate(len(runnable[start : start + max_batch_size]), shots)
-                    for start in range(0, len(runnable), max_batch_size)
+                    JobEstimate(len(jobs[start : start + max_batch_size]), shots)
+                    for start in range(0, len(jobs), max_batch_size)
                 ]
             ),
             exact=True,
@@ -1163,7 +1247,7 @@ def run_experiments(  # noqa: C901
 
     """
     if backend is None:
-        backend = AerSimulator()
+        raise QCutError("a backend or sampler to run the circuits on is needed")
 
     if cut_experiment.plan is not None:
         results = _run_communicating(
@@ -1172,26 +1256,19 @@ def run_experiments(  # noqa: C901
         return RawResult(results, shots, cut_experiment)
 
     results: list[list[dict[int, CircuitResult]]] = [
-        [{} for _ in group] for group in cut_experiment.experiments
+        # Seeded in subcircuit order, because the estimator reads a group's subcircuits
+        # back in the order these were filled, and deduplicated circuits fill them in
+        # the order they were submitted instead. The same reason _run_communicating
+        # seeds its own.
+        [{sub: CircuitResult({}) for sub in sorted(obs_group)} for obs_group in group]
+        for group in cut_experiment.experiments
     ]
 
-    runnable: list[tuple[tuple[int, int, int], QuantumCircuit]] = []
-    empty_locations: list[tuple[tuple[int, int, int], int]] = []
-    for group_idx, circuit_group in enumerate(cut_experiment.experiments):
-        for obs_idx, obs_group in enumerate(circuit_group):
-            for sub_idx, subcircuit in obs_group.items():
-                key = (group_idx, obs_idx, sub_idx)
-                if _has_measurements(subcircuit):
-                    runnable.append((key, subcircuit))
-                else:
-                    empty_locations.append((key, subcircuit.num_clbits))
+    jobs, empty_locations = _submission(cut_experiment)
 
-    num_batches = len(runnable) // max_batch_size + (
-        1 if len(runnable) % max_batch_size else 0
-    )
+    num_batches = len(jobs) // max_batch_size + (1 if len(jobs) % max_batch_size else 0)
     logger.info(
-        f"Running {len(runnable)} circuits on the"
-        f" backend {backend} with {shots} shots each"
+        f"Running {len(jobs)} circuits on the backend {backend} with {shots} shots each"
     )
     logger.info(
         "Circuits will be split into "
@@ -1200,8 +1277,8 @@ def run_experiments(  # noqa: C901
     )
     # Submitted before any is collected, so every batch queues at once.
     submitted = []
-    for start in range(0, len(runnable), max_batch_size):
-        batch = runnable[start : start + max_batch_size]
+    for start in range(0, len(jobs), max_batch_size):
+        batch = jobs[start : start + max_batch_size]
         job = _submit(
             backend,
             [circ for _, circ in batch],
@@ -1214,9 +1291,13 @@ def run_experiments(  # noqa: C901
 
     for job, batch in submitted:
         result = _result(job)
-        for index, (key, _circ) in enumerate(batch):
-            group_idx, obs_idx, sub_idx = key
-            results[group_idx][obs_idx][sub_idx] = CircuitResult(result, index)
+        for index, (slots, _circ) in enumerate(batch):
+            # One result object for the circuit, shared by every slot it fills. It is
+            # frozen and holds the job's result by reference, so there is nothing to
+            # copy and nothing that could be mutated through one slot.
+            circuit_result = CircuitResult(result, index)
+            for group_idx, obs_idx, sub_idx in slots:
+                results[group_idx][obs_idx][sub_idx] = circuit_result
 
     for (group_idx, obs_idx, sub_idx), num_clbits in empty_locations:
         results[group_idx][obs_idx][sub_idx] = CircuitResult(
@@ -1229,7 +1310,7 @@ def run_experiments(  # noqa: C901
 def run_cut_circuit(
     cut_circuit: CutCircuit,
     observables: ObservablesLike | None = None,
-    backend=AerSimulator(),
+    backend=None,
     max_batch_size: int = 100,
     options: CutOptions | None = None,
     shots: int = DEFAULT_SHOTS,
@@ -1243,7 +1324,9 @@ def run_cut_circuit(
             operations and cut locations
         observables: the observables to estimate, taken as qiskit's estimator takes
             them. See :func:`get_experiment_circuits`.
-        backend: backend to use for running experiment circuits (optional)
+        backend: backend or V2 sampler to run the experiment circuits on. A device
+            with a coupling map gets the subcircuits transpiled for it first. A
+            sampler is not transpiled for, so it must take the circuits as built.
         max_batch_size (int): maximum number of circuits submitted per backend.run
             call (optional)
         options (CutOptions): configuration, overriding what the CutCircuit carries
@@ -1269,16 +1352,13 @@ def run_cut_circuit(
     if options is not None:
         cut_circuit.options = options
 
-    if not isinstance(backend, AerSimulator):
-        transpiled_subcircuits = transpile_subcircuits(
-            cut_circuit, backend, optimization_level=3
-        )
+    if backend is None:
+        raise QCutError("a backend or sampler to run the circuits on is needed")
 
-        cut_experiment = get_experiment_circuits(
-            transpiled_subcircuits, observables, qubits
-        )
-    else:
-        cut_experiment = get_experiment_circuits(cut_circuit, observables, qubits)
+    if has_topology(backend):
+        cut_circuit = transpile_subcircuits(cut_circuit, backend, optimization_level=3)
+
+    cut_experiment = get_experiment_circuits(cut_circuit, observables, qubits)
 
     results = run_experiments(
         cut_experiment,
@@ -1297,7 +1377,7 @@ def run_cut_circuit(
 def run(
     circuit: QuantumCircuit,
     observables: ObservablesLike | None = None,
-    backend=AerSimulator(),
+    backend=None,
     max_batch_size: int = 100,
     options: CutOptions | None = None,
     shots: int = DEFAULT_SHOTS,
@@ -1310,7 +1390,9 @@ def run(
         circuit (QuantumCircuit): circuit with cut experiments
         observables: the observables to estimate, taken as qiskit's estimator takes
             them. See :func:`get_experiment_circuits`.
-        backend: backend to use for running experiment circuits (optional)
+        backend: backend or V2 sampler to run the experiment circuits on. A device
+            with a coupling map gets the subcircuits transpiled for it first. A
+            sampler is not transpiled for, so it must take the circuits as built.
         max_batch_size (int): maximum number of circuits submitted per backend.run
             call (optional)
         options (CutOptions): configuration for the run (optional)

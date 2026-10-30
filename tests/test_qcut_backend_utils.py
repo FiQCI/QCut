@@ -4,10 +4,12 @@ from qiskit import QuantumCircuit
 from qiskit.circuit.library import CXGate
 from qiskit.providers.fake_provider import GenericBackendV2
 from qiskit.quantum_info import Pauli, Statevector
+from qiskit_aer import AerSimulator
 
 import QCut as ck
 from QCut import cut, cutGate
 from QCut.errors.qcuterror import QCutError
+from QCut.execution.backend_utility import has_topology
 from QCut.execution.circuit_knitting import _backend_gate_names
 
 cut_circ = QuantumCircuit(4)
@@ -137,9 +139,55 @@ def test_transpiled_subcircuits_give_correct_expectation_value():
     cut_circuit = ck.get_locations_and_subcircuits(to_cut)
     transpiled = ck.transpile_subcircuits(cut_circuit, generic, optimization_level=3)
     experiments = ck.get_experiment_circuits(transpiled, ["ZZZZ"])
-    results = ck.run_experiments(experiments, shots=20000)
+    results = ck.run_experiments(experiments, shots=20000, backend=AerSimulator())
 
     assert np.allclose(ck.estimate_expectation_values(results), exact, atol=0.1)
+
+
+def test_subcircuits_transpile_for_aer():
+    """Aer builds its target on each read of ``target`` and leaves ``_target`` empty."""
+    uncut = QuantumCircuit(4)
+    uncut.h(0)
+    uncut.cx(0, 1)
+    uncut.cx(1, 2)
+    uncut.cx(2, 3)
+    exact = np.real(Statevector(uncut).expectation_value(Pauli("ZZZZ")))
+
+    to_cut = QuantumCircuit(4)
+    to_cut.h(0)
+    to_cut.cx(0, 1)
+    to_cut.append(**cutGate(CXGate(), 1, 2))
+    to_cut.cx(2, 3)
+
+    cut_circuit = ck.get_locations_and_subcircuits(to_cut)
+    transpiled = ck.transpile_subcircuits(cut_circuit, AerSimulator())
+    experiments = ck.get_experiment_circuits(transpiled, ["ZZZZ"])
+    results = ck.run_experiments(experiments, shots=20000, backend=AerSimulator())
+
+    assert np.allclose(ck.estimate_expectation_values(results), exact, atol=0.1)
+
+
+def test_a_backend_without_a_target_is_refused():
+    cut_circuit = ck.get_locations_and_subcircuits(cut_circ.copy())
+
+    with pytest.raises(QCutError, match="no target"):
+        ck.transpile_subcircuits(cut_circuit, object())
+
+
+@pytest.mark.parametrize(
+    ("make", "expected"),
+    [(AerSimulator, False), (lambda: GenericBackendV2(num_qubits=5), True)],
+    ids=["aer", "generic"],
+)
+def test_only_a_backend_with_a_coupling_map_has_a_topology(make, expected):
+    assert has_topology(make()) is expected
+
+
+def test_running_without_a_backend_is_refused():
+    with pytest.raises(QCutError, match="backend or sampler"):
+        ck.run(cut_circ.copy(), ["ZZZZ"])
+    with pytest.raises(QCutError, match="backend or sampler"):
+        ck.run_cut_circuit(ck.get_locations_and_subcircuits(cut_circ.copy()), ["ZZZZ"])
 
 
 def test_backend_gate_names_reads_a_v2_target():
