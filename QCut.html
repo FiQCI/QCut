@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=5c4a50dc"></script>
+    <script src="_static/documentation_options.js?v=25c48609"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="License" href="License.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -1215,9 +1215,9 @@ without ever building the <code class="docutils literal notranslate"><span class
 and <a class="reference internal" href="#QCut.QuasiProbabilities.counts" title="QCut.QuasiProbabilities.counts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">counts()</span></code></a>, report the <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_TOP</span></code> most likely bitstrings unless
 given a <code class="docutils literal notranslate"><span class="pre">top</span></code> of their own, since a distribution over more than a few qubits has
 more entries than is usually needed. <code class="docutils literal notranslate"><span class="pre">top=None</span></code> asks for all of them. Only
-<a class="reference internal" href="#QCut.QuasiProbabilities.quasi_probabilities" title="QCut.QuasiProbabilities.quasi_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code></a> gets out of building them all the other two project onto
-the nearest physical distribution first, and what that projection is depends on
-every value.</p>
+<a class="reference internal" href="#QCut.QuasiProbabilities.quasi_probabilities" title="QCut.QuasiProbabilities.quasi_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code></a> gets out of building them all, since the other two
+project onto the nearest physical distribution first, and what that projection is
+depends on every value.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="QCut.QuasiProbabilities.shots">
 <span class="sig-name descname"><span class="pre">shots</span></span><a class="headerlink" href="#QCut.QuasiProbabilities.shots" title="Link to this definition">#</a></dt>
