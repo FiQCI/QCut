@@ -42,7 +42,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=f2bd6b95"></script>
+    <script src="../_static/documentation_options.js?v=88b8e8c7"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="Deriving optimal QPD for the CZ gate" href="CZ_derivation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev17+ge36f45f51" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -419,8 +419,8 @@
 <section id="pauli-expansion">
 <h2>Pauli expansion<a class="headerlink" href="#pauli-expansion" title="Link to this heading">#</a></h2>
 <p>We start by expressing the SWAP gate in Pauli tensor basis:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ea3d65e8-3c11-4f47-97a8-a193bade78d7">
-<span id="eq1"></span><span class="eqno">(1)<a class="headerlink" href="#equation-ea3d65e8-3c11-4f47-97a8-a193bade78d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6a1b4295-6755-4890-a703-e112edee34dd">
+<span id="eq1"></span><span class="eqno">(1)<a class="headerlink" href="#equation-6a1b4295-6755-4890-a703-e112edee34dd" title="Permalink to this equation">#</a></span>\[\begin{equation}
     SWAP = \sum_{\alpha,\beta=0}^{3}c_{\alpha\beta}\sigma_\alpha\otimes\sigma_\beta
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(c_\alpha\beta = \frac{1}{4}Tr[(\sigma_\alpha \otimes \sigma\beta)SWAP]\)</span></p>
@@ -440,8 +440,8 @@
 \end{split}\]</div>
 <p>Therefore <span class="math notranslate nohighlight">\(c_{\alpha\beta}=\frac{1}{4}2\delta_{\alpha\beta}=\frac{1}{2}\delta_{\alpha\beta}\)</span></p>
 <p>Now expanding out <a class="reference internal" href="#eq1">equation 1</a> gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-298225b4-8ee4-41ec-a3c3-f284a8589391">
-<span id="eq2"></span><span class="eqno">(2)<a class="headerlink" href="#equation-298225b4-8ee4-41ec-a3c3-f284a8589391" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-971dc8db-3394-48af-946f-13b64210514c">
+<span id="eq2"></span><span class="eqno">(2)<a class="headerlink" href="#equation-971dc8db-3394-48af-946f-13b64210514c" title="Permalink to this equation">#</a></span>\[\begin{equation}
     SWAP = \frac{1}{2}(I\otimes I + X\otimes X + Y\otimes Y + Z\otimes Z)
 \end{equation}\]</div>
 <p>Note that SWAP is already diagonal in the Pauli basis.</p>
@@ -449,13 +449,13 @@
 <section id="kak-decomposition">
 <h2>KAK decomposition<a class="headerlink" href="#kak-decomposition" title="Link to this heading">#</a></h2>
 <p>Any two qubit unitary can be written as <a class="reference internal" href="#ref">[2]</a>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1ea85382-c49e-4a55-baa1-ffc1e4c14a43">
-<span id="eq3"></span><span class="eqno">(3)<a class="headerlink" href="#equation-1ea85382-c49e-4a55-baa1-ffc1e4c14a43" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7500b560-6749-49f3-b689-941601451c6d">
+<span id="eq3"></span><span class="eqno">(3)<a class="headerlink" href="#equation-7500b560-6749-49f3-b689-941601451c6d" title="Permalink to this equation">#</a></span>\[\begin{equation}
     U = (K_1 \otimes K_2)\exp[-i(\theta_1X\otimes X + \theta_2Y\otimes Y + \theta_3Z\otimes Z)](K_3 \otimes K4)
 \end{equation}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(K_i\)</span> are local unitaries and <span class="math notranslate nohighlight">\(\theta_i\)</span> are the non-local parameters. For swap gate the local parts are trivial. Since SWAP is already diagonal in the Pauli basis <span class="math notranslate nohighlight">\(K_i=I\)</span>. <a class="reference internal" href="#eq3">Equation 3</a> then simplifies to just <span class="math notranslate nohighlight">\(\exp[-i(\theta_1X\otimes X + \theta_2Y\otimes Y + \theta_3Z\otimes Z)]\)</span>. To evaluate this we note that the Pauli terms commute and they all square to identity and write:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2dfb4293-b7ec-422c-9c74-54cc896deefd">
-<span class="eqno">(4)<a class="headerlink" href="#equation-2dfb4293-b7ec-422c-9c74-54cc896deefd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8f5047f6-640d-4022-b5c4-9868b23e5133">
+<span class="eqno">(4)<a class="headerlink" href="#equation-8f5047f6-640d-4022-b5c4-9868b23e5133" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \begin{aligned}
         &amp; \exp[-i(\theta_1X\otimes X + \theta_2Y\otimes Y + \theta_3Z\otimes Z)] \\
         &amp;= e^{-\theta_1XX}e^{-\theta_2YY}e^{-\theta_3ZZ} \\
@@ -492,8 +492,8 @@ u_0 = \cos(\pi/4)^3 - i \sin(\pi/4)^3 = \frac{1}{\sqrt(2)^3} - \frac{i}{\sqrt(2)
 <section id="superoperator-expansion">
 <h2>Superoperator expansion<a class="headerlink" href="#superoperator-expansion" title="Link to this heading">#</a></h2>
 <p>We can expand a superoperator acting on a two qubit unitary as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8e896455-e366-4a4e-b372-5a6527f2b110">
-<span id="eq4"></span><span class="eqno">(5)<a class="headerlink" href="#equation-8e896455-e366-4a4e-b372-5a6527f2b110" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-feb69225-40ff-43d7-ae72-68bc2c699cbb">
+<span id="eq4"></span><span class="eqno">(5)<a class="headerlink" href="#equation-feb69225-40ff-43d7-ae72-68bc2c699cbb" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \begin{aligned}
         U(\rho) &amp;= U\rho U^\dagger \\
         &amp;=\sum_{\alpha,\alpha'}u_\alpha u_{\alpha'}^*(\sigma_\alpha \otimes \sigma\alpha)\rho(\sigma_\alpha' \otimes \sigma\alpha') \\
@@ -638,8 +638,8 @@ B_{\alpha\alpha'}^\pm\rho = \frac{\sigma_\alpha\pm i\sigma_{\alpha'}}{2}\rho\fra
 <section id="family-4-b-pm-alpha-neq-alpha-neq-0">
 <h3>Family 4: <span class="math notranslate nohighlight">\(B^\pm\)</span>, <span class="math notranslate nohighlight">\(\alpha\neq\alpha'\neq 0\)</span><a class="headerlink" href="#family-4-b-pm-alpha-neq-alpha-neq-0" title="Link to this heading">#</a></h3>
 <p>The operators are <span class="math notranslate nohighlight">\(\frac{\sigma_\alpha \pm i\sigma_{\alpha'}}{2}\)</span>. Using <span class="math notranslate nohighlight">\(\sigma_\alpha\sigma_{\alpha'}=i\epsilon_{\alpha\alpha'\beta}\sigma_\beta\)</span> we can write the operators as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d34558c2-d8ff-4e57-8281-4823848e2ff0">
-<span class="eqno">(6)<a class="headerlink" href="#equation-d34558c2-d8ff-4e57-8281-4823848e2ff0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7b2b5b7c-9e7d-4efb-9d1d-ff0ce0521d4c">
+<span class="eqno">(6)<a class="headerlink" href="#equation-7b2b5b7c-9e7d-4efb-9d1d-ff0ce0521d4c" title="Permalink to this equation">#</a></span>\[\begin{align}
     \frac{\sigma_\alpha \pm i\sigma_{\alpha'}}{2} &amp;= \frac{\sigma_\alpha(I \pm i \sigma_\alpha\sigma_{\alpha'})}{2} \\
     &amp;= \sigma_\alpha \frac{I \pm \epsilon_{\alpha \alpha' \beta}\sigma_\beta}{2} \\
     &amp; \text{For cyclic ordering } \epsilon=+1 \\
@@ -676,8 +676,8 @@ B_{\alpha\alpha'}^\pm\rho = \frac{\sigma_\alpha\pm i\sigma_{\alpha'}}{2}\rho\fra
 <section id="applying-equation-19-of-1">
 <h2>Applying equation 19 of <a class="reference internal" href="#ref">[1]</a><a class="headerlink" href="#applying-equation-19-of-1" title="Link to this heading">#</a></h2>
 <p>From <a class="reference internal" href="#ref">[1]</a> equation 19 with <span class="math notranslate nohighlight">\(u_\alpha u_{\alpha'}^*\)</span>=1/4 (all real and equal):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f8114646-acf6-4981-b4dc-acbfee555c8f">
-<span class="eqno">(7)<a class="headerlink" href="#equation-f8114646-acf6-4981-b4dc-acbfee555c8f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-09664ae3-33d2-4822-be69-630233210d40">
+<span class="eqno">(7)<a class="headerlink" href="#equation-09664ae3-33d2-4822-be69-630233210d40" title="Permalink to this equation">#</a></span>\[\begin{equation}
     U=\sum_\alpha|u_\alpha|^2\sigma_\alpha^{\otimes 2} + \sum_{\alpha&lt;\alpha'}2Re(u_\alpha u_{\alpha'}^*)(A_{\alpha\alpha'}^{\otimes2}-B_{\alpha\alpha}^{\otimes 2})
 \end{equation}\]</div>
 <p>Note that here we omit the last term of the equation since for SWAP it is 0. However if deriving the QPD for e.g an iSWAP gate the last term would also be relevant. That general case is worked through in <a class="reference internal" href="General_2q_derivation.html"><span class="std std-doc">General two-qubit QPD derivation</span></a>, which QCut uses to generate a QPD for any two-qubit gate.</p>
