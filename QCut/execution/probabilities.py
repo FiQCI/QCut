@@ -54,9 +54,9 @@ class QuasiProbabilities(Mapping):
     and :meth:`counts`, report the :data:`DEFAULT_TOP` most likely bitstrings unless
     given a ``top`` of their own, since a distribution over more than a few qubits has
     more entries than is usually needed. ``top=None`` asks for all of them. Only
-    :meth:`quasi_probabilities` gets out of building them all the other two project onto
-    the nearest physical distribution first, and what that projection is depends on
-    every value.
+    :meth:`quasi_probabilities` gets out of building them all, since the other two
+    project onto the nearest physical distribution first, and what that projection is
+    depends on every value.
 
     Attributes:
         shots (int | None): what the experiment ran at, carried so :meth:`counts` has a
