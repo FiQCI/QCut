@@ -454,9 +454,13 @@ cut_experiment = ck.get_experiment_circuits(cut_circuit, qubits=[0, 1])
 results = ck.run_experiments(cut_experiment, shots=4096, backend=sim)
 
 probs = ck.estimate_probabilities(results)
+print(probs)
 ```
 
-`{'00': 0.8658, '01': -0.0024, '10': 0.1041, '11': 0.0324}`
+`QuasiProbabilities({'00': 0.8658, '01': -0.0024, '10': 0.1041, '11': 0.0324})`
+
+The bitstrings are read with the first of the chosen qubits as the rightmost character, so
+with `qubits=[2, 0]` qubit 2 is the last character and qubit 0 the first.
 
 `run()` and `run_cut_circuit()` take `qubits` in the same way, and hand back the
 distribution rather than expectation values.
@@ -466,27 +470,17 @@ would have been for a single observable however many qubits are asked for. See
 [the derivation](https://jooniv.github.io/QCut/theory/Probability_reconstruction.html)
 for how the distribution is reconstructed.
 
-The result is a mapping, so it indexes and plots like a dict, and carries three views:
+The distribution is never built as a table of `2**k` values unless asked for, so the
+recommended way to read it is `top()`, which finds the most likely bitstrings directly:
 
 ```python
-probs["00"]  # 0.8658
-probs.quasi_probabilities()  # the same values, as a plain dict
-probs.nearest_probabilities()  # closest true distribution, negatives projected away
-probs.counts()  # scaled by the shots the experiment ran at
-probs.counts(shots=1000)  # or by any other shots
+probs.top(10)  # {'00': 0.8658, '10': 0.1041, '11': 0.0324, '01': -0.0024}
 ```
 
-The three dict views report, by default, the ten most likely bitstrings. Pass `top` for a different
-number, or `top=None` for all of them:
-
-```python
-probs.quasi_probabilities(top=50)  # the fifty most likely
-probs.counts(shots=1000, top=None)  # the whole distribution, as before
-```
-
-Note that :code:`counts()` sums to :code:`shots` only with :code:`top=None` and
-Only :code:`quasi_probabilities()` gets cheaper this way since the other two project onto the
-nearest physical distribution first.
+`probability_of()` and `marginal()` give one bitstring or a subset of the qubits.
+`nearest_probabilities()` and `counts()` give the closest true distribution, as
+probabilities or scaled to shots. They report the ten most likely bitstrings, or all of
+them with `top=None`.
 
 Against the same circuit run whole:
 
