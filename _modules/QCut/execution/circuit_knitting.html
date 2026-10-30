@@ -41,7 +41,7 @@
 
     <script src="../../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../../_static/documentation_options.js?v=88b8e8c7"></script>
+    <script src="../../../_static/documentation_options.js?v=5c4a50dc"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -52,7 +52,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -351,12 +351,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_standard_gate_name_mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.converters</span><span class="w"> </span><span class="kn">import</span> <span class="n">circuit_to_dag</span><span class="p">,</span> <span class="n">dag_to_circuit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSamplerV2</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">QCut.cutcircuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutCircuit</span><span class="p">,</span> <span class="n">CutExperiment</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">QCut.cutting.circuit_preparation</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_locations_and_subcircuits</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">QCut.errors.qcuterror</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCutError</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.backend_utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">transpile_subcircuits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.backend_utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">has_topology</span><span class="p">,</span> <span class="n">transpile_subcircuits</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.basis_transform</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_combine_pauli_ops</span><span class="p">,</span>
     <span class="n">_get_obs_subcircuits</span><span class="p">,</span>
@@ -390,7 +389,12 @@
     <span class="n">qpd_for_bundle</span><span class="p">,</span>
     <span class="n">sample_qpd_combinations</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.circuit_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_remove_obsm</span><span class="p">,</span> <span class="n">_remove_obsm_2</span><span class="p">,</span> <span class="n">compact_qpd_register</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.circuit_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_remove_obsm</span><span class="p">,</span>
+    <span class="n">_remove_obsm_2</span><span class="p">,</span>
+    <span class="n">circuit_fingerprint</span><span class="p">,</span>
+    <span class="n">compact_qpd_register</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -1243,6 +1247,13 @@
 <span class="sd">    The budget is not divided evenly between the waves. Sharing makes a measuring shot</span>
 <span class="sd">    worth more than a preparing one, so wave zero takes :data:`MEASURE_SHARE` of the run</span>
 <span class="sd">    and the later waves divide the rest. The total is unchanged either way.</span>
+
+<span class="sd">    TODO: the waves after the first do not share circuits at all. ``_later_wave_jobs``</span>
+<span class="sd">    gives every group a job of its own, where :func:`_deduplicate` would collapse the</span>
+<span class="sd">    groups holding the same circuit as wave zero&#39;s ``plan.keys`` already does. It is not</span>
+<span class="sd">    the same change as the plain path&#39;s, because each group carries its own shot</span>
+<span class="sd">    allocation by then, so the shared job would have to run at their sum and be scaled</span>
+<span class="sd">    back per group.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plan</span> <span class="o">=</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">plan</span>
     <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CircuitResult</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
@@ -1392,6 +1403,83 @@
     <span class="p">]</span>
 
 
+<span class="c1">#: One slot of an experiment: which group, which measurement setting, which subcircuit.</span>
+<span class="n">Slot</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_runnable</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split an experiment&#39;s slots into the ones worth submitting and the ones not.</span>
+
+<span class="sd">    A QPD term that measures nothing on a subcircuit leaves a circuit with no</span>
+<span class="sd">    measurements at all. There is nothing to run, and its counts are known: every shot</span>
+<span class="sd">    reads zero. Those are filled in directly rather than submitted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The slots to submit, as ``(slot, circuit)``, and the empty ones, as</span>
+<span class="sd">        ``(slot, num_clbits)``. Both in group, setting, subcircuit order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">runnable</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Slot</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">empty</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Slot</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">circuit_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">obs_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">circuit_group</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub_idx</span><span class="p">,</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">obs_group</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">slot</span> <span class="o">=</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">_has_measurements</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">):</span>
+                    <span class="n">runnable</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">slot</span><span class="p">,</span> <span class="n">subcircuit</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">empty</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">slot</span><span class="p">,</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">num_clbits</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">runnable</span><span class="p">,</span> <span class="n">empty</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_deduplicate</span><span class="p">(</span><span class="n">runnable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group slots filled by the same circuit, so it is only submitted once.</span>
+
+<span class="sd">    A subcircuit&#39;s experiment circuit depends on the QPD terms of the cuts touching that</span>
+<span class="sd">    subcircuit and on the measurement setting restricted to its own qubits, neither of</span>
+<span class="sd">    which most of an experiment&#39;s groups change. The slot count grows exponentially in</span>
+<span class="sd">    the number of pieces and the distinct count linearly, so almost all of a large run</span>
+<span class="sd">    is the same handful of circuits submitted over and over.</span>
+
+<span class="sd">    The key carries the subcircuit index as well as the fingerprint. The estimator takes</span>
+<span class="sd">    one factor per subcircuit from each group and multiplies them, so two factors of a</span>
+<span class="sd">    single product sharing a sample would give ``E[X**2]`` where ``E[X]**2`` is meant.</span>
+<span class="sd">    Keying on the subcircuit makes that impossible, since a group holds each subcircuit</span>
+<span class="sd">    once. Sharing between groups is a different matter: groups are summed rather than</span>
+<span class="sd">    multiplied, so it leaves the estimate unbiased and moves only its variance.</span>
+
+<span class="sd">    Two subcircuits of a symmetric circuit really can produce identical experiment</span>
+<span class="sd">    circuits, so this is not a theoretical concern.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``(slots, circuit)`` per distinct circuit, in the order first seen, so two runs</span>
+<span class="sd">        of one experiment submit the same circuits in the same order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[([</span><span class="n">slot</span><span class="p">],</span> <span class="n">circuit</span><span class="p">)</span> <span class="k">for</span> <span class="n">slot</span><span class="p">,</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">runnable</span><span class="p">]</span>
+
+    <span class="n">cache</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">distinct</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">slot</span><span class="p">,</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">runnable</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">slot</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">circuit_fingerprint</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">cache</span><span class="p">))</span>
+        <span class="n">hit</span> <span class="o">=</span> <span class="n">distinct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">distinct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="n">slot</span><span class="p">],</span> <span class="n">circuit</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">distinct</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_submission</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a run of this experiment actually submits, and what it fills in itself.&quot;&quot;&quot;</span>
+    <span class="n">runnable</span><span class="p">,</span> <span class="n">empty</span> <span class="o">=</span> <span class="n">_runnable</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="n">_deduplicate</span><span class="p">(</span><span class="n">runnable</span><span class="p">,</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">)</span><span class="si">}</span><span class="s2"> experiment circuits hold </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="si">}</span><span class="s2"> distinct ones&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">empty</span>
+
+
 <div class="viewcode-block" id="estimate_run">
 <a class="viewcode-back" href="../../../QCut.html#QCut.estimate_run">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">estimate_run</span><span class="p">(</span>
@@ -1424,18 +1512,14 @@
     <span class="n">cap</span> <span class="o">=</span> <span class="n">_backend_shot_cap</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span> <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">runnable</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">circuit</span>
-            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span>
-            <span class="k">for</span> <span class="n">obs_group</span> <span class="ow">in</span> <span class="n">group</span>
-            <span class="k">for</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">obs_group</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">_has_measurements</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="c1"># Counted through the same pair the run uses, so an estimate cannot drift from</span>
+        <span class="c1"># what is submitted.</span>
+        <span class="n">jobs</span><span class="p">,</span> <span class="n">_empty</span> <span class="o">=</span> <span class="n">_submission</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">RunEstimate</span><span class="p">(</span>
             <span class="n">_named</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="n">JobEstimate</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">max_batch_size</span><span class="p">]),</span> <span class="n">shots</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">),</span> <span class="n">max_batch_size</span><span class="p">)</span>
+                    <span class="n">JobEstimate</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">max_batch_size</span><span class="p">]),</span> <span class="n">shots</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">),</span> <span class="n">max_batch_size</span><span class="p">)</span>
                 <span class="p">]</span>
             <span class="p">),</span>
             <span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1511,7 +1595,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">backend</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span><span class="s2">&quot;a backend or sampler to run the circuits on is needed&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">plan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">_run_communicating</span><span class="p">(</span>
@@ -1520,26 +1604,19 @@
         <span class="k">return</span> <span class="n">RawResult</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">cut_experiment</span><span class="p">)</span>
 
     <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CircuitResult</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span>
+        <span class="c1"># Seeded in subcircuit order, because the estimator reads a group&#39;s subcircuits</span>
+        <span class="c1"># back in the order these were filled, and deduplicated circuits fill them in</span>
+        <span class="c1"># the order they were submitted instead. The same reason _run_communicating</span>
+        <span class="c1"># seeds its own.</span>
+        <span class="p">[{</span><span class="n">sub</span><span class="p">:</span> <span class="n">CircuitResult</span><span class="p">({})</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">obs_group</span><span class="p">)}</span> <span class="k">for</span> <span class="n">obs_group</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span>
     <span class="p">]</span>
 
-    <span class="n">runnable</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">empty_locations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">circuit_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">obs_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">circuit_group</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">sub_idx</span><span class="p">,</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">obs_group</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">_has_measurements</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">):</span>
-                    <span class="n">runnable</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">subcircuit</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">empty_locations</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">num_clbits</span><span class="p">))</span>
+    <span class="n">jobs</span><span class="p">,</span> <span class="n">empty_locations</span> <span class="o">=</span> <span class="n">_submission</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
 
-    <span class="n">num_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">)</span> <span class="o">//</span> <span class="n">max_batch_size</span> <span class="o">+</span> <span class="p">(</span>
-        <span class="mi">1</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">)</span> <span class="o">%</span> <span class="n">max_batch_size</span> <span class="k">else</span> <span class="mi">0</span>
-    <span class="p">)</span>
+    <span class="n">num_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">//</span> <span class="n">max_batch_size</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">%</span> <span class="n">max_batch_size</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Running </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">)</span><span class="si">}</span><span class="s2"> circuits on the&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot; backend </span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">shots</span><span class="si">}</span><span class="s2"> shots each&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Running </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="si">}</span><span class="s2"> circuits on the backend </span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">shots</span><span class="si">}</span><span class="s2"> shots each&quot;</span>
     <span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
         <span class="s2">&quot;Circuits will be split into &quot;</span>
@@ -1548,8 +1625,8 @@
     <span class="p">)</span>
     <span class="c1"># Submitted before any is collected, so every batch queues at once.</span>
     <span class="n">submitted</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">),</span> <span class="n">max_batch_size</span><span class="p">):</span>
-        <span class="n">batch</span> <span class="o">=</span> <span class="n">runnable</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">max_batch_size</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">),</span> <span class="n">max_batch_size</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">jobs</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">max_batch_size</span><span class="p">]</span>
         <span class="n">job</span> <span class="o">=</span> <span class="n">_submit</span><span class="p">(</span>
             <span class="n">backend</span><span class="p">,</span>
             <span class="p">[</span><span class="n">circ</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">],</span>
@@ -1562,9 +1639,13 @@
 
     <span class="k">for</span> <span class="n">job</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">submitted</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">_result</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">_circ</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
-            <span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span> <span class="o">=</span> <span class="n">key</span>
-            <span class="n">results</span><span class="p">[</span><span class="n">group_idx</span><span class="p">][</span><span class="n">obs_idx</span><span class="p">][</span><span class="n">sub_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">CircuitResult</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">slots</span><span class="p">,</span> <span class="n">_circ</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+            <span class="c1"># One result object for the circuit, shared by every slot it fills. It is</span>
+            <span class="c1"># frozen and holds the job&#39;s result by reference, so there is nothing to</span>
+            <span class="c1"># copy and nothing that could be mutated through one slot.</span>
+            <span class="n">circuit_result</span> <span class="o">=</span> <span class="n">CircuitResult</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span> <span class="ow">in</span> <span class="n">slots</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">group_idx</span><span class="p">][</span><span class="n">obs_idx</span><span class="p">][</span><span class="n">sub_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">circuit_result</span>
 
     <span class="k">for</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span><span class="p">),</span> <span class="n">num_clbits</span> <span class="ow">in</span> <span class="n">empty_locations</span><span class="p">:</span>
         <span class="n">results</span><span class="p">[</span><span class="n">group_idx</span><span class="p">][</span><span class="n">obs_idx</span><span class="p">][</span><span class="n">sub_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">CircuitResult</span><span class="p">(</span>
@@ -1580,7 +1661,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">run_cut_circuit</span><span class="p">(</span>
     <span class="n">cut_circuit</span><span class="p">:</span> <span class="n">CutCircuit</span><span class="p">,</span>
     <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend</span><span class="o">=</span><span class="n">AerSimulator</span><span class="p">(),</span>
+    <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">CutOptions</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
@@ -1594,7 +1675,9 @@
 <span class="sd">            operations and cut locations</span>
 <span class="sd">        observables: the observables to estimate, taken as qiskit&#39;s estimator takes</span>
 <span class="sd">            them. See :func:`get_experiment_circuits`.</span>
-<span class="sd">        backend: backend to use for running experiment circuits (optional)</span>
+<span class="sd">        backend: backend or V2 sampler to run the experiment circuits on. A device</span>
+<span class="sd">            with a coupling map gets the subcircuits transpiled for it first. A</span>
+<span class="sd">            sampler is not transpiled for, so it must take the circuits as built.</span>
 <span class="sd">        max_batch_size (int): maximum number of circuits submitted per backend.run</span>
 <span class="sd">            call (optional)</span>
 <span class="sd">        options (CutOptions): configuration, overriding what the CutCircuit carries</span>
@@ -1620,16 +1703,13 @@
     <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cut_circuit</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">AerSimulator</span><span class="p">):</span>
-        <span class="n">transpiled_subcircuits</span> <span class="o">=</span> <span class="n">transpile_subcircuits</span><span class="p">(</span>
-            <span class="n">cut_circuit</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span>
-        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span><span class="s2">&quot;a backend or sampler to run the circuits on is needed&quot;</span><span class="p">)</span>
 
-        <span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">get_experiment_circuits</span><span class="p">(</span>
-            <span class="n">transpiled_subcircuits</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">qubits</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">qubits</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">has_topology</span><span class="p">(</span><span class="n">backend</span><span class="p">):</span>
+        <span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">transpile_subcircuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">qubits</span><span class="p">)</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
         <span class="n">cut_experiment</span><span class="p">,</span>
@@ -1651,7 +1731,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
     <span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
     <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend</span><span class="o">=</span><span class="n">AerSimulator</span><span class="p">(),</span>
+    <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">CutOptions</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
@@ -1664,7 +1744,9 @@
 <span class="sd">        circuit (QuantumCircuit): circuit with cut experiments</span>
 <span class="sd">        observables: the observables to estimate, taken as qiskit&#39;s estimator takes</span>
 <span class="sd">            them. See :func:`get_experiment_circuits`.</span>
-<span class="sd">        backend: backend to use for running experiment circuits (optional)</span>
+<span class="sd">        backend: backend or V2 sampler to run the experiment circuits on. A device</span>
+<span class="sd">            with a coupling map gets the subcircuits transpiled for it first. A</span>
+<span class="sd">            sampler is not transpiled for, so it must take the circuits as built.</span>
 <span class="sd">        max_batch_size (int): maximum number of circuits submitted per backend.run</span>
 <span class="sd">            call (optional)</span>
 <span class="sd">        options (CutOptions): configuration for the run (optional)</span>

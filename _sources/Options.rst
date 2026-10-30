@@ -18,9 +18,10 @@ resulting ``CutCircuit`` and ``CutExperiment``, so it only has to be given once.
     cut_circuit = find_cuts(circuit , options=options)
 
 
-Options are fixed before the subcircuits are built, because they decide how the
+Most options are fixed before the subcircuits are built, because they decide how the
 quasiprobability decomposition is formed and therefore what its coefficients mean. A
-``CutOptions`` is frozen for that reason. Use ``options.replace(...)`` for a modified copy,
+``CutOptions`` is frozen for that reason. ``deduplicate`` is the exception: it changes
+only how a built experiment is submitted. Use ``options.replace(...)`` for a modified copy,
 or reassign ``QCut.DEFAULT_OPTIONS`` to change the defaults process-wide. For more examples
 on using options, see :doc:`QCutOptionsExample.ipynb <notebooks/QCutOptionsExample>`.
 
@@ -202,6 +203,34 @@ Sampling is not only a way to make large cases tractable. Enumerating gives ever
 same number of shots and corrects with a weight afterwards, which is higher variance than
 drawing proportional to :math:`|c|` in the first place. The estimator is unbiased either
 way, and ``CutExperiment.sampled`` says which path was taken.
+
+Submitting each distinct circuit once
+-------------------------------------
+
+``deduplicate`` (default ``True``) submits each structurally distinct experiment circuit
+once and shares its result with every slot it fills.
+
+A subcircuit's experiment circuit depends only on the QPD terms of the cuts touching that
+subcircuit and on the measurement setting over its own qubits. Neither changes between
+most of an experiment's groups, so the same circuit is built over and over: the number of
+slots grows exponentially in the number of pieces while the number of distinct circuits
+grows linearly. A three-piece chain with two gate cuts and five observables holds 324
+circuits and 45 distinct ones; a four-piece one holds 2592 and 70.
+
+``shots`` still means shots per circuit, so a run spends that many on each distinct
+circuit and the total drops by the same factor. What the old total bought was
+re-measuring circuits already measured. Sharing a sample between groups leaves the
+estimate unbiased, because a group's subcircuits are multiplied together while the groups
+themselves are summed, and no group reads one circuit twice. Measured over 15 seeds on
+the three-piece chain, the deduplicated estimator's error was *smaller* than the
+undeduplicated one's at the same shots per circuit, and six times smaller at an equal
+total shot budget, because the quasiprobability coefficients come in signed pairs whose
+variance contributions largely cancel.
+
+``CutExperiment.num_circuits`` still counts the circuits the decomposition calls for.
+``estimate_run()`` counts what is actually submitted. Experiments whose wire cuts
+communicate are unaffected; their first wave already shares circuits between the groups
+that differ only in the label they answer.
 
 Configuring cut finding options
 -------------------------------

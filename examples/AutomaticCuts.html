@@ -42,7 +42,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=88b8e8c7"></script>
+    <script src="../_static/documentation_options.js?v=5c4a50dc"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="Gate cuts" href="GateCuts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -403,6 +403,7 @@
 The number of partitions, the size of the partitions, and the type of cuts can be specified.</p>
 <p>Under the hood QCut uses <a class="reference external" href="https://github.com/inducer/pymetis">pymetis</a>  to find good cut locations based on the circuit’s graph representation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_cuts</span><span class="p">,</span> <span class="n">CutOptions</span>
 
@@ -426,7 +427,7 @@ The number of partitions, the size of the partitions, and the type of cuts can b
 <span class="nb">print</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">([</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">num_qubits</span> <span class="k">for</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">])</span>
 
-<span class="n">estimated_expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_cut_circuit</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
+<span class="n">estimated_expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_cut_circuit</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">AerSimulator</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>Nothing here says where to cut. The finder settles on the single <code class="docutils literal notranslate"><span class="pre">rzz</span></code> in the middle of

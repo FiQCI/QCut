@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=88b8e8c7"></script>
+    <script src="_static/documentation_options.js?v=5c4a50dc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -54,7 +54,7 @@
     <link rel="prev" title="QCut API reference" href="QCut.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -381,6 +381,11 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-3-0"><strong>Version 2.3.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-qiskit-aer-dependency">Remove Qiskit-Aer dependency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplicated-experiment-circuits">Deduplicated experiment circuits</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-2-0"><strong>Version 2.2.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breaking-changes">Breaking changes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-a-distribution-no-longer-costs-2-k">Reconstructing a distribution no longer costs <code class="code docutils literal notranslate"><span class="pre">2**k</span></code></a></li>
@@ -454,6 +459,39 @@
                   
   <section id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="version-2-3-0">
+<h2><strong>Version 2.3.0</strong><a class="headerlink" href="#version-2-3-0" title="Link to this heading">#</a></h2>
+<section id="remove-qiskit-aer-dependency">
+<h3>Remove Qiskit-Aer dependency<a class="headerlink" href="#remove-qiskit-aer-dependency" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">run()</span></code> and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> no longer default to <code class="code docutils literal notranslate"><span class="pre">AerSimulator()</span></code>;
+pass a backend or sampler. <code class="code docutils literal notranslate"><span class="pre">qiskit-aer</span></code> is no longer installed with QCut, so
+install it separately to simulate.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">transpile_subcircuits()</span></code> and <code class="code docutils literal notranslate"><span class="pre">transpile_experiments()</span></code> read a backend’s
+public <code class="code docutils literal notranslate"><span class="pre">target</span></code> rather than <code class="code docutils literal notranslate"><span class="pre">_target</span></code>, which Aer never fills in. Transpiling
+for <code class="code docutils literal notranslate"><span class="pre">AerSimulator</span></code> works, and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> transpiles only for a
+backend with a coupling map.</p></li>
+</ul>
+</section>
+<section id="deduplicated-experiment-circuits">
+<h3>Deduplicated experiment circuits<a class="headerlink" href="#deduplicated-experiment-circuits" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A run now submits each <em>distinct</em> experiment circuit once and shares its result with
+every slot it fills.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">shots</span></code> still means shots per circuit, so a run spends that many on each
+distinct circuit and the total drops by the same factor. What the old total bought
+was re-measuring circuits already measured. Sharing a sample between groups leaves the estimate unbiased,
+since the groups are summed rather than multiplied.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">estimate_run()</span></code> counts the circuits and shots that are actually submitted, so
+it still matches the run exactly.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">CutOptions(deduplicate=False)</span></code> restores one submission per slot.
+<code class="code docutils literal notranslate"><span class="pre">CutExperiment.num_circuits</span></code> is unchanged: it still counts the circuits the
+decomposition calls for.</p></li>
+<li><p>Experiments whose wire cuts communicate are unaffected for now. Their first wave
+already shares circuits between the groups that differ only in the label they answer.</p></li>
+</ul>
+</section>
+</section>
 <section id="version-2-2-0">
 <h2><strong>Version 2.2.0</strong><a class="headerlink" href="#version-2-2-0" title="Link to this heading">#</a></h2>
 <section id="breaking-changes">
@@ -1131,6 +1169,11 @@ call. A target that batches on its own account, such as
   </div>
   <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-3-0"><strong>Version 2.3.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-qiskit-aer-dependency">Remove Qiskit-Aer dependency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplicated-experiment-circuits">Deduplicated experiment circuits</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-2-0"><strong>Version 2.2.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breaking-changes">Breaking changes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-a-distribution-no-longer-costs-2-k">Reconstructing a distribution no longer costs <code class="code docutils literal notranslate"><span class="pre">2**k</span></code></a></li>

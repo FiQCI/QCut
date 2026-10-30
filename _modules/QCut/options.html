@@ -41,7 +41,7 @@
 
     <script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=88b8e8c7"></script>
+    <script src="../../_static/documentation_options.js?v=5c4a50dc"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -52,7 +52,7 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -338,9 +338,13 @@
 <span class="sd">passes them to :class:`QCut.cutcircuit.CutExperiment`. Everything downstream reads them</span>
 <span class="sd">from there, so adding a knob does not mean widening five signatures.</span>
 
-<span class="sd">They have to be fixed before the subcircuits are built, because they decide how the</span>
-<span class="sd">quasiprobability decomposition is formed and therefore what the coefficients mean. A</span>
-<span class="sd">:class:`CutOptions` is frozen for that reason.</span>
+<span class="sd">Most of them have to be fixed before the subcircuits are built, because they decide how</span>
+<span class="sd">the quasiprobability decomposition is formed and therefore what the coefficients mean. A</span>
+<span class="sd">:class:`CutOptions` is frozen for that reason. ``deduplicate`` is the exception: it</span>
+<span class="sd">changes only how an experiment is submitted, so it can be flipped on a built</span>
+<span class="sd">:class:`QCut.cutcircuit.CutExperiment`. It lives here anyway, so that</span>
+<span class="sd">:func:`QCut.estimate_run` and :func:`QCut.run_experiments` read one setting and cannot</span>
+<span class="sd">disagree about what a run costs.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
@@ -404,6 +408,13 @@
 <span class="sd">    ``num_samples`` draws are taken, defaulting to ``max_exact_groups``, and ``seed``</span>
 <span class="sd">    fixes the sampler for a reproducible experiment set.</span>
 
+<span class="sd">    ``deduplicate`` submits each distinct experiment circuit once and shares its result</span>
+<span class="sd">    between every slot it fills, rather than running the same circuit once per group.</span>
+<span class="sd">    The slot count grows exponentially in the number of pieces while the distinct count</span>
+<span class="sd">    grows linearly, so this is most of the cost of a run. ``shots`` still means shots</span>
+<span class="sd">    per circuit, so the total spent drops by the same factor; what it bought before was</span>
+<span class="sd">    re-measuring circuits already measured. Turn it off to submit one circuit per slot.</span>
+
 <span class="sd">    ``finder_candidates`` is how many candidate partitions the cut finder generates and</span>
 <span class="sd">    costs before keeping the cheapest. METIS returns only the partitioning that</span>
 <span class="sd">    minimises its own objective, the weighted edge cut, which stops being the true cost</span>
@@ -425,6 +436,7 @@
     <span class="n">max_exact_groups</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
     <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">deduplicate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">finder_candidates</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">finder_cut_mode</span><span class="p">:</span> <span class="n">FinderCutMode</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
     <span class="n">finder_max_qubits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -452,6 +464,10 @@
             <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;unknown finder_cut_mode &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">finder_cut_mode</span><span class="si">}</span><span class="s2">&#39;, expected one of &quot;</span>
                 <span class="s2">&quot;&#39;both&#39;, &#39;wire&#39;, &#39;gate&#39;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;deduplicate must be a bool, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_exact_groups</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span><span class="s2">&quot;max_exact_groups must be at least 1&quot;</span><span class="p">)</span>

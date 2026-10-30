@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=88b8e8c7"></script>
+    <script src="_static/documentation_options.js?v=5c4a50dc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="Basic Usage" href="Usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.2.0.post1.dev18+gcb78bf632" />
+  <meta name="docsearch:version" content="2.2.0.post1.dev19+g47a33470a" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -388,6 +388,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cutting-parallel-rotation-gates-together">Cutting parallel rotation gates together</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wire-cuts-with-one-way-classical-communication">Wire cuts with one-way classical communication</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-instead-of-enumerating">Sampling instead of enumerating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-each-distinct-circuit-once">Submitting each distinct circuit once</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-cut-finding-options">Configuring cut finding options</a></li>
 </ul>
             </nav>
@@ -416,9 +417,10 @@ resulting <code class="docutils literal notranslate"><span class="pre">CutCircui
  <span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">find_cuts</span><span class="p">(</span><span class="n">circuit</span> <span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Options are fixed before the subcircuits are built, because they decide how the
+<p>Most options are fixed before the subcircuits are built, because they decide how the
 quasiprobability decomposition is formed and therefore what its coefficients mean. A
-<code class="docutils literal notranslate"><span class="pre">CutOptions</span></code> is frozen for that reason. Use <code class="docutils literal notranslate"><span class="pre">options.replace(...)</span></code> for a modified copy,
+<code class="docutils literal notranslate"><span class="pre">CutOptions</span></code> is frozen for that reason. <code class="docutils literal notranslate"><span class="pre">deduplicate</span></code> is the exception: it changes
+only how a built experiment is submitted. Use <code class="docutils literal notranslate"><span class="pre">options.replace(...)</span></code> for a modified copy,
 or reassign <code class="docutils literal notranslate"><span class="pre">QCut.DEFAULT_OPTIONS</span></code> to change the defaults process-wide. For more examples
 on using options, see <a class="reference internal" href="notebooks/QCutOptionsExample.html"><span class="doc">QCutOptionsExample.ipynb</span></a>.</p>
 <section id="merging-gates-on-the-same-qubit-pair">
@@ -582,6 +584,30 @@ same number of shots and corrects with a weight afterwards, which is higher vari
 drawing proportional to <span class="math notranslate nohighlight">\(|c|\)</span> in the first place. The estimator is unbiased either
 way, and <code class="docutils literal notranslate"><span class="pre">CutExperiment.sampled</span></code> says which path was taken.</p>
 </section>
+<section id="submitting-each-distinct-circuit-once">
+<h2>Submitting each distinct circuit once<a class="headerlink" href="#submitting-each-distinct-circuit-once" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">deduplicate</span></code> (default <code class="docutils literal notranslate"><span class="pre">True</span></code>) submits each structurally distinct experiment circuit
+once and shares its result with every slot it fills.</p>
+<p>A subcircuit’s experiment circuit depends only on the QPD terms of the cuts touching that
+subcircuit and on the measurement setting over its own qubits. Neither changes between
+most of an experiment’s groups, so the same circuit is built over and over: the number of
+slots grows exponentially in the number of pieces while the number of distinct circuits
+grows linearly. A three-piece chain with two gate cuts and five observables holds 324
+circuits and 45 distinct ones; a four-piece one holds 2592 and 70.</p>
+<p><code class="docutils literal notranslate"><span class="pre">shots</span></code> still means shots per circuit, so a run spends that many on each distinct
+circuit and the total drops by the same factor. What the old total bought was
+re-measuring circuits already measured. Sharing a sample between groups leaves the
+estimate unbiased, because a group’s subcircuits are multiplied together while the groups
+themselves are summed, and no group reads one circuit twice. Measured over 15 seeds on
+the three-piece chain, the deduplicated estimator’s error was <em>smaller</em> than the
+undeduplicated one’s at the same shots per circuit, and six times smaller at an equal
+total shot budget, because the quasiprobability coefficients come in signed pairs whose
+variance contributions largely cancel.</p>
+<p><code class="docutils literal notranslate"><span class="pre">CutExperiment.num_circuits</span></code> still counts the circuits the decomposition calls for.
+<code class="docutils literal notranslate"><span class="pre">estimate_run()</span></code> counts what is actually submitted. Experiments whose wire cuts
+communicate are unaffected; their first wave already shares circuits between the groups
+that differ only in the label they answer.</p>
+</section>
 <section id="configuring-cut-finding-options">
 <h2>Configuring cut finding options<a class="headerlink" href="#configuring-cut-finding-options" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">CutOptions</span></code> also carries the options that <code class="docutils literal notranslate"><span class="pre">find_cuts</span></code> uses to steer the partitioner.
@@ -647,6 +673,7 @@ The seeds are fixed, so the finder is deterministic and reproducible.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cutting-parallel-rotation-gates-together">Cutting parallel rotation gates together</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wire-cuts-with-one-way-classical-communication">Wire cuts with one-way classical communication</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-instead-of-enumerating">Sampling instead of enumerating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-each-distinct-circuit-once">Submitting each distinct circuit once</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-cut-finding-options">Configuring cut finding options</a></li>
 </ul>
   </nav></div>
