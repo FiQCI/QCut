@@ -266,7 +266,7 @@ print(block.gamma, local.gamma, local.optimal_gamma)
 `7.0 16.0 7.0`
 
 Those cuts run in waves, since one side has to be measured before the other can prepare
-what it measured. `run_experiments()` handles that itself.
+what it measured. `submit_experiments()` handles that itself.
 
 ### Options
 
@@ -335,9 +335,22 @@ routed in for you. See
 ## Execution
 
 ```python
-results = ck.run_experiments(cut_experiment, backend=fake)
-expectation_values = ck.estimate_expectation_values(results)
+job = ck.submit_experiments(cut_experiment, backend=fake)
+expectation_values = ck.estimate_expectation_values(job.result())
 ```
+
+`submit_experiments()` returns a `QCutJob` as soon as everything is submitted, and
+`result()` waits for the results. The job is shaped like a Qiskit job, so it can be
+checked on while the run is under way:
+
+```python
+job.job_ids()  # every backend job, in submission order
+job.status()  # one JobStatus for the whole experiment
+job.partial_results()  # per batch: wave, job id, status, circuits, shots, result
+```
+
+`run_experiments()` takes the same arguments and is the same as
+`submit_experiments(...).result()`.
 
 The cost of an experiment run can be checked before submission:
 
@@ -361,13 +374,18 @@ Exact for non-cummunicating runs. Runs whose wire cuts communicate get executed 
 each wave after the first spends its shots on what the one before it measured. For these jobs
 the circuit count is exact and job and shot counts are estimates.
 
+The job submits those waves itself. The first goes out before `submit_experiments()`
+returns, and a thread of the job's own submits each later one as soon as the one before
+it is in, so nothing has to keep polling for the run to move on. `job.cancel()` cancels
+what is still queued and submits no further waves.
+
 `backend` takes a Qiskit backend, a V2 sampler, or anything else shaped like a backend,
 which is what lets e.g. [fiqci-ems](https://github.com/FiQCI/fiqci-ems) run the experiment:
 
 ```python
 from fiqci.ems import FiQCISampler
 
-results = ck.run_experiments(
+job = ck.submit_experiments(
     cut_experiment, backend=FiQCISampler(backend, mitigation_level=1)
 )
 ```
@@ -451,9 +469,9 @@ instead of `observables`:
 
 ```python
 cut_experiment = ck.get_experiment_circuits(cut_circuit, qubits=[0, 1])
-results = ck.run_experiments(cut_experiment, shots=4096, backend=sim)
+job = ck.submit_experiments(cut_experiment, shots=4096, backend=sim)
 
-probs = ck.estimate_probabilities(results)
+probs = ck.estimate_probabilities(job.result())
 print(probs)
 ```
 
