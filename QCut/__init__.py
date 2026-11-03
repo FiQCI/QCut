@@ -19,7 +19,9 @@ from QCut.execution.circuit_knitting import (
     run,
     run_cut_circuit,
     run_experiments,
+    submit_experiments,
 )
+from QCut.execution.job import PartialBatch, QCutJob
 from QCut.execution.observables import ObservablesLike
 from QCut.execution.parallel import ParallelBackend
 from QCut.execution.postprocess import (
@@ -53,6 +55,9 @@ __all__ = [
     "run",
     "run_cut_circuit",
     "run_experiments",
+    "submit_experiments",
+    "QCutJob",
+    "PartialBatch",
     "cut",
     "cutCZ",
     "cutSWAP",
