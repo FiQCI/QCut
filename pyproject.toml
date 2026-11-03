@@ -140,6 +140,9 @@ markers = [
     "slow: end-to-end simulation, skipped by the qiskit version matrix",
     "sim: runs circuits on a simulator; deselect with -m \"not sim\" for a fast loop",
 ]
+# The planned 3.0 interface change is warned about on every public call, which most
+# tests make.
+filterwarnings = ["ignore:.*QCut 3\\.0:FutureWarning"]
 
 [tool.ty.rules]
 unused-type-ignore-comment = "ignore"
