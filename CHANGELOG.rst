@@ -2,6 +2,27 @@
 Changelog
 =========
 
+**Version 2.4.0**
+=================
+
+Submitting without waiting
+--------------------------
+
+- New :code:`submit_experiments()`, now the recommended way to run an experiment. It
+  takes the same arguments as :code:`run_experiments()` and returns a :code:`QCutJob`
+  once everything is submitted, without waiting for results. Its :code:`job_ids()`,
+  :code:`status()`, :code:`statuses()`, :code:`done()`, :code:`cancel()` and
+  :code:`result()` follow Qiskit's job interface, and :code:`partial_results()` reports
+  each batch's wave, job id, status, circuit and shot count, and result once it is in.
+- :code:`run_experiments()` is now :code:`submit_experiments(...).result()`. Its
+  signature and return value are unchanged.
+- Experiments whose wire cuts communicate return just as quickly. Wave zero is
+  submitted before :code:`submit_experiments()` returns, and a thread of the job's own
+  submits each later wave as soon as the one before it is in.
+- A target refusing a batch part-way through no longer loses the jobs already queued.
+  Nothing after it is submitted, the job reports :code:`ERROR`, and :code:`result()`
+  raises the refusal.
+
 **Version 2.3.0**
 =================
 
