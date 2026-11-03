@@ -164,25 +164,21 @@ class _Batch:
 
 
 class PartialBatch(NamedTuple):
-    """One ``run`` call of a submitted experiment, as it stands.
+    """One ``run`` call of a submitted experiment, as it stands."""
 
-    Attributes:
-        index: position of the batch in submission order.
-        wave: the wave it belongs to. Zero unless the experiment's wire cuts
-            communicate.
-        job_id: the backend's id for it, ``None`` if it was never submitted.
-        status: its current :class:`~qiskit.providers.JobStatus`.
-        circuits: how many circuits it carries.
-        shots: the shots each of them runs at.
-        result: what the backend returned, once the batch is done, else ``None``.
-    """
-
+    #: Position of the batch in submission order.
     index: int  # type: ignore[bad-override]  # shadows tuple.index
+    #: The wave it belongs to. Zero unless the experiment's wire cuts communicate.
     wave: int
+    #: The backend's id for it, ``None`` if it was never submitted.
     job_id: str | None
+    #: Its current :class:`~qiskit.providers.JobStatus`.
     status: JobStatus
+    #: How many circuits it carries.
     circuits: int
+    #: The shots each of them runs at.
     shots: int
+    #: What the backend returned, once the batch is done, else ``None``.
     result: object | None
 
 
