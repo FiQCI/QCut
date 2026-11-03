@@ -9,8 +9,8 @@ the quasiprobability decomposition is formed and therefore what the coefficients
 :class:`CutOptions` is frozen for that reason. ``deduplicate`` is the exception: it
 changes only how an experiment is submitted, so it can be flipped on a built
 :class:`QCut.cutcircuit.CutExperiment`. It lives here anyway, so that
-:func:`QCut.estimate_run` and :func:`QCut.run_experiments` read one setting and cannot
-disagree about what a run costs.
+:func:`QCut.estimate_run` and :func:`QCut.submit_experiments` read one setting and
+cannot disagree about what a run costs.
 """
 
 from __future__ import annotations
