@@ -42,7 +42,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=25c48609"></script>
+    <script src="../_static/documentation_options.js?v=90402422"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="QAOA Example" href="QCutQAOAExample.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev3+g045d07d07" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -712,7 +712,7 @@ Generated 96 circuits. In mode always.
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated </span><span class="si">{</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">num_circuits</span><span class="si">}</span><span class="s2"> circuits.&quot;</span><span class="p">)</span>
 
-    <span class="n">res</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">AerSimulator</span><span class="p">())</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">AerSimulator</span><span class="p">())</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
     <span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 

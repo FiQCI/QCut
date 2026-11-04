@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=25c48609"></script>
+    <script src="_static/documentation_options.js?v=90402422"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -57,7 +57,7 @@
     <link rel="prev" title="License" href="License.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev3+g045d07d07" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -402,6 +402,42 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run_cut_circuit"><code class="docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run_experiments"><code class="docutils literal notranslate"><span class="pre">run_experiments()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.submit_experiments"><code class="docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob"><code class="docutils literal notranslate"><span class="pre">QCutJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.__init__"><code class="docutils literal notranslate"><span class="pre">QCutJob.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.experiment"><code class="docutils literal notranslate"><span class="pre">QCutJob.experiment</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.backend"><code class="docutils literal notranslate"><span class="pre">QCutJob.backend</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.shots"><code class="docutils literal notranslate"><span class="pre">QCutJob.shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.max_batch_size"><code class="docutils literal notranslate"><span class="pre">QCutJob.max_batch_size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.run_options"><code class="docutils literal notranslate"><span class="pre">QCutJob.run_options</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.num_waves"><code class="docutils literal notranslate"><span class="pre">QCutJob.num_waves</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.wave"><code class="docutils literal notranslate"><span class="pre">QCutJob.wave</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.num_circuits"><code class="docutils literal notranslate"><span class="pre">QCutJob.num_circuits</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.total_shots"><code class="docutils literal notranslate"><span class="pre">QCutJob.total_shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.job_id"><code class="docutils literal notranslate"><span class="pre">QCutJob.job_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.job_ids"><code class="docutils literal notranslate"><span class="pre">QCutJob.job_ids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.statuses"><code class="docutils literal notranslate"><span class="pre">QCutJob.statuses()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.status"><code class="docutils literal notranslate"><span class="pre">QCutJob.status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.done"><code class="docutils literal notranslate"><span class="pre">QCutJob.done()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.running"><code class="docutils literal notranslate"><span class="pre">QCutJob.running()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.cancelled"><code class="docutils literal notranslate"><span class="pre">QCutJob.cancelled()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.in_final_state"><code class="docutils literal notranslate"><span class="pre">QCutJob.in_final_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.wait_for_final_state"><code class="docutils literal notranslate"><span class="pre">QCutJob.wait_for_final_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.cancel"><code class="docutils literal notranslate"><span class="pre">QCutJob.cancel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.partial_results"><code class="docutils literal notranslate"><span class="pre">QCutJob.partial_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.result"><code class="docutils literal notranslate"><span class="pre">QCutJob.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch"><code class="docutils literal notranslate"><span class="pre">PartialBatch</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.index"><code class="docutils literal notranslate"><span class="pre">PartialBatch.index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.wave"><code class="docutils literal notranslate"><span class="pre">PartialBatch.wave</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.job_id"><code class="docutils literal notranslate"><span class="pre">PartialBatch.job_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.status"><code class="docutils literal notranslate"><span class="pre">PartialBatch.status</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.circuits"><code class="docutils literal notranslate"><span class="pre">PartialBatch.circuits</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.shots"><code class="docutils literal notranslate"><span class="pre">PartialBatch.shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.result"><code class="docutils literal notranslate"><span class="pre">PartialBatch.result</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cut"><code class="docutils literal notranslate"><span class="pre">cut()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cutCZ"><code class="docutils literal notranslate"><span class="pre">cutCZ()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cutSWAP"><code class="docutils literal notranslate"><span class="pre">cutSWAP()</span></code></a></li>
@@ -510,7 +546,7 @@ alike, and only one batch is ever held in its transpiled form. The experiment it
 stays as it was built.</p>
 <p>Pass it where a backend goes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">ParallelBackend</span><span class="p">([</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">])</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>A batch goes only to a backend wide enough for it, so a fleet of different sizes
@@ -726,7 +762,7 @@ zero-dimensional array</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="QCut.estimate_run">
 <span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">estimate_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_experiment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutExperiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.RunEstimate" title="QCut.execution.circuit_knitting.RunEstimate"><span class="pre">RunEstimate</span></a></span></span><a class="reference internal" href="_modules/QCut/execution/circuit_knitting.html#estimate_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.estimate_run" title="Link to this definition">#</a></dt>
-<dd><p>Work out what <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a> will cost, without submitting anything.</p>
+<dd><p>Work out what <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a> will cost, without submitting anything.</p>
 <p>Exact for an experiment that runs in one go. One whose wire cuts communicate runs in
 waves, and every wave after the first spends its shots in proportion to what the one
 before it measured, so only that first wave is known in advance. The rest is worked
@@ -738,7 +774,7 @@ jobs of their own.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cut_experiment</strong> (<em>CutExperiment</em>) – the experiment circuits that would be run.</p></li>
-<li><p><strong>shots</strong> (<em>int</em>) – shots per circuit, as passed to <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a>.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – shots per circuit, as passed to <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a>.</p></li>
 <li><p><strong>backend</strong> – the backend or sampler that would run it, read only for the most shots
 it takes in one job.</p></li>
 <li><p><strong>max_batch_size</strong> (<em>int</em>) – maximum number of circuits submitted per <code class="docutils literal notranslate"><span class="pre">run</span></code> call.</p></li>
@@ -822,12 +858,12 @@ sampler is not transpiled for, so it must take the circuits as built.</p></li>
 <li><p><strong>max_batch_size</strong> (<em>int</em>) – maximum number of circuits submitted per backend.run
 call (optional)</p></li>
 <li><p><strong>options</strong> (<a class="reference internal" href="#QCut.CutOptions" title="QCut.CutOptions"><em>CutOptions</em></a>) – configuration for the run (optional)</p></li>
-<li><p><strong>shots</strong> (<em>int</em>) – number of shots per circuit run, as in <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a>
+<li><p><strong>shots</strong> (<em>int</em>) – number of shots per circuit run, as in <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a>
 (optional)</p></li>
 <li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – the qubits to reconstruct a distribution over, instead of
 estimating observables (optional)</p></li>
 <li><p><strong>run_options</strong> (<em>dict</em>) – passed on to the backend or sampler, as in
-<a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a> (optional)</p></li>
+<a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a> (optional)</p></li>
 <li><p><strong>provided.</strong> (<em>One</em><em> of </em><em>observables</em><em> or </em><em>qubits must be</em>)</p></li>
 </ul>
 </dd>
@@ -861,12 +897,12 @@ sampler is not transpiled for, so it must take the circuits as built.</p></li>
 call (optional)</p></li>
 <li><p><strong>options</strong> (<a class="reference internal" href="#QCut.CutOptions" title="QCut.CutOptions"><em>CutOptions</em></a>) – configuration, overriding what the CutCircuit carries
 (optional)</p></li>
-<li><p><strong>shots</strong> (<em>int</em>) – number of shots per circuit run, as in <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a>
+<li><p><strong>shots</strong> (<em>int</em>) – number of shots per circuit run, as in <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a>
 (optional)</p></li>
 <li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – the qubits to reconstruct a distribution over, instead of
 estimating observables (optional)</p></li>
 <li><p><strong>run_options</strong> (<em>dict</em>) – passed on to the backend or sampler, as in
-<a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a> (optional)</p></li>
+<a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a> (optional)</p></li>
 <li><p><strong>provided.</strong> (<em>One</em><em> of </em><em>observables</em><em> or </em><em>qubits must be</em>)</p></li>
 </ul>
 </dd>
@@ -885,12 +921,41 @@ distribution over them.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="QCut.run_experiments">
 <span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">run_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_experiment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutExperiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.RawResult" title="QCut.execution.qcutresult.RawResult"><span class="pre">RawResult</span></a></span></span><a class="reference internal" href="_modules/QCut/execution/circuit_knitting.html#run_experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.run_experiments" title="Link to this definition">#</a></dt>
-<dd><p>Run experiment circuits.</p>
-<p>Loop through experiment circuits and then loop through circuit group and run each
-circuit. Store results as [group0, group1, …] where group is [res0, res1, …].
-where res is “xxx yy”: count xxx are the measurements from the end of circuit
-measurements on the meas classical register and yy are the qpd basis measurement
-results from the qpd_meas class register.</p>
+<dd><p>Run experiment circuits and wait for their results.</p>
+<p>The same as <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a> followed by <a class="reference internal" href="#QCut.QCutJob.result" title="QCut.QCutJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QCutJob.result()</span></code></a>. The
+counts come back as <code class="docutils literal notranslate"><span class="pre">[group][observable][subcircuit]</span></code>, each key <code class="docutils literal notranslate"><span class="pre">&quot;xxx</span> <span class="pre">yy&quot;</span></code>
+where <code class="docutils literal notranslate"><span class="pre">xxx</span></code> is the end-of-circuit measurements on the <code class="docutils literal notranslate"><span class="pre">meas</span></code> register and
+<code class="docutils literal notranslate"><span class="pre">yy</span></code> the QPD basis measurements on the <code class="docutils literal notranslate"><span class="pre">qpd_meas</span></code> register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cut_experiment</strong> (<em>CutExperiment</em>) – the experiment circuits to run</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – number of shots per circuit run (optional), as in
+<a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a>.</p></li>
+<li><p><strong>backend</strong> – backend or V2 sampler used for running the circuits.</p></li>
+<li><p><strong>max_batch_size</strong> (<em>int</em>) – maximum number of circuits submitted per backend.run
+call, as in <a class="reference internal" href="#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a>.</p></li>
+<li><p><strong>run_options</strong> (<em>dict</em>) – passed on to every <code class="docutils literal notranslate"><span class="pre">run</span></code> call.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the raw counts, carrying the experiment they came from so that
+<a class="reference internal" href="#QCut.estimate_expectation_values" title="QCut.estimate_expectation_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_expectation_values()</span></code></a> can be called on them alone</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult">RawResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCut.submit_experiments">
+<span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">submit_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_experiment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutExperiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.QCutJob" title="QCut.execution.job.QCutJob"><span class="pre">QCutJob</span></a></span></span><a class="reference internal" href="_modules/QCut/execution/circuit_knitting.html#submit_experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.submit_experiments" title="Link to this definition">#</a></dt>
+<dd><p>Submit experiment circuits and return without waiting for their results.</p>
+<p>Every batch is submitted before this returns, and the returned job collects them
+when its <a class="reference internal" href="#QCut.QCutJob.result" title="QCut.QCutJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QCutJob.result()</span></code></a> is asked for. An experiment whose wire cuts
+communicate runs in waves: the first is submitted before this returns, and the
+job submits the rest itself as each wave before them comes back.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -899,7 +964,7 @@ results from the qpd_meas class register.</p>
 cuts spend it differently: the waves split a total of <code class="docutils literal notranslate"><span class="pre">shots</span></code> times the
 number of groups per subcircuit between them, in proportion to how often
 each label came up, so individual circuits run at very different counts and
-only that total is fixed. See <code class="xref py py-func docutils literal notranslate"><span class="pre">_run_communicating()</span></code>.</p></li>
+only that total is fixed. See <code class="xref py py-func docutils literal notranslate"><span class="pre">_submit_communicating()</span></code>.</p></li>
 <li><p><strong>backend</strong> – backend or V2 sampler used for running the circuits.
 A sampler is run through its own interface and its results are read
 per register, so the circuits must already be in its target’s basis.</p></li>
@@ -912,13 +977,255 @@ target takes per run, since QCut sets only <code class="docutils literal notrans
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the raw counts, carrying the experiment they came from so that
-<a class="reference internal" href="#QCut.estimate_expectation_values" title="QCut.estimate_expectation_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_expectation_values()</span></code></a> can be called on them alone</p>
+<dd class="field-even"><p>a handle on the submitted experiment, whose <a class="reference internal" href="#QCut.QCutJob.result" title="QCut.QCutJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QCutJob.result()</span></code></a>
+returns what <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_experiments()</span></code></a> does.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.QCutJob" title="QCut.QCutJob">QCutJob</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.QCutJob">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">QCutJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_waves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A submitted experiment, handed back before any of its results are in.</p>
+<p>Shaped like a qiskit job: <a class="reference internal" href="#QCut.QCutJob.job_ids" title="QCut.QCutJob.job_ids"><code class="xref py py-meth docutils literal notranslate"><span class="pre">job_ids()</span></code></a> and <a class="reference internal" href="#QCut.QCutJob.status" title="QCut.QCutJob.status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">status()</span></code></a> can be read at once,
+and <a class="reference internal" href="#QCut.QCutJob.result" title="QCut.QCutJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code></a> waits for everything and returns the same <a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawResult</span></code></a>
+<a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.run_experiments()</span></code></a> does. An experiment is usually several <code class="docutils literal notranslate"><span class="pre">run</span></code> calls,
+so the per-batch view is there too, in <a class="reference internal" href="#QCut.QCutJob.statuses" title="QCut.QCutJob.statuses"><code class="xref py py-meth docutils literal notranslate"><span class="pre">statuses()</span></code></a> and <a class="reference internal" href="#QCut.QCutJob.partial_results" title="QCut.QCutJob.partial_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partial_results()</span></code></a>.</p>
+<p>An experiment whose wire cuts communicate runs in waves, and every wave after the
+first spends its shots on what the one before it measured. A thread of the job’s
+own collects each wave and submits the next as soon as it can, so such a job comes
+back as quickly as any other and does not sit idle waiting to be polled. Its job
+ids and batches grow as the waves go out, and it reports itself running until the
+last one is in.</p>
+<p>Submission is not atomic: a target can refuse a batch after accepting the ones
+before it. Raising there would lose the jobs already queued, so the job is handed
+back regardless, reports <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, and raises the refusal from <a class="reference internal" href="#QCut.QCutJob.result" title="QCut.QCutJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_waves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.experiment">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">experiment</span></span><a class="headerlink" href="#QCut.QCutJob.experiment" title="Link to this definition">#</a></dt>
+<dd><p>The experiment that was submitted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.backend">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">backend</span></span><a class="headerlink" href="#QCut.QCutJob.backend" title="Link to this definition">#</a></dt>
+<dd><p>The backend or sampler it was submitted to.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.shots">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">shots</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.shots" title="Link to this definition">#</a></dt>
+<dd><p>Shots per circuit, as given. What the estimator divides by.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.max_batch_size">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">max_batch_size</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.max_batch_size" title="Link to this definition">#</a></dt>
+<dd><p>The most circuits submitted in one <code class="docutils literal notranslate"><span class="pre">run</span></code> call.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.run_options">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">run_options</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></span><a class="headerlink" href="#QCut.QCutJob.run_options" title="Link to this definition">#</a></dt>
+<dd><p>What was passed on to every <code class="docutils literal notranslate"><span class="pre">run</span></code> call, as it was at submission.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.num_waves">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_waves</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.num_waves" title="Link to this definition">#</a></dt>
+<dd><p>How many waves it runs in. One unless its wire cuts communicate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.wave">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">wave</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.wave" title="Link to this definition">#</a></dt>
+<dd><p>The wave most recently submitted, counting from zero.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.num_circuits">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_circuits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.num_circuits" title="Link to this definition">#</a></dt>
+<dd><p>How many circuits have been submitted so far.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QCutJob.total_shots">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">total_shots</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QCutJob.total_shots" title="Link to this definition">#</a></dt>
+<dd><p>How many shots have been submitted so far, over every circuit.</p>
+<p>Matches <a class="reference internal" href="#QCut.estimate_run" title="QCut.estimate_run"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_run()</span></code></a> exactly for an experiment that runs in one
+go. One whose wire cuts communicate decides its later waves’ shots from what
+the earlier ones measured, so this is what it actually spent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.job_id">
+<span class="sig-name descname"><span class="pre">job_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.job_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.job_id" title="Link to this definition">#</a></dt>
+<dd><p>The first backend job’s id, <code class="docutils literal notranslate"><span class="pre">None</span></code> if nothing was submitted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.job_ids">
+<span class="sig-name descname"><span class="pre">job_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.job_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.job_ids" title="Link to this definition">#</a></dt>
+<dd><p>Every backend job’s id, in submission order.</p>
+<p>A batch that was never submitted has <code class="docutils literal notranslate"><span class="pre">None</span></code>. A target that splits a batch
+into several jobs of its own, as fiqci-ems does, contributes all of them.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.statuses">
+<span class="sig-name descname"><span class="pre">statuses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">JobStatus</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.statuses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.statuses" title="Link to this definition">#</a></dt>
+<dd><p>Each batch’s current status, in submission order.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JobStatus</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.status" title="Link to this definition">#</a></dt>
+<dd><p>One status for the whole experiment.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DONE</span></code> only once every wave has been submitted and collected and every batch
+is done. A batch failing, or the waves stopping on an error, makes it
+<code class="docutils literal notranslate"><span class="pre">ERROR</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.done">
+<span class="sig-name descname"><span class="pre">done</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.done" title="Link to this definition">#</a></dt>
+<dd><p>Whether the experiment finished successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.running">
+<span class="sig-name descname"><span class="pre">running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.running" title="Link to this definition">#</a></dt>
+<dd><p>Whether any of it is running, or waves remain to submit.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.cancelled">
+<span class="sig-name descname"><span class="pre">cancelled</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.cancelled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.cancelled" title="Link to this definition">#</a></dt>
+<dd><p>Whether the experiment was cancelled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.in_final_state">
+<span class="sig-name descname"><span class="pre">in_final_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.in_final_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.in_final_state" title="Link to this definition">#</a></dt>
+<dd><p>Whether the experiment is done, failed or cancelled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.wait_for_final_state">
+<span class="sig-name descname"><span class="pre">wait_for_final_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.wait_for_final_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.wait_for_final_state" title="Link to this definition">#</a></dt>
+<dd><p>Poll until the experiment reaches a final state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<em>float</em>) – seconds to wait before giving up, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to wait as
+long as it takes.</p></li>
+<li><p><strong>wait</strong> (<em>float</em>) – seconds between polls.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>JobTimeoutError</strong> – the experiment was not finished within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.cancel" title="Link to this definition">#</a></dt>
+<dd><p>Cancel every backend job not yet finished, and submit no further waves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.partial_results">
+<span class="sig-name descname"><span class="pre">partial_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#QCut.PartialBatch" title="QCut.execution.job.PartialBatch"><span class="pre">PartialBatch</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.partial_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.partial_results" title="Link to this definition">#</a></dt>
+<dd><p>Each batch as it stands, with its result once it is done.</p>
+<p>The slots of the experiment only fill in once every batch is in, so this is
+the place to look at what came back while the rest is still running.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QCutJob.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.RawResult" title="QCut.execution.qcutresult.RawResult"><span class="pre">RawResult</span></a></span></span><a class="reference internal" href="_modules/QCut/execution/job.html#QCutJob.result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QCutJob.result" title="Link to this definition">#</a></dt>
+<dd><p>Wait for every batch and return the raw results, computed once and kept.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>float</em>) – seconds to wait before giving up, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to wait as
+long as it takes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the raw counts, carrying the experiment they came from, exactly
+as <a class="reference internal" href="#QCut.run_experiments" title="QCut.run_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.run_experiments()</span></code></a> returns them.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult">RawResult</a></p>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>JobTimeoutError</strong> – the experiment was not finished within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p></li>
+<li><p><strong>QCutError</strong> – the experiment was cancelled.</p></li>
+<li><p><strong>Exception</strong> – whatever a refused batch, a failed job or a failed wave raised.</p></li>
+</ul>
+</dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.PartialBatch">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">PartialBatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JobStatus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCut/execution/job.html#PartialBatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.PartialBatch" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>One <code class="docutils literal notranslate"><span class="pre">run</span></code> call of a submitted experiment, as it stands.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.PartialBatch.index" title="Link to this definition">#</a></dt>
+<dd><p>Position of the batch in submission order.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.wave">
+<span class="sig-name descname"><span class="pre">wave</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.PartialBatch.wave" title="Link to this definition">#</a></dt>
+<dd><p>The wave it belongs to. Zero unless the experiment’s wire cuts communicate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.job_id">
+<span class="sig-name descname"><span class="pre">job_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#QCut.PartialBatch.job_id" title="Link to this definition">#</a></dt>
+<dd><p>The backend’s id for it, <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was never submitted.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">JobStatus</span></span><a class="headerlink" href="#QCut.PartialBatch.status" title="Link to this definition">#</a></dt>
+<dd><p>Its current <code class="xref py py-class docutils literal notranslate"><span class="pre">JobStatus</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.circuits">
+<span class="sig-name descname"><span class="pre">circuits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.PartialBatch.circuits" title="Link to this definition">#</a></dt>
+<dd><p>How many circuits it carries.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.shots">
+<span class="sig-name descname"><span class="pre">shots</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.PartialBatch.shots" title="Link to this definition">#</a></dt>
+<dd><p>The shots each of them runs at.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.PartialBatch.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#QCut.PartialBatch.result" title="Link to this definition">#</a></dt>
+<dd><p>What the backend returned, once the batch is done, else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -1684,6 +1991,42 @@ result rather than to the circuit they all read.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run_cut_circuit"><code class="docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.run_experiments"><code class="docutils literal notranslate"><span class="pre">run_experiments()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.submit_experiments"><code class="docutils literal notranslate"><span class="pre">submit_experiments()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob"><code class="docutils literal notranslate"><span class="pre">QCutJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.__init__"><code class="docutils literal notranslate"><span class="pre">QCutJob.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.experiment"><code class="docutils literal notranslate"><span class="pre">QCutJob.experiment</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.backend"><code class="docutils literal notranslate"><span class="pre">QCutJob.backend</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.shots"><code class="docutils literal notranslate"><span class="pre">QCutJob.shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.max_batch_size"><code class="docutils literal notranslate"><span class="pre">QCutJob.max_batch_size</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.run_options"><code class="docutils literal notranslate"><span class="pre">QCutJob.run_options</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.num_waves"><code class="docutils literal notranslate"><span class="pre">QCutJob.num_waves</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.wave"><code class="docutils literal notranslate"><span class="pre">QCutJob.wave</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.num_circuits"><code class="docutils literal notranslate"><span class="pre">QCutJob.num_circuits</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.total_shots"><code class="docutils literal notranslate"><span class="pre">QCutJob.total_shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.job_id"><code class="docutils literal notranslate"><span class="pre">QCutJob.job_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.job_ids"><code class="docutils literal notranslate"><span class="pre">QCutJob.job_ids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.statuses"><code class="docutils literal notranslate"><span class="pre">QCutJob.statuses()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.status"><code class="docutils literal notranslate"><span class="pre">QCutJob.status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.done"><code class="docutils literal notranslate"><span class="pre">QCutJob.done()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.running"><code class="docutils literal notranslate"><span class="pre">QCutJob.running()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.cancelled"><code class="docutils literal notranslate"><span class="pre">QCutJob.cancelled()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.in_final_state"><code class="docutils literal notranslate"><span class="pre">QCutJob.in_final_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.wait_for_final_state"><code class="docutils literal notranslate"><span class="pre">QCutJob.wait_for_final_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.cancel"><code class="docutils literal notranslate"><span class="pre">QCutJob.cancel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.partial_results"><code class="docutils literal notranslate"><span class="pre">QCutJob.partial_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QCutJob.result"><code class="docutils literal notranslate"><span class="pre">QCutJob.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch"><code class="docutils literal notranslate"><span class="pre">PartialBatch</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.index"><code class="docutils literal notranslate"><span class="pre">PartialBatch.index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.wave"><code class="docutils literal notranslate"><span class="pre">PartialBatch.wave</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.job_id"><code class="docutils literal notranslate"><span class="pre">PartialBatch.job_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.status"><code class="docutils literal notranslate"><span class="pre">PartialBatch.status</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.circuits"><code class="docutils literal notranslate"><span class="pre">PartialBatch.circuits</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.shots"><code class="docutils literal notranslate"><span class="pre">PartialBatch.shots</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.PartialBatch.result"><code class="docutils literal notranslate"><span class="pre">PartialBatch.result</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cut"><code class="docutils literal notranslate"><span class="pre">cut()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cutCZ"><code class="docutils literal notranslate"><span class="pre">cutCZ()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.cutSWAP"><code class="docutils literal notranslate"><span class="pre">cutSWAP()</span></code></a></li>

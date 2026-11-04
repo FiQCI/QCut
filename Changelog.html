@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=25c48609"></script>
+    <script src="_static/documentation_options.js?v=90402422"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -54,7 +54,7 @@
     <link rel="prev" title="QCut API reference" href="QCut.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev3+g045d07d07" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -381,6 +381,10 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-4-0"><strong>Version 2.4.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-without-blocking">Submitting without blocking</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-3-0"><strong>Version 2.3.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-qiskit-aer-dependency">Remove Qiskit-Aer dependency</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplicated-experiment-circuits">Deduplicated experiment circuits</a></li>
@@ -459,6 +463,28 @@
                   
   <section id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="version-2-4-0">
+<h2><strong>Version 2.4.0</strong><a class="headerlink" href="#version-2-4-0" title="Link to this heading">#</a></h2>
+<section id="submitting-without-blocking">
+<h3>Submitting without blocking<a class="headerlink" href="#submitting-without-blocking" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>New <code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code>, now the recommended way to run an experiment. It
+takes the same arguments as <code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> and returns a <code class="code docutils literal notranslate"><span class="pre">QCutJob</span></code>
+once everything is submitted, without waiting for results. Its <code class="code docutils literal notranslate"><span class="pre">job_ids()</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">status()</span></code>, <code class="code docutils literal notranslate"><span class="pre">statuses()</span></code>, <code class="code docutils literal notranslate"><span class="pre">done()</span></code>, <code class="code docutils literal notranslate"><span class="pre">cancel()</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">result()</span></code> follow Qiskit’s job interface, and <code class="code docutils literal notranslate"><span class="pre">partial_results()</span></code> reports
+each batch’s wave, job id, status, circuit and shot count, and result once it is in.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> is now <code class="code docutils literal notranslate"><span class="pre">submit_experiments(...).result()</span></code>. Its
+signature and return value are unchanged.</p></li>
+<li><p>Experiments whose wire cuts communicate return just as quickly. Wave zero is
+submitted before <code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns, and a thread of the job’s own
+submits each later wave as soon as the one before it is in.</p></li>
+<li><p>A target refusing a batch part-way through no longer loses the jobs already queued.
+Nothing after it is submitted, the job reports <code class="code docutils literal notranslate"><span class="pre">ERROR</span></code>, and <code class="code docutils literal notranslate"><span class="pre">result()</span></code>
+raises the refusal.</p></li>
+</ul>
+</section>
+</section>
 <section id="version-2-3-0">
 <h2><strong>Version 2.3.0</strong><a class="headerlink" href="#version-2-3-0" title="Link to this heading">#</a></h2>
 <section id="remove-qiskit-aer-dependency">
@@ -1169,6 +1195,10 @@ call. A target that batches on its own account, such as
   </div>
   <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-4-0"><strong>Version 2.4.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-without-blocking">Submitting without blocking</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-3-0"><strong>Version 2.3.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-qiskit-aer-dependency">Remove Qiskit-Aer dependency</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplicated-experiment-circuits">Deduplicated experiment circuits</a></li>

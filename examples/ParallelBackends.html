@@ -42,7 +42,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=25c48609"></script>
+    <script src="../_static/documentation_options.js?v=90402422"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="Automatic cuts" href="AutomaticCuts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev3+g045d07d07" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -418,9 +418,9 @@ hands them the batches in turn.</p>
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;IIIIIZ&quot;</span><span class="p">])</span>
 
 <span class="n">backend</span> <span class="o">=</span> <span class="n">ParallelBackend</span><span class="p">([</span><span class="n">first_device</span><span class="p">,</span> <span class="n">second_device</span><span class="p">])</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
 
-<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 
 <span class="n">backend</span><span class="o">.</span><span class="n">submitted</span>  <span class="c1"># circuits given to each, e.g. [1728, 1728]</span>
 </pre></div>
@@ -441,7 +441,7 @@ experiment itself stays as it was built.</p>
 shared while the widest go to the backends that can fit them. Cutting a circuit into a
 wide piece and a narrow one and giving it a large device and a small one uses both:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">ParallelBackend</span><span class="p">([</span><span class="n">five_qubit_device</span><span class="p">,</span> <span class="n">twenty_qubit_device</span><span class="p">])</span>
-<span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If nothing is wide enough for a subcircuit, QCut says so rather than letting the device

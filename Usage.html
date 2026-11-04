@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=25c48609"></script>
+    <script src="_static/documentation_options.js?v=90402422"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="QCut documentation" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.3.0.post1.dev2+gc54549387" />
+  <meta name="docsearch:version" content="2.3.0.post1.dev3+g045d07d07" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -588,7 +588,7 @@ three of the below are on by default and can be turned off through <a class="ref
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">7.0</span> <span class="pre">16.0</span> <span class="pre">7.0</span></code></p>
 <p>Those cuts run in waves, since one side has to be measured before the other can prepare
-what it measured. <code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> handles that itself.</p>
+what it measured. <code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> handles that itself.</p>
 </section>
 <section id="options">
 <h3>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h3>
@@ -648,10 +648,20 @@ gates are routed in for you.</p>
 </section>
 <section id="execution">
 <h2>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
-<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
+<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 </pre></div>
 </div>
+<p><code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns a <code class="code docutils literal notranslate"><span class="pre">QCutJob</span></code> as soon as everything is
+submitted, and <code class="code docutils literal notranslate"><span class="pre">result()</span></code> waits for the results. The job is shaped like a Qiskit
+job, so it can be checked on while the run is under way:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">job_ids</span><span class="p">()</span>          <span class="c1"># every backend job, in submission order</span>
+<span class="n">job</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>           <span class="c1"># one JobStatus for the whole experiment</span>
+<span class="n">job</span><span class="o">.</span><span class="n">partial_results</span><span class="p">()</span>  <span class="c1"># per batch: wave, job id, status, circuits, shots, result</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> takes the same arguments and is the same as
+<code class="code docutils literal notranslate"><span class="pre">submit_experiments(...).result()</span></code>.</p>
 <p>The cost of an experiment run can be checked before submission:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">estimate_run</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
 </pre></div>
@@ -665,11 +675,15 @@ gates are routed in for you.</p>
 <p>Exact for non-cummunicating runs. Runs whose wire cuts communicate get executed in waves so that
 each wave after the first spends its shots on what the one before it measured. For these jobs
 the circuit count is exact and job and shot counts are estimates.</p>
+<p>The job submits those waves itself. The first goes out before
+<code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns, and a thread of the job’s own submits each later
+one as soon as the one before it is in, so nothing has to keep polling for the run to
+move on. <code class="code docutils literal notranslate"><span class="pre">job.cancel()</span></code> cancels what is still queued and submits no further waves.</p>
 <p><code class="code docutils literal notranslate"><span class="pre">backend</span></code> takes a Qiskit backend, a V2 sampler, or anything else shaped like a
 backend, which is what lets e.g. <a class="reference external" href="https://github.com/FiQCI/fiqci-ems">fiqci-ems</a> run the experiment:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fiqci.ems</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiQCISampler</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span>
     <span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">FiQCISampler</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">mitigation_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
@@ -732,9 +746,9 @@ from QCut contain mid-circuit measurements and that sampler refuses those.
 distribution over a chosen set of qubits can still be recovered from them. Pass
 <code class="code docutils literal notranslate"><span class="pre">qubits</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">observables</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">sim</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">sim</span><span class="p">)</span>
 
-<span class="n">probs</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_probabilities</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">probs</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_probabilities</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">{'00':</span> <span class="pre">0.8658,</span> <span class="pre">'01':</span> <span class="pre">-0.0024,</span> <span class="pre">'10':</span> <span class="pre">0.1041,</span> <span class="pre">'11':</span> <span class="pre">0.0324}</span></code></p>
