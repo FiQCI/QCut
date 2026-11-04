@@ -5,7 +5,7 @@ Changelog
 **Version 2.4.0**
 =================
 
-Submitting without waiting
+Submitting without blocking
 --------------------------
 
 - New :code:`submit_experiments()`, now the recommended way to run an experiment. It
