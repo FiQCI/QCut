@@ -24,9 +24,9 @@ hands them the batches in turn.
    experiment = ck.get_experiment_circuits(cut_circuit, ["IIIIIZ"])
 
    backend = ParallelBackend([first_device, second_device])
-   results = ck.run_experiments(experiment, shots=4096, backend=backend)
+   job = ck.submit_experiments(experiment, shots=4096, backend=backend)
 
-   expectation_values = ck.estimate_expectation_values(results)
+   expectation_values = ck.estimate_expectation_values(job.result())
 
    backend.submitted  # circuits given to each, e.g. [1728, 1728]
 
@@ -52,7 +52,7 @@ wide piece and a narrow one and giving it a large device and a small one uses bo
 .. code:: python
 
    backend = ParallelBackend([five_qubit_device, twenty_qubit_device])
-   ck.run_experiments(experiment, shots=4096, backend=backend)
+   job = ck.submit_experiments(experiment, shots=4096, backend=backend)
 
 If nothing is wide enough for a subcircuit, QCut says so rather than letting the device
 refuse the job. Cut into smaller pieces with ``max_qubits``, or pass a larger backend.

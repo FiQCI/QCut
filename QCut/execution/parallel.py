@@ -22,7 +22,7 @@ class ParallelBackend:
     Pass it where a backend goes::
 
         backend = ParallelBackend([first, second])
-        results = ck.run_experiments(experiment, shots=4096, backend=backend)
+        job = ck.submit_experiments(experiment, shots=4096, backend=backend)
 
     A batch goes only to a backend wide enough for it, so a fleet of different sizes
     works. The pieces that fit anywhere are shared, and the widest go to the backends

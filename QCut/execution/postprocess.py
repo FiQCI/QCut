@@ -398,8 +398,8 @@ def estimate_expectation_values(results: RawResult) -> np.ndarray:
     if experiment is None:
         raise ValueError(
             "These results carry no experiment, so there is nothing to interpret them "
-            "with. Results from QCut.run_experiments carry it already; a hand-built "
-            "RawResult has to be given the experiment it came from."
+            "with. Results from a QCutJob or QCut.run_experiments carry it already; a "
+            "hand-built RawResult has to be given the experiment it came from."
         )
     results_processed = _process_results(
         raw_results.results, raw_results._shots, experiment.qpd_bits

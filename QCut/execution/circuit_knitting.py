@@ -7,7 +7,6 @@ from __future__ import annotations
 import inspect
 import logging
 from dataclasses import dataclass, field, replace
-from time import sleep
 
 import numpy as np
 from qiskit import QuantumCircuit, transpile
@@ -26,6 +25,7 @@ from QCut.execution.basis_transform import (
     _combine_pauli_ops,
     _get_obs_subcircuits,
 )
+from QCut.execution.job import QCutJob, _Batch, _job_id
 from QCut.execution.observables import (
     ObservablesLike,
     coerce_observables,
@@ -61,6 +61,7 @@ from QCut.utils.circuit_utils import (
     circuit_fingerprint,
     compact_qpd_register,
 )
+from QCut.utils.deprecation import deprecated
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -655,30 +656,56 @@ def _submit(backend, circuits, shots, max_batch_size, run_options):
     return backend.run(circuits, shots=shots, **options)
 
 
-#: How long to wait before asking for a job's results a second time.
-RESULT_RETRY_DELAY: float = 5.0
+def _submit_batches(job: QCutJob, wave: int, planned) -> None:
+    """Submit batches to the job's target, every one before any is collected.
+
+    ``planned`` holds ``(circuits, targets, shots, scale)`` per batch. A target can
+    refuse a batch after accepting the ones before it, and raising there would lose the
+    jobs already queued. The refusal is kept on its batch instead, nothing after it is
+    submitted, and the job raises it when its results are asked for.
+    """
+    refused = False
+    for circuits, targets, shots, scale in planned:
+        batch = _Batch(wave, targets, shots, scale)
+        if not refused and not job._cancelled.is_set():
+            try:
+                batch.job = _submit(
+                    job.backend,
+                    circuits,
+                    shots,
+                    job.max_batch_size,
+                    job._run_options,
+                )
+            except Exception as error:  # noqa: BLE001 - kept on the batch, raised later
+                refused = True
+                batch.error = error
+                logger.warning(
+                    f"The target refused a batch of {len(circuits)} circuits: {error}. "
+                    "Nothing after it is submitted, and the job raises this when its "
+                    "results are asked for."
+                )
+            else:
+                logger.info(
+                    f"Submitted {len(circuits)} circuits at {shots} shots each, job "
+                    f"{_job_id(batch.job) or 'unknown'}"
+                )
+        job._add(batch)
+        # Cancelled while this one was going out, so it missed the sweep.
+        if job._cancelled.is_set():
+            batch.cancel()
 
 
-def _job_id(job) -> str:
-    """A job's id, or a note that it has none to give."""
-    identifier = getattr(job, "job_id", None)
-    try:
-        identifier = identifier() if callable(identifier) else identifier
-    except Exception:  # noqa: BLE001 - an id is for the log, never worth failing over
-        return "unknown"
-    return str(identifier) if identifier is not None else "unknown"
+def _seeded(cut_experiment) -> list[list[dict[int, CircuitResult]]]:
+    """An empty result per slot, ready for the batches to fill in.
 
-
-def _result(job):
-    """A job's result, asked for twice if the results are not ready yet."""
-    try:
-        return job.result()
-    except Exception as error:
-        if "no results" not in str(error).lower():
-            raise
-        logger.info(f"Results not ready yet, asking again in {RESULT_RETRY_DELAY}s")
-        sleep(RESULT_RETRY_DELAY)
-        return job.result()
+    Seeded in subcircuit order, because the estimator reads a group's subcircuits back
+    in the order these were filled, and both deduplicated circuits and the waves fill
+    them out of order.
+    """
+    return [
+        [{sub: CircuitResult({}) for sub in sorted(obs_group)} for obs_group in group]
+        for group in cut_experiment.experiments
+    ]
 
 
 def _backend_shot_cap(backend) -> int | None:
@@ -703,8 +730,8 @@ def _backend_shot_cap(backend) -> int | None:
 SHOT_SPREAD: float = 2.0
 
 
-#: Shots per circuit when the caller does not say. Used by :func:`run_experiments` and
-#: the one-call wrappers around it, so they cannot drift apart.
+#: Shots per circuit when the caller does not say. Used by :func:`submit_experiments`
+#: and every wrapper around it, so they cannot drift apart.
 DEFAULT_SHOTS: int = 2**12
 
 
@@ -746,51 +773,42 @@ def _batch_shots(batch, cap) -> int:
     return min(shots, cap) if cap is not None else shots
 
 
-def _dispatch(  # noqa: PLR0913
-    jobs, backend, max_batch_size, nominal_shots, cap, results, run_options=None
-) -> None:
-    """Run one wave and scatter its counts, rescaled to a common shot count.
+def _dispatch(job: QCutJob, wave: int, jobs, cap, results) -> None:
+    """Submit one wave, and fill in the circuits with nothing to measure.
 
     Circuits in a wave no longer want the same number of shots, and only circuits asking
     for the same number can share a job. They are sorted and grouped by
     :func:`_batches`, and each batch runs at the mean of what its own circuits asked
     for. Sorting first is what keeps that mean close to every request in the batch.
 
-    The counts are then rescaled to ``nominal_shots`` so that everything downstream can
-    keep dividing by the one number it was given.
+    Each batch carries the factor that rescales its counts to the job's nominal shots
+    when they are collected, so that everything downstream can keep dividing by the one
+    number it was given.
     """
+    job._wave = wave
     runnable = []
     for targets, circuit, wanted in jobs:
         if not _has_measurements(circuit):
-            synthetic = {" " + "0" * circuit.num_clbits: nominal_shots}
+            synthetic = {" " + "0" * circuit.num_clbits: job.shots}
             for group, obs, sub in targets:
                 results[group][obs][sub] = CircuitResult(dict(synthetic))
             continue
         runnable.append((targets, circuit, wanted))
 
-    runnable.sort(key=lambda job: job[2])
+    runnable.sort(key=lambda entry: entry[2])
 
-    # Submitted before any is collected, so the whole wave queues at once.
-    submitted = []
-    for batch in _batches(runnable, max_batch_size):
+    planned = []
+    for batch in _batches(runnable, job.max_batch_size):
         shots = _batch_shots(batch, cap)
-        job = _submit(
-            backend,
-            [circuit for _t, circuit, _w in batch],
-            shots,
-            max_batch_size,
-            run_options,
+        planned.append(
+            (
+                [circuit for _t, circuit, _w in batch],
+                [targets for targets, _c, _w in batch],
+                shots,
+                job.shots / shots,
+            )
         )
-        logger.info(
-            f"Submitted {len(batch)} circuits at {shots} shots each, job {_job_id(job)}"
-        )
-        submitted.append((job, batch, nominal_shots / shots))
-
-    for job, batch, scale in submitted:
-        result = _result(job)
-        for index, (targets, _circuit, _wanted) in enumerate(batch):
-            for group, obs, sub in targets:
-                results[group][obs][sub] = CircuitResult(result, index, scale)
+    _submit_batches(job, wave, planned)
 
 
 def _label_fraction(counts: dict, clbits, label) -> float:
@@ -898,8 +916,8 @@ def _later_wave_jobs(cut_experiment, wave, allocation, results):
     return jobs
 
 
-def _run_communicating(cut_experiment, shots, backend, max_batch_size, run_options):
-    """Run an experiment whose wire cuts exchange their measured outcome.
+def _submit_communicating(job: QCutJob) -> None:
+    """Submit an experiment whose wire cuts exchange their measured outcome.
 
     The state one side prepares depends on what the other measured, so the circuits run
     in waves. Wave zero holds everything no label can affect, and its circuits are
@@ -911,6 +929,11 @@ def _run_communicating(cut_experiment, shots, backend, max_batch_size, run_optio
     worth more than a preparing one, so wave zero takes :data:`MEASURE_SHARE` of the run
     and the later waves divide the rest. The total is unchanged either way.
 
+    Wave zero is submitted here, so the job has ids to report as soon as it is handed
+    back. Every later wave needs the one before it collected first, so those are left
+    to a thread of the job's own, which submits each as soon as it can rather than when
+    someone next polls.
+
     TODO: the waves after the first do not share circuits at all. ``_later_wave_jobs``
     gives every group a job of its own, where :func:`_deduplicate` would collapse the
     groups holding the same circuit as wave zero's ``plan.keys`` already does. It is not
@@ -918,14 +941,11 @@ def _run_communicating(cut_experiment, shots, backend, max_batch_size, run_optio
     allocation by then, so the shared job would have to run at their sum and be scaled
     back per group.
     """
+    cut_experiment = job.experiment
+    shots = job.shots
     plan = cut_experiment.plan
-    results: list[list[dict[int, CircuitResult]]] = [
-        # Seeded in subcircuit order, because the estimator reads the observable bits
-        # back in the order these were filled, and the waves fill them out of order.
-        [{sub: CircuitResult({}) for sub in sorted(obs_group)} for obs_group in group]
-        for group in cut_experiment.experiments
-    ]
-    cap = _backend_shot_cap(backend)
+    results = _seeded(cut_experiment)
+    cap = _backend_shot_cap(job.backend)
 
     # Budget-neutral reweighting of the waves. Every subcircuit would otherwise get
     # shots * groups whatever wave it fell in, which hands the measuring wave a share
@@ -949,38 +969,41 @@ def _run_communicating(cut_experiment, shots, backend, max_batch_size, run_optio
         f"shared across {len(cut_experiment.experiments)} group(s)."
     )
     _dispatch(
+        job,
+        0,
         _first_wave_jobs(cut_experiment, shots, sharing, first_scale),
-        backend,
-        max_batch_size,
-        shots,
         cap,
         results,
-        run_options,
     )
 
-    for wave in range(1, plan.last_wave + 1):
-        weights = _label_weights(cut_experiment, results, wave)
-        allocation = _allocate(
-            weights, round(shots * len(cut_experiment.experiments) * later_scale)
-        )
-        logger.info(
-            f"Wave {wave + 1} of {plan.last_wave + 1}: preparing circuits for "
-            f"{sum(1 for value in allocation if value > 0)} of "
-            f"{len(cut_experiment.experiments)} group(s), shots split in proportion to "
-            "how often each label came up."
-        )
-        _dispatch(
-            _later_wave_jobs(cut_experiment, wave, allocation, results),
-            backend,
-            max_batch_size,
-            shots,
-            cap,
-            results,
-            run_options,
-        )
+    def drive():
+        job._collect(results, 0)
+        for wave in range(1, plan.last_wave + 1):
+            if job._cancelled.is_set():
+                raise QCutError(f"cancelled before wave {wave + 1}")
+            weights = _label_weights(cut_experiment, results, wave)
+            allocation = _allocate(
+                weights, round(shots * len(cut_experiment.experiments) * later_scale)
+            )
+            logger.info(
+                f"Wave {wave + 1} of {plan.last_wave + 1}: preparing circuits for "
+                f"{sum(1 for value in allocation if value > 0)} of "
+                f"{len(cut_experiment.experiments)} group(s), shots split in "
+                "proportion to how often each label came up."
+            )
+            _dispatch(
+                job,
+                wave,
+                _later_wave_jobs(cut_experiment, wave, allocation, results),
+                cap,
+                results,
+            )
+            job._collect(results, wave)
 
-    _apply_communication(cut_experiment, results)
-    return results
+        _apply_communication(cut_experiment, results)
+        return results
+
+    job._start(drive, background=True)
 
 
 @dataclass(frozen=True)
@@ -1143,7 +1166,7 @@ def estimate_run(
     backend=None,
     max_batch_size: int = 100,
 ) -> RunEstimate:
-    """Work out what :func:`run_experiments` will cost, without submitting anything.
+    """Work out what :func:`submit_experiments` will cost, without submitting anything.
 
     Exact for an experiment that runs in one go. One whose wire cuts communicate runs in
     waves, and every wave after the first spends its shots in proportion to what the one
@@ -1155,7 +1178,7 @@ def estimate_run(
 
     Args:
         cut_experiment (CutExperiment): the experiment circuits that would be run.
-        shots (int): shots per circuit, as passed to :func:`run_experiments`.
+        shots (int): shots per circuit, as passed to :func:`submit_experiments`.
         backend: the backend or sampler that would run it, read only for the most shots
             it takes in one job.
         max_batch_size (int): maximum number of circuits submitted per ``run`` call.
@@ -1208,20 +1231,25 @@ def estimate_run(
     return RunEstimate(_named(estimates), exact=plan.last_wave == 0)
 
 
-def run_experiments(  # noqa: C901
+@deprecated(
+    "submit_experiments() is planned to be removed in QCut 3.0. run_experiments() will "
+    "return the QCutJob itself, and the job's result() will give expectation values "
+    "or a distribution rather than raw counts. The raw counts will stay available on "
+    "the job."
+)
+def submit_experiments(
     cut_experiment: CutExperiment,
     shots: int = DEFAULT_SHOTS,
     backend=None,
     max_batch_size: int = 100,
     run_options: dict | None = None,
-) -> RawResult:
-    """Run experiment circuits.
+) -> QCutJob:
+    """Submit experiment circuits and return without waiting for their results.
 
-    Loop through experiment circuits and then loop through circuit group and run each
-    circuit. Store results as [group0, group1, ...] where group is [res0, res1, ...].
-    where res is "xxx yy": count xxx are the measurements from the end of circuit
-    measurements on the meas classical register and yy are the qpd basis measurement
-    results from the qpd_meas class register.
+    Every batch is submitted before this returns, and the returned job collects them
+    when its :meth:`QCutJob.result` is asked for. An experiment whose wire cuts
+    communicate runs in waves: the first is submitted before this returns, and the
+    job submits the rest itself as each wave before them comes back.
 
     Args:
         cut_experiment (CutExperiment): the experiment circuits to run
@@ -1229,7 +1257,7 @@ def run_experiments(  # noqa: C901
             cuts spend it differently: the waves split a total of ``shots`` times the
             number of groups per subcircuit between them, in proportion to how often
             each label came up, so individual circuits run at very different counts and
-            only that total is fixed. See :func:`_run_communicating`.
+            only that total is fixed. See :func:`_submit_communicating`.
         backend: backend or V2 sampler used for running the circuits.
             A sampler is run through its own interface and its results are read
             per register, so the circuits must already be in its target's basis.
@@ -1241,28 +1269,26 @@ def run_experiments(  # noqa: C901
             target takes per run, since QCut sets only ``shots`` itself.
 
     Returns:
-        RawResult:
-            the raw counts, carrying the experiment they came from so that
-            :func:`QCut.estimate_expectation_values` can be called on them alone
+        QCutJob: a handle on the submitted experiment, whose :meth:`QCutJob.result`
+        returns what :func:`run_experiments` does.
 
     """
     if backend is None:
         raise QCutError("a backend or sampler to run the circuits on is needed")
 
-    if cut_experiment.plan is not None:
-        results = _run_communicating(
-            cut_experiment, shots, backend, max_batch_size, run_options
-        )
-        return RawResult(results, shots, cut_experiment)
+    plan = cut_experiment.plan
+    job = QCutJob(
+        cut_experiment,
+        backend,
+        shots,
+        max_batch_size,
+        run_options,
+        num_waves=1 if plan is None else plan.last_wave + 1,
+    )
 
-    results: list[list[dict[int, CircuitResult]]] = [
-        # Seeded in subcircuit order, because the estimator reads a group's subcircuits
-        # back in the order these were filled, and deduplicated circuits fill them in
-        # the order they were submitted instead. The same reason _run_communicating
-        # seeds its own.
-        [{sub: CircuitResult({}) for sub in sorted(obs_group)} for obs_group in group]
-        for group in cut_experiment.experiments
-    ]
+    if plan is not None:
+        _submit_communicating(job)
+        return job
 
     jobs, empty_locations = _submission(cut_experiment)
 
@@ -1275,38 +1301,85 @@ def run_experiments(  # noqa: C901
         f"{num_batches}"
         f" batches of size {max_batch_size} for execution."
     )
-    # Submitted before any is collected, so every batch queues at once.
-    submitted = []
-    for start in range(0, len(jobs), max_batch_size):
-        batch = jobs[start : start + max_batch_size]
-        job = _submit(
-            backend,
-            [circ for _, circ in batch],
-            shots,
-            max_batch_size,
-            run_options,
-        )
-        logger.info(f"Submitted batch of {len(batch)} circuits, job {_job_id(job)}")
-        submitted.append((job, batch))
+    _submit_batches(
+        job,
+        0,
+        [
+            (
+                [circuit for _slots, circuit in batch],
+                [slots for slots, _circuit in batch],
+                shots,
+                1.0,
+            )
+            for batch in (
+                jobs[start : start + max_batch_size]
+                for start in range(0, len(jobs), max_batch_size)
+            )
+        ],
+    )
 
-    for job, batch in submitted:
-        result = _result(job)
-        for index, (slots, _circ) in enumerate(batch):
-            # One result object for the circuit, shared by every slot it fills. It is
-            # frozen and holds the job's result by reference, so there is nothing to
-            # copy and nothing that could be mutated through one slot.
-            circuit_result = CircuitResult(result, index)
-            for group_idx, obs_idx, sub_idx in slots:
-                results[group_idx][obs_idx][sub_idx] = circuit_result
+    def collect():
+        results = _seeded(cut_experiment)
+        job._collect(results)
+        for (group_idx, obs_idx, sub_idx), num_clbits in empty_locations:
+            results[group_idx][obs_idx][sub_idx] = CircuitResult(
+                {" " + "0" * num_clbits: shots}
+            )
+        return results
 
-    for (group_idx, obs_idx, sub_idx), num_clbits in empty_locations:
-        results[group_idx][obs_idx][sub_idx] = CircuitResult(
-            {" " + "0" * num_clbits: shots}
-        )
-
-    return RawResult(results, shots, cut_experiment)
+    job._start(collect, background=False)
+    return job
 
 
+@deprecated(
+    "run_experiments() is planned to change in QCut 3.0: it will return a QCutJob "
+    "without waiting, as submit_experiments() does now, and the job's result() will "
+    "give expectation values or a distribution rather than a RawResult. The RawResult "
+    "will stay available on the job."
+)
+def run_experiments(
+    cut_experiment: CutExperiment,
+    shots: int = DEFAULT_SHOTS,
+    backend=None,
+    max_batch_size: int = 100,
+    run_options: dict | None = None,
+) -> RawResult:
+    """Run experiment circuits and wait for their results.
+
+    The same as :func:`submit_experiments` followed by :meth:`QCutJob.result`. The
+    counts come back as ``[group][observable][subcircuit]``, each key ``"xxx yy"``
+    where ``xxx`` is the end-of-circuit measurements on the ``meas`` register and
+    ``yy`` the QPD basis measurements on the ``qpd_meas`` register.
+
+    Args:
+        cut_experiment (CutExperiment): the experiment circuits to run
+        shots (int): number of shots per circuit run (optional), as in
+            :func:`submit_experiments`.
+        backend: backend or V2 sampler used for running the circuits.
+        max_batch_size (int): maximum number of circuits submitted per backend.run
+            call, as in :func:`submit_experiments`.
+        run_options (dict): passed on to every ``run`` call.
+
+    Returns:
+        RawResult:
+            the raw counts, carrying the experiment they came from so that
+            :func:`QCut.estimate_expectation_values` can be called on them alone
+
+    """
+    return submit_experiments(
+        cut_experiment,
+        shots=shots,
+        backend=backend,
+        max_batch_size=max_batch_size,
+        run_options=run_options,
+    ).result()
+
+
+@deprecated(
+    "run_cut_circuit() is planned to change in QCut 3.0: it will return a QCutJob "
+    "without waiting, whose result() gives the expectation values or the "
+    "distribution. The raw counts will stay available on the job."
+)
 def run_cut_circuit(
     cut_circuit: CutCircuit,
     observables: ObservablesLike | None = None,
@@ -1331,12 +1404,12 @@ def run_cut_circuit(
             call (optional)
         options (CutOptions): configuration, overriding what the CutCircuit carries
             (optional)
-        shots (int): number of shots per circuit run, as in :func:`run_experiments`
+        shots (int): number of shots per circuit run, as in :func:`submit_experiments`
             (optional)
         qubits (list[int]): the qubits to reconstruct a distribution over, instead of
             estimating observables (optional)
         run_options (dict): passed on to the backend or sampler, as in
-            :func:`run_experiments` (optional)
+            :func:`submit_experiments` (optional)
 
         One of observables or qubits must be provided.
 
@@ -1360,13 +1433,13 @@ def run_cut_circuit(
 
     cut_experiment = get_experiment_circuits(cut_circuit, observables, qubits)
 
-    results = run_experiments(
+    results = submit_experiments(
         cut_experiment,
         shots=shots,
         backend=backend,
         max_batch_size=max_batch_size,
         run_options=run_options,
-    )
+    ).result()
 
     if qubits is not None:
         return estimate_probabilities(results)
@@ -1374,6 +1447,11 @@ def run_cut_circuit(
     return estimate_expectation_values(results)
 
 
+@deprecated(
+    "run() is planned to change in QCut 3.0: it will return a QCutJob without "
+    "waiting, whose result() gives the expectation values or the distribution. The "
+    "raw counts will stay available on the job."
+)
 def run(
     circuit: QuantumCircuit,
     observables: ObservablesLike | None = None,
@@ -1396,12 +1474,12 @@ def run(
         max_batch_size (int): maximum number of circuits submitted per backend.run
             call (optional)
         options (CutOptions): configuration for the run (optional)
-        shots (int): number of shots per circuit run, as in :func:`run_experiments`
+        shots (int): number of shots per circuit run, as in :func:`submit_experiments`
             (optional)
         qubits (list[int]): the qubits to reconstruct a distribution over, instead of
             estimating observables (optional)
         run_options (dict): passed on to the backend or sampler, as in
-            :func:`run_experiments` (optional)
+            :func:`submit_experiments` (optional)
 
         One of observables or qubits must be provided.
 

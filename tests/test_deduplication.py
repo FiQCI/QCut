@@ -19,6 +19,7 @@ from qiskit_aer.primitives import SamplerV2
 import QCut as ck
 from QCut import CutOptions, cutGate
 from QCut.execution import circuit_knitting as knit
+from QCut.execution.job import _result
 from QCut.utils.circuit_utils import circuit_fingerprint
 
 #: Shot noise on the reconstructed values, in line with the rest of the suite.
@@ -288,7 +289,7 @@ def test_every_slot_receives_the_result_of_an_identical_circuit():
     # first. The result object is what ties a slot back to the batch it came from.
     cache: dict = {}
     by_result = {
-        id(knit._result(job)): [circuit_fingerprint(c, cache) for c in circuits]
+        id(_result(job)): [circuit_fingerprint(c, cache) for c in circuits]
         for circuits, job in batches
     }
     checked = 0
