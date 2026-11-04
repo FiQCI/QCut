@@ -6,7 +6,7 @@ Changelog
 =================
 
 Submitting without blocking
---------------------------
+---------------------------
 
 - New :code:`submit_experiments()`, now the recommended way to run an experiment. It
   takes the same arguments as :code:`run_experiments()` and returns a :code:`QCutJob`
