@@ -5,7 +5,7 @@ Running an experiment whose wire cuts communicate, in waves.
 from __future__ import annotations
 
 import logging
-from dataclasses import replace
+from dataclasses import dataclass, replace
 
 from QCut.errors.qcuterror import QCutError
 from QCut.execution.dispatch import _dispatch, _seeded
@@ -24,6 +24,59 @@ logger: logging.Logger = logging.getLogger(__name__)
 #: pieces, all put the best share near a sixth, independent of the block width and of
 #: how many pieces the circuit was cut into.
 MEASURE_SHARE: float = 1 / 6
+
+
+@dataclass(frozen=True)
+class _WaveBudget:
+    """How a communicating run's shots are split between its waves.
+
+    Attributes:
+        sharing: the groups holding the same measuring circuit, keyed by what they
+            share. Wave zero runs each such circuit once for all of them.
+        first_scale: :data:`MEASURE_SHARE` as a factor on the shots of each measuring
+            subcircuit.
+        later_scale: the rest of the budget as a factor on the shots of each preparing
+            subcircuit.
+        groups: how many experiment groups the run has.
+    """
+
+    sharing: dict[tuple, list[int]]
+    first_scale: float
+    later_scale: float
+    groups: int
+
+    def later_total(self, shots: int) -> int:
+        """The shots one later wave splits between the groups."""
+        return round(shots * self.groups * self.later_scale)
+
+
+def _wave_budget(cut_experiment) -> _WaveBudget:
+    """Work out how a communicating run spends its shots, for running or estimating it.
+
+    Budget-neutral reweighting of the waves. Every subcircuit would otherwise get
+    shots * groups whatever wave it fell in, which hands the measuring wave a share of
+    one over the number of pieces the circuit was cut into. Rewriting
+    :data:`MEASURE_SHARE` as a per-subcircuit factor leaves the run's total untouched,
+    so ``shots`` keeps meaning what it always did.
+
+    The run and :func:`QCut.estimate_run` both read it from here, so an estimate cannot
+    drift from what is submitted.
+    """
+    plan = cut_experiment.plan
+    groups = len(cut_experiment.experiments)
+    subcircuits = list(cut_experiment.experiments[0][0])
+    measuring = sum(1 for sub in subcircuits if plan.waves.get(sub, 0) == 0)
+    preparing = len(subcircuits) - measuring
+    first_scale = MEASURE_SHARE * len(subcircuits) / measuring
+    later_scale = (
+        (1 - MEASURE_SHARE) * len(subcircuits) / preparing if preparing else 0.0
+    )
+
+    sharing: dict[tuple, list[int]] = {}
+    for group in range(groups):
+        sharing.setdefault(plan.keys[group], []).append(group)
+
+    return _WaveBudget(sharing, first_scale, later_scale, groups)
 
 
 def _apply_communication(cut_experiment, results) -> None:
@@ -181,32 +234,16 @@ def _submit_communicating(job: QCutJob) -> None:
     plan = cut_experiment.plan
     results = _seeded(cut_experiment)
     cap = _backend_shot_cap(job.backend)
-
-    # Budget-neutral reweighting of the waves. Every subcircuit would otherwise get
-    # shots * groups whatever wave it fell in, which hands the measuring wave a share
-    # of one over the number of pieces the circuit was cut into. Rewriting
-    # MEASURE_SHARE as a per-subcircuit factor leaves the run's total untouched, so
-    # ``shots`` keeps meaning what it always did.
-    subcircuits = list(cut_experiment.experiments[0][0])
-    measuring = sum(1 for sub in subcircuits if plan.waves.get(sub, 0) == 0)
-    preparing = len(subcircuits) - measuring
-    first_scale = MEASURE_SHARE * len(subcircuits) / measuring
-    later_scale = (
-        (1 - MEASURE_SHARE) * len(subcircuits) / preparing if preparing else 0.0
-    )
-
-    sharing: dict[tuple, list[int]] = {}
-    for group in range(len(cut_experiment.experiments)):
-        sharing.setdefault(plan.keys[group], []).append(group)
+    budget = _wave_budget(cut_experiment)
 
     logger.info(
-        f"Wave 1 of {plan.last_wave + 1}: {len(sharing)} distinct measuring run(s) "
-        f"shared across {len(cut_experiment.experiments)} group(s)."
+        f"Wave 1 of {plan.last_wave + 1}: {len(budget.sharing)} distinct measuring "
+        f"run(s) shared across {len(cut_experiment.experiments)} group(s)."
     )
     _dispatch(
         job,
         0,
-        _first_wave_jobs(cut_experiment, shots, sharing, first_scale),
+        _first_wave_jobs(cut_experiment, shots, budget.sharing, budget.first_scale),
         cap,
         results,
     )
@@ -217,9 +254,7 @@ def _submit_communicating(job: QCutJob) -> None:
             if job._cancelled.is_set():
                 raise QCutError(f"cancelled before wave {wave + 1}")
             weights = _label_weights(cut_experiment, results, wave)
-            allocation = _allocate(
-                weights, round(shots * len(cut_experiment.experiments) * later_scale)
-            )
+            allocation = _allocate(weights, budget.later_total(shots))
             logger.info(
                 f"Wave {wave + 1} of {plan.last_wave + 1}: preparing circuits for "
                 f"{sum(1 for value in allocation if value > 0)} of "

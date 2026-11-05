@@ -13,7 +13,7 @@ from QCut.execution.dispatch import (
     _has_measurements,
 )
 from QCut.execution.submit import _submission
-from QCut.execution.waves import MEASURE_SHARE, _first_wave_jobs
+from QCut.execution.waves import _first_wave_jobs, _wave_budget
 from QCut.model.cutcircuit import CutExperiment
 from QCut.utils.backend import _backend_shot_cap
 
@@ -139,26 +139,15 @@ def estimate_run(
         )
 
     plan = cut_experiment.plan
-    groups = len(cut_experiment.experiments)
-    subcircuits = list(cut_experiment.experiments[0][0])
-    measuring = sum(1 for sub in subcircuits if plan.waves.get(sub, 0) == 0)
-    preparing = len(subcircuits) - measuring
-    first_scale = MEASURE_SHARE * len(subcircuits) / measuring
-    later_scale = (
-        (1 - MEASURE_SHARE) * len(subcircuits) / preparing if preparing else 0.0
-    )
-
-    sharing: dict[tuple, list[int]] = {}
-    for group in range(groups):
-        sharing.setdefault(plan.keys[group], []).append(group)
+    budget = _wave_budget(cut_experiment)
 
     estimates = _estimated_batches(
-        _first_wave_jobs(cut_experiment, shots, sharing, first_scale),
+        _first_wave_jobs(cut_experiment, shots, budget.sharing, budget.first_scale),
         max_batch_size,
         cap,
     )
     for wave in range(1, plan.last_wave + 1):
-        even = max(1, round(round(shots * groups * later_scale) / groups))
+        even = max(1, round(budget.later_total(shots) / budget.groups))
         estimates += _estimated_batches(
             _projected_wave_jobs(cut_experiment, wave, even), max_batch_size, cap
         )
