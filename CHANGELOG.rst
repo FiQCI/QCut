@@ -5,6 +5,29 @@ Changelog
 **[WIP] Version 2.5.0**
 =======================
 
+Reorganised source
+------------------
+
+- Modules are regrouped in a more sensible way: :code:`QCut.model` (the cut circuit and its
+  cut locations), :code:`QCut.pre_process` (was :code:`QCut.cutting`),
+  :code:`QCut.transpilation`, :code:`QCut.job` and :code:`QCut.post_process`, with
+  shared helpers in :code:`QCut.utils`. Everything exported from :code:`QCut` itself is
+  unchanged.
+- :code:`QCut.execution.circuit_knitting` is split into :code:`experiments`,
+  :code:`dispatch`, :code:`waves`, :code:`submit`, :code:`estimate` and :code:`run`
+  under :code:`QCut.execution`. :code:`run()`, :code:`run_cut_circuit()` and
+  :code:`run_experiments()` are in :code:`QCut.execution.run`.
+- The old module paths, such as :code:`QCut.execution.probabilities`,
+  :code:`QCut.cutcircuit` or :code:`QCut.execution.circuit_knitting`, still import but
+  raise a :code:`FutureWarning` naming the new path, and are planned to be removed in
+  3.0. They give back the new modules, so a class imported from either path is the
+  same class, and results pickled under the old paths still load.
+- Helpers whose names start with an underscore are not public API, and those that moved
+  to a different module than the rest of their file cannot be imported from the old
+  path.
+- Log records come from the new modules, e.g. :code:`QCut.execution.dispatch` or
+  :code:`QCut.utils.backend` rather than :code:`QCut.execution.circuit_knitting`. A
+  filter on :code:`QCut` still catches all of them.
 
 **Version 2.4.0**
 =================
