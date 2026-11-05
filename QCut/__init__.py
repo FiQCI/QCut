@@ -2,15 +2,6 @@
 
 from importlib.metadata import PackageNotFoundError, version
 
-from QCut.cutting.circuit_preparation import (
-    get_locations_and_subcircuits,
-)
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks
-from QCut.execution.backend_utility import (
-    transpile_circuits,
-    transpile_experiments,
-    transpile_subcircuits,
-)
 from QCut.execution.circuit_knitting import (
     JobEstimate,
     RunEstimate,
@@ -21,20 +12,33 @@ from QCut.execution.circuit_knitting import (
     run_experiments,
     submit_experiments,
 )
-from QCut.execution.job import PartialBatch, QCutJob
-from QCut.execution.observables import ObservablesLike
 from QCut.execution.parallel import ParallelBackend
-from QCut.execution.postprocess import (
+from QCut.job.cutresult import CircuitResult, RawResult
+from QCut.job.handle import PartialBatch, QCutJob
+from QCut.options import DEFAULT_OPTIONS, CutOptions
+from QCut.post_process.postprocess import (
     estimate_expectation_values,
 )
-from QCut.execution.probabilities import (
+from QCut.post_process.probabilities import (
     QuasiProbabilities,
     estimate_probabilities,
 )
-from QCut.execution.qcutresult import CircuitResult, RawResult
-from QCut.options import DEFAULT_OPTIONS, CutOptions
+from QCut.pre_process.circuit_preparation import (
+    get_locations_and_subcircuits,
+)
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks
 from QCut.QCutFind import find_cuts
 from QCut.qpd.qpd_gates import cut, cutCZ, cutGate, cutISWAP, cutSWAP
+from QCut.transpilation.transpile_cut_circuits import (
+    transpile_circuits,
+    transpile_experiments,
+    transpile_subcircuits,
+)
+from QCut.utils.deprecation import install_moved_module_finder
+from QCut.utils.observables import ObservablesLike
+
+install_moved_module_finder()
+del install_moved_module_finder
 
 try:
     __version__ = version("QCut")

@@ -12,12 +12,13 @@ from qiskit.circuit import Gate, Instruction
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.transpiler import PassManager, Target
 
-from QCut.cutcircuit import CutCircuit, CutExperiment
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.move_routing import is_resonator_backend, move_route
+from QCut.model.cutcircuit import CutCircuit, CutExperiment
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.qpd.bundle import locate_placeholders, plan_bundles
-from QCut.utils.circuit_utils import (
+from QCut.transpilation.move_routing import move_route
+from QCut.utils.backend import is_resonator_backend
+from QCut.utils.circuit import (
     MarkerSpan,
     _drop_barriers,
     _fence_markers,

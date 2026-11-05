@@ -12,62 +12,8 @@ from qiskit import QuantumCircuit
 from qiskit.circuit import QuantumRegister
 from qiskit.circuit.library import HGate, SdgGate
 from qiskit.dagcircuit import DAGCircuit
-from qiskit.quantum_info import SparsePauliOp
 from qiskit.transpiler import PassManager
 from qiskit.transpiler.basepasses import TransformationPass
-
-
-def _combine_pauli_ops(op: SparsePauliOp) -> list[dict[int, str]]:  # noqa: C901
-    """Combine Pauli operators that have no conflicting non-identity components.
-
-    Args:
-        op (SparsePauliOp): The SparsePauliOp to analyze.
-
-    Returns:
-        list[dict[int, str]]: A list of combined measurement settings, where each dict
-                              maps qubit indices to Pauli basis measurements.
-    """
-
-    pauli_strings = [pauli.to_label()[::-1] for pauli in op.paulis]
-
-    combined_settings = []
-    used = [False] * len(pauli_strings)
-
-    for i, pauli_string in enumerate(pauli_strings):
-        if used[i]:
-            continue
-
-        # Start a new combined setting with the current Pauli string
-        combined = {}
-        for qubit_index, pauli in enumerate(pauli_string):
-            if pauli != "I":
-                combined[qubit_index] = pauli
-
-        used[i] = True
-
-        # Try to combine with remaining Pauli strings
-        for j in range(i + 1, len(pauli_strings)):
-            if used[j]:
-                continue
-
-            # Check if pauli_strings[j] can be combined with current combined setting
-            can_combine = True
-            for qubit_index, pauli in enumerate(pauli_strings[j]):
-                if pauli != "I":
-                    if qubit_index in combined and combined[qubit_index] != pauli:
-                        can_combine = False
-                        break
-
-            # If compatible, add to combined setting
-            if can_combine:
-                for qubit_index, pauli in enumerate(pauli_strings[j]):
-                    if pauli != "I":
-                        combined[qubit_index] = pauli
-                used[j] = True
-
-        combined_settings.append(combined)
-
-    return combined_settings
 
 
 def _apply_basis_change(
@@ -159,17 +105,3 @@ def _get_obs_subcircuits(
             pm_circs[ind] = modified_circuit
         obs_subcircuits.append(pm_circs)
     return obs_subcircuits
-
-
-def _get_observable_circuit_index(pauli, combined: list[dict[int, str]]):
-    """Find which measurement setting covers the non-identity letters of `pauli`,
-    and return the indices of the qubits involved."""
-    label = pauli
-    non_identity = {i: p for i, p in enumerate(label) if p.to_label() != "I"}
-
-    for idx, setting in enumerate(combined):
-        # All non-identity qubits must be measured in the matching basis
-        if all(setting.get(q) == p.to_label() for q, p in non_identity.items()):
-            return {"circuit_index": idx, "obs_indices": list(non_identity.keys())}
-
-    return {"circuit_index": None, "obs_indices": []}

@@ -26,14 +26,6 @@ def _positions(bits) -> dict:
     return {bit: index for index, bit in enumerate(bits)}
 
 
-def is_resonator_backend(backend) -> bool:
-    """
-    Whether the device couples its qubits only through a resonator.
-    """
-    has_resonators = getattr(backend, "has_resonators", None)
-    return bool(has_resonators and has_resonators())
-
-
 def _barrier_labels(circuit: QuantumCircuit) -> dict[int, list[str | None]]:
     """Every barrier's label, grouped by the wire it sits on, in per-wire order."""
     labels: dict[int, list[str | None]] = {}

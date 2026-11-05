@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import transpile_circuits
+from QCut.transpilation.transpile_cut_circuits import transpile_circuits
 
 logger: logging.Logger = logging.getLogger(__name__)
 

@@ -10,15 +10,15 @@ from qiskit import QuantumCircuit
 from qiskit.primitives.containers.observables_array import ObservablesArray
 from qiskit.quantum_info import SparsePauliOp
 
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
-from QCut.execution.observables import (
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
+from QCut.options import CutOptions, resolve
+from QCut.utils.observables import (
     ObservablesLike,
     ObservableSpec,
+    _all_z_paulis_for_subset,
     coerce_observables,
     per_term_observables,
 )
-from QCut.execution.probabilities import _all_z_paulis_for_subset
-from QCut.options import CutOptions, resolve
 
 
 class CutCircuit:
@@ -165,7 +165,7 @@ class CutExperiment:
         observables themselves are built on demand -- see :attr:`observables`.
 
         ``observables`` is taken the way qiskit's estimator takes them, and is kept as
-        an :class:`QCut.execution.observables.ObservableSpec`.
+        an :class:`QCut.utils.observables.ObservableSpec`.
         """
 
         self.experiments = experiment_circuits
@@ -193,9 +193,9 @@ class CutExperiment:
         An experiment built from ``qubits`` is built for every Pauli Z over them, and
         there are ``2**k`` of those. They all share one measurement setting, so none of
         them shapes a circuit, and reconstructing the distribution does not go through
-        them either, see :func:`QCut.execution.probabilities._separable_form`. So they
-        are built here, on demand, for whoever does want them: estimating them one at a
-        time with :func:`QCut.estimate_expectation_values` still works.
+        them either, see :func:`QCut.post_process.probabilities._separable_form`. So
+        they are built here, on demand, for whoever does want them: estimating them one
+        at a time with :func:`QCut.estimate_expectation_values` still works.
 
         Raises:
             ValueError: the experiment was given ``qubits`` but not the width they span,

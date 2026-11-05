@@ -383,7 +383,7 @@ def _bundles(circuit, options=None):
     cut_circuit = ck.get_locations_and_subcircuits(
         circuit, options=options or CutOptions()
     )
-    from QCut.utils.circuit_utils import _remove_obsm_2
+    from QCut.utils.circuit import _remove_obsm_2
 
     _remove_obsm_2(cut_circuit.subcircuits)
     return plan_bundles(

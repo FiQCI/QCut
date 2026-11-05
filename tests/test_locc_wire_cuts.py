@@ -27,7 +27,7 @@ from QCut.qpd.qpd_locc import (
     locc_wire_qpd,
     mub_unitaries,
 )
-from QCut.utils.circuit_utils import _remove_obsm_2
+from QCut.utils.circuit import _remove_obsm_2
 
 TOLERANCE = 0.1
 

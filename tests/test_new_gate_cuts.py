@@ -6,13 +6,13 @@ from dataclasses import replace
 
 import numpy as np
 import pytest
+from QCut.job.cutresult import RawResult
 from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.circuit import Instruction
 from qiskit_aer import AerSimulator
 
 import QCut as ck
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
-from QCut.execution.qcutresult import RawResult
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.options import CutOptions
 from QCut.qpd.qpd import cz_qpd, iswap_qpd, swap_qpd
 from QCut.qpd.qpd_operations import QPD_REGISTRY, get_qpd_combinations

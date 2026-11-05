@@ -5,17 +5,16 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import numpy as np
-from qiskit.quantum_info import SparsePauliOp
 from qiskit.result import QuasiDistribution
 
-from QCut.cutlocation import SingleQubitCutLocation
-from QCut.execution.distribution import Mode, SeparableDistribution
-from QCut.execution.postprocess import (
+from QCut.job.cutresult import RawResult
+from QCut.model.cutlocation import SingleQubitCutLocation
+from QCut.post_process.distribution import Mode, SeparableDistribution
+from QCut.post_process.postprocess import (
     _bit_layout,
     _outcome_rows,
     _process_results,
 )
-from QCut.execution.qcutresult import RawResult
 
 #: How many bitstrings are shown without being asked for: the default of the dict views
 #: and the length of a ``repr`` too wide to print whole. A distribution over more than a
@@ -361,57 +360,6 @@ class QuasiProbabilities(Mapping):
             key: value * shots
             for key, value in self.nearest_probabilities(top=top).items()
         }
-
-
-def _validate_qubits(number_of_qubits: int, qubit_indices: list[int]) -> None:
-    """Check the qubits a distribution was asked for against the circuit.
-
-    Args:
-        number_of_qubits (int): width of the uncut circuit.
-        qubit_indices (list[int]): the qubits to measure.
-
-    Raises:
-        ValueError: the qubits are empty, repeated, or outside the circuit.
-    """
-    if not qubit_indices:
-        raise ValueError("qubits must name at least one qubit")
-    if len(set(qubit_indices)) != len(qubit_indices):
-        raise ValueError(f"qubits must not repeat, got {qubit_indices}")
-    outside = [q for q in qubit_indices if not 0 <= q < number_of_qubits]
-    if outside:
-        raise ValueError(
-            f"qubits {outside} are outside the {number_of_qubits}-qubit circuit"
-        )
-
-
-def _all_z_paulis_for_subset(
-    number_of_qubits: int, qubit_indices: list[int]
-) -> SparsePauliOp:
-    """Every Pauli Z string over ``qubit_indices``, identity excluded.
-
-    Args:
-        number_of_qubits (int): width of the uncut circuit, which the strings span.
-        qubit_indices (list[int]): the qubits to measure, in the order their bits are
-            read back.
-
-    Returns:
-        SparsePauliOp: the ``2**k - 1`` non-identity Z strings, ordered so that the
-        ``i``-th carries Z on the qubits named by the set bits of ``i``.
-
-    Raises:
-        ValueError: the qubits are empty, repeated, or outside the circuit.
-    """
-    _validate_qubits(number_of_qubits, qubit_indices)
-
-    paulis = []
-    for i in range(2 ** len(qubit_indices)):
-        pauli_str = ["I"] * number_of_qubits
-        for j, qubit_index in enumerate(qubit_indices):
-            ind = number_of_qubits - qubit_index - 1
-            if (i >> j) & 1:
-                pauli_str[ind] = "Z"
-        paulis.append("".join(pauli_str))
-    return SparsePauliOp(paulis[1:])
 
 
 #: One group's measured outcomes for one subcircuit, and the weight each carried.

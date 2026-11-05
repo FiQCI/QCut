@@ -98,7 +98,7 @@ def _location(gate_name, gate):
     """Build a CutLocation directly, without going through a circuit."""
     from qiskit import QuantumRegister
 
-    from QCut.cutlocation import CutLocation
+    from QCut.model.cutlocation import CutLocation
 
     register = QuantumRegister(2, "q")
     return CutLocation(([(register, 0), (register, 1)], 0), gate_name, gate)

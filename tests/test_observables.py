@@ -12,10 +12,10 @@ from qiskit.quantum_info import Pauli, SparsePauliOp, Statevector
 from qiskit_aer import AerSimulator
 
 import QCut as ck
-from QCut.execution.basis_transform import _combine_pauli_ops
-from QCut.execution.observables import (
+from QCut.utils.observables import (
     MAX_PROJECTOR_TERMS,
     SUPPORTS_SPARSE_OBSERVABLE,
+    _combine_pauli_ops,
     _expand,
     coerce_observables,
     per_term_observables,

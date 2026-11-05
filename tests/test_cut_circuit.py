@@ -1,6 +1,8 @@
 import numpy as np
 import pytest
 from pydantic import TypeAdapter, ValidationError
+from QCut.job import handle as job_module
+from QCut.job.cutresult import CircuitResult
 from qiskit import QuantumCircuit
 from qiskit.circuit import CircuitInstruction, Gate, Parameter
 from qiskit.circuit.library import CXGate
@@ -10,8 +12,6 @@ from qiskit_aer.primitives import SamplerV2
 
 import QCut as ck
 from QCut import cut, cutGate
-from QCut.execution import job as job_module
-from QCut.execution.qcutresult import CircuitResult
 from QCut.options import CutOptions
 
 cut_qc = QuantumCircuit(4)
@@ -102,7 +102,7 @@ def test_results_carry_their_own_experiment():
 
 def test_results_without_an_experiment_say_so():
     """A hand-built result carries nothing, so the estimator cannot interpret it."""
-    from QCut.execution.qcutresult import RawResult
+    from QCut.job.cutresult import RawResult
 
     bare = RawResult([], 1024)
     assert bare.experiment is None

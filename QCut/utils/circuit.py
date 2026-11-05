@@ -8,7 +8,7 @@ from functools import lru_cache
 
 import numpy as np
 from qiskit import ClassicalRegister, QuantumCircuit
-from qiskit.circuit import Barrier, ControlFlowOp, Qubit
+from qiskit.circuit import Barrier, ControlFlowOp, Instruction, Qubit
 from qiskit.circuit.library import get_standard_gate_name_mapping
 
 
@@ -82,9 +82,17 @@ def markers_to_barriers(circuit: QuantumCircuit, names: set[str]) -> QuantumCirc
     return out
 
 
+class NonCommutingGate(Instruction):
+    def __init__(self, name="Init_1"):
+        super().__init__(name=name, num_qubits=1, num_clbits=0, params=[])
+        self._opaque = True
+
+    def __repr__(self):
+        return f"{self.name}"
+
+
 def barriers_to_markers(circuit: QuantumCircuit, names: set[str]) -> QuantumCircuit:
     """Turn the labelled barriers back into placeholders, once transpiling is done."""
-    from QCut.cutting.circuit_preparation import NonCommutingGate
 
     out = circuit.copy_empty_like()
     for instruction in circuit.data:
@@ -253,7 +261,6 @@ def split_markers(
     order. Everything downstream reads placeholders one at a time, so this is what keeps
     the widening confined to transpilation.
     """
-    from QCut.cutting.circuit_preparation import NonCommutingGate
 
     out = circuit.copy_empty_like()
     for instruction in circuit.data:

@@ -17,27 +17,17 @@ from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 from qiskit.primitives import BaseSamplerV2
 
-from QCut.cutcircuit import CutCircuit, CutExperiment
-from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import has_topology, transpile_subcircuits
-from QCut.execution.basis_transform import (
-    _combine_pauli_ops,
-    _get_obs_subcircuits,
-)
-from QCut.execution.job import QCutJob, _Batch, _job_id
-from QCut.execution.observables import (
-    ObservablesLike,
-    coerce_observables,
-)
-from QCut.execution.postprocess import estimate_expectation_values
-from QCut.execution.probabilities import (
+from QCut.job.cutresult import CircuitResult, RawResult
+from QCut.job.handle import QCutJob, _Batch, _job_id
+from QCut.model.cutcircuit import CutCircuit, CutExperiment
+from QCut.options import CutOptions
+from QCut.post_process.postprocess import estimate_expectation_values
+from QCut.post_process.probabilities import (
     QuasiProbabilities,
-    _validate_qubits,
     estimate_probabilities,
 )
-from QCut.execution.qcutresult import CircuitResult, RawResult
-from QCut.options import CutOptions
+from QCut.pre_process.circuit_preparation import get_locations_and_subcircuits
 from QCut.qpd.bundle import (
     SIDE_1,
     communication_waves,
@@ -55,13 +45,27 @@ from QCut.qpd.qpd_operations import (
     qpd_for_bundle,
     sample_qpd_combinations,
 )
-from QCut.utils.circuit_utils import (
+from QCut.transpilation.basis_transform import (
+    _get_obs_subcircuits,
+)
+from QCut.transpilation.transpile_cut_circuits import (
+    has_topology,
+    transpile_subcircuits,
+)
+from QCut.utils.backend import _backend_gate_names, _backend_shot_cap
+from QCut.utils.circuit import (
     _remove_obsm,
     _remove_obsm_2,
     circuit_fingerprint,
     compact_qpd_register,
 )
 from QCut.utils.deprecation import deprecated
+from QCut.utils.observables import (
+    ObservablesLike,
+    _combine_pauli_ops,
+    _validate_qubits,
+    coerce_observables,
+)
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -172,39 +176,6 @@ def _transpiled(circuit: QuantumCircuit, basis, cache: dict) -> QuantumCircuit:
     transpiled = transpile(circuit, basis_gates=basis)
     cache[key] = (circuit, transpiled)
     return transpiled
-
-
-def _backend_gate_names(backend) -> list[str]:
-    """The gate names a backend accepts, however that backend spells them.
-
-    A BackendV1 answers through its configuration, an IQM device through its
-    architecture, and any other BackendV2 through its target. IQM is asked before the
-    target because its architecture is what the prx rename below was written against.
-
-    Raises:
-        QCutError: the backend names its gates in none of the three ways.
-    """
-    configuration = getattr(backend, "configuration", None)
-    if configuration is not None:
-        try:
-            return list(configuration().basis_gates)
-        except Exception:  # noqa: BLE001 - a V2 backend may carry a stub that raises
-            pass
-
-    architecture = getattr(backend, "architecture", None)
-    if architecture is not None:
-        return list(architecture.gates.keys())
-
-    target = getattr(backend, "target", None)
-    if target is not None:
-        return list(target.operation_names)
-
-    raise QCutError(
-        f"cannot tell which gates {type(backend).__name__} accepts, because it has no "
-        "configuration(), no architecture and no target. Please raise an issue so this "
-        "backend can be supported. In the meantime, build the experiment circuits from "
-        "an untranspiled cut circuit and transpile them with transpile_experiments."
-    )
 
 
 def _check_measurement_spec(
@@ -706,21 +677,6 @@ def _seeded(cut_experiment) -> list[list[dict[int, CircuitResult]]]:
         [{sub: CircuitResult({}) for sub in sorted(obs_group)} for obs_group in group]
         for group in cut_experiment.experiments
     ]
-
-
-def _backend_shot_cap(backend) -> int | None:
-    """Return the most shots a backend takes in one job, if it says."""
-    for probe in (
-        lambda: backend.max_shots,
-        lambda: backend.configuration().max_shots,
-    ):
-        try:
-            cap = probe()
-        except Exception:
-            continue
-        if isinstance(cap, int) and cap > 0:
-            return cap
-    return None
 
 
 #: Widest ratio of requested shot counts allowed to share one job. Circuits in a batch

@@ -9,8 +9,8 @@ from qiskit_aer import AerSimulator
 import QCut as ck
 from QCut import cut, cutGate
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import has_topology
 from QCut.execution.circuit_knitting import _backend_gate_names
+from QCut.transpilation.transpile_cut_circuits import has_topology
 
 cut_circ = QuantumCircuit(4)
 

@@ -23,7 +23,7 @@ from typing import Callable
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import CZGate
 
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.options import CutOptions
 from QCut.qpd.qpd_joint import (
     gamma_joint,

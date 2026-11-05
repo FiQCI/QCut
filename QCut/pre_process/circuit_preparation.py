@@ -9,14 +9,15 @@ from __future__ import annotations
 import logging
 
 from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
-from qiskit.circuit import CircuitInstruction, Instruction, Qubit
+from qiskit.circuit import CircuitInstruction, Qubit
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 
-from QCut.cutcircuit import CutCircuit
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks, marker_gate
 from QCut.errors.qcuterror import QCutError
+from QCut.model.cutcircuit import CutCircuit
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.options import CutOptions, resolve
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks, marker_gate
+from QCut.utils.circuit import NonCommutingGate
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -60,15 +61,6 @@ def _get_cut_locations(circuit):
         index += 1
 
     return cut_locations
-
-
-class NonCommutingGate(Instruction):
-    def __init__(self, name="Init_1"):
-        super().__init__(name=name, num_qubits=1, num_clbits=0, params=[])
-        self._opaque = True
-
-    def __repr__(self):
-        return f"{self.name}"
 
 
 def _insert_cut_nodes(circuit, cut_locations):

@@ -15,9 +15,8 @@ from qiskit.circuit import (
     CircuitInstruction,
 )
 
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.move_routing import is_resonator_backend
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.qpd.bundle import (
     Bundle,
     flatten_term,
@@ -34,7 +33,8 @@ from QCut.qpd.qpd_joint import (
     single_axis_theta,
 )
 from QCut.qpd.qpd_locc import gamma_locc, locc_wire_qpd
-from QCut.utils.circuit_utils import _remove_obsm_2
+from QCut.utils.backend import is_resonator_backend
+from QCut.utils.circuit import _remove_obsm_2
 
 logger: logging.Logger = logging.getLogger(__name__)
 

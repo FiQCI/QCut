@@ -8,10 +8,10 @@ import rustworkx as rx
 from qiskit import transpile
 from qiskit.circuit import CircuitInstruction
 
-from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks
 from QCut.errors.qcuterror import QCutError
 from QCut.options import CutOptions, resolve
+from QCut.pre_process.circuit_preparation import get_locations_and_subcircuits
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks
 from QCut.QCutFind.graph_circuit_utils import circ_to_graph
 from QCut.QCutFind.metis import (
     BUDGET_UFACTORS,
