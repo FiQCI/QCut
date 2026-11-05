@@ -184,7 +184,6 @@ def _insert_wire_cut_qpd(
     qpd_qubits,
     qpd,
     classical_bit_index,
-    inserted_operations,
 ):
     if "Meas" in op.operation.name:  # if measure channel remove placeholder
         # and insert current
@@ -229,7 +228,6 @@ def _insert_wire_cut_qpd(
             # increment classical bit counter
             classical_bit_index += 1
 
-        inserted_operations += 1
         offset += len(meas_op.data) - 1
 
     if "Init" in op.operation.name:
@@ -246,10 +244,9 @@ def _insert_wire_cut_qpd(
                 ),
             )
 
-        inserted_operations += 1
         offset += len(init_op) - 1
 
-    return offset, classical_bit_index, inserted_operations
+    return offset, classical_bit_index
 
 
 def _insert_2qubit_gate_cut_qpd(  # noqa: C901
@@ -260,7 +257,6 @@ def _insert_2qubit_gate_cut_qpd(  # noqa: C901
     qpd_qubits,
     qpd,
     classical_bit_index,
-    inserted_operations,
 ):
     if "_c_" in op.operation.name:  # if measure channel remove placeholder
         # and insert current
@@ -308,7 +304,6 @@ def _insert_2qubit_gate_cut_qpd(  # noqa: C901
             # increment classical bit counter
             classical_bit_index += 1
 
-        inserted_operations += 1
         offset += len(meas_op) - 1
 
     if "_t_" in op.operation.name:
@@ -357,10 +352,9 @@ def _insert_2qubit_gate_cut_qpd(  # noqa: C901
             # increment classical bit counter
             classical_bit_index += 1
 
-        inserted_operations += 1
         offset += len(meas_op) - 1
 
-    return offset, classical_bit_index, inserted_operations
+    return offset, classical_bit_index
 
 
 def _insert_bundle_qpd(  # noqa: PLR0913
@@ -373,7 +367,6 @@ def _insert_bundle_qpd(  # noqa: PLR0913
     bundle,
     placeholders,
     classical_bit_index,
-    inserted_operations,
     label_clbits,
 ):
     """Replace a bundle's placeholders in one subcircuit by a single block.
@@ -403,7 +396,7 @@ def _insert_bundle_qpd(  # noqa: PLR0913
 
     subcircuit.data.pop(ind + offset)
     if placeholders[(cut, side)].index != target:
-        return offset - 1, classical_bit_index, inserted_operations + 1
+        return offset - 1, classical_bit_index
 
     entry = qpd[bundle.anchor]
     block = entry["op_0"] if bundle_side == 0 else entry["op_1"]
@@ -443,7 +436,7 @@ def _insert_bundle_qpd(  # noqa: PLR0913
             (bundle, tuple(per_qubit[index] for index in range(len(members))))
         )
 
-    return offset + len(block.data) - 1, next_bit, inserted_operations + 1
+    return offset + len(block.data) - 1, next_bit
 
 
 def get_qpd_combinations(

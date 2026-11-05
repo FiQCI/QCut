@@ -107,34 +107,32 @@ def _finalize_subcircuit(
 
 def _get_placeholder_locations(subcircuits: list[QuantumCircuit]) -> list:
     """
-    Identify the locations of placeholder operations in a list of quantum subcircuits.
-    This function scans through each quantum subcircuit provided in the input list and
-    identifies the indices and operations where either measurement ("Meas") or
-    initialization ("Init") operations occur. It returns a list of lists, where each
-    sublist corresponds to  a subcircuit and contains tuples of the
-    form (index, operation).
+    Identify the placeholder operations in a list of quantum subcircuits: the
+    measurement ("Meas") and initialization ("Init") sides of wire cuts, and the halves
+    of gate cuts. Only the instructions are kept, not their indices, because the
+    experiment circuits are built from copies whose placeholders transpilation may have
+    moved, and :func:`_build_experiment_circuit` finds them again by name.
 
     Args:
         subcircuits (list[QuantumCircuit]):
             A list of QuantumCircuit objects to be analyzed.
     Returns:
         list:
-            A list of lists, where each sublist contains tuples (index, operation)
-            indicating the positions of measurement or initialization operations in
-            the corresponding subcircuit.
+            A list of lists, where each sublist holds the placeholder instructions of
+            the corresponding subcircuit, in circuit order.
 
     """
     ops = []
     for circ in subcircuits:
         subops = []
-        for ind, op in enumerate(circ.data):
+        for op in circ.data:
             name = op.operation.name
             if (
                 name.startswith("Meas")
                 or name.startswith("Init")
                 or (name.startswith("cut") and "_" in name)
             ):
-                subops.append((ind, op))
+                subops.append(op)
         ops.append(subops)
 
     return ops
@@ -154,6 +152,119 @@ def _transpiled(circuit: QuantumCircuit, basis, cache: dict) -> QuantumCircuit:
     transpiled = transpile(circuit, basis_gates=basis)
     cache[key] = (circuit, transpiled)
     return transpiled
+
+
+def _build_experiment_circuit(
+    circ: QuantumCircuit,
+    placeholder_ops: list,
+    qpd,
+    bundle_of_cut: dict,
+    placeholders: dict,
+) -> tuple[QuantumCircuit, tuple[int, int], list]:
+    """Insert one group's QPD terms into one observable subcircuit.
+
+    Every placeholder is replaced by the operation ``qpd`` chooses for its cut, the
+    qubits left over are measured into the observable register, and the qpd bits the
+    terms never write to are dropped.
+
+    Args:
+        circ (QuantumCircuit): the subcircuit with its observable basis change in place.
+            It is left untouched, and the experiment circuit is built on a copy.
+        placeholder_ops (list): its placeholder instructions, as
+            :func:`_get_placeholder_locations` found them.
+        qpd: the group's choice of term for every cut.
+        bundle_of_cut (dict): the bundle each cut belongs to.
+        placeholders (dict): where each placeholder sits, from
+            :func:`QCut.qpd.bundle.locate_placeholders`.
+
+    Returns:
+        The experiment circuit, its ``(qpd bits written, qpd bits dropped)``, and a
+        ``(bundle, clbits)`` pair for each communicating wire cut it measures.
+
+    Raises:
+        QCutError: a placeholder is missing from the subcircuit.
+        ValueError: a placeholder is of no kind the builder knows.
+    """
+    subcircuit = circ.copy_empty_like()
+    subcircuit._data = circ._data.copy(copy_instructions=False)
+    offset = 0
+    classical_bit_index = 0
+    qpd_qubits = []  # store the qubit indices of qubits used for qpd
+    # measurements
+    labels_here: list = []  # (bundle, clbits) per communicating wire cut
+    # Placeholders are found by name in the subcircuit as it stands, not by
+    # the index they had when it was built. Transpiling against a backend
+    # commutes them past each other, since each looks like an ordinary
+    # single-qubit gate, and the walk below both reads them and accumulates
+    # ``offset`` on the assumption that it meets them front to back. Every
+    # placeholder name is unique within its subcircuit, so the lookup is
+    # exact, and sorting by it restores the order the walk needs.
+    position = {
+        instruction.operation.name: index
+        for index, instruction in enumerate(subcircuit.data)
+    }
+    placeholders_here = []
+    for op in placeholder_ops:
+        if op.operation.name not in position:
+            raise QCutError(
+                f"Placeholder '{op.operation.name}' is missing from its "
+                "subcircuit. Transpilation is not allowed to remove or "
+                "rename it, so the experiment cannot be built."
+            )
+        placeholders_here.append((position[op.operation.name], op))
+    placeholders_here.sort(key=lambda pair: pair[0])
+
+    for ind, op in placeholders_here:
+        parsed = parse_placeholder(op.operation.name)
+        bundle = bundle_of_cut.get(parsed[0]) if parsed is not None else None
+        if bundle is not None and bundle.kind != "single":
+            offset, classical_bit_index = _insert_bundle_qpd(
+                ind,
+                op,
+                subcircuit,
+                offset,
+                qpd_qubits,
+                qpd,
+                bundle,
+                placeholders,
+                classical_bit_index,
+                labels_here,
+            )
+
+        elif "cut" in op.operation.name:
+            offset, classical_bit_index = _insert_2qubit_gate_cut_qpd(
+                ind,
+                op,
+                subcircuit,
+                offset,
+                qpd_qubits,
+                qpd,
+                classical_bit_index,
+            )
+
+        elif "Meas" in op.operation.name or "Init" in op.operation.name:
+            offset, classical_bit_index = _insert_wire_cut_qpd(
+                ind,
+                op,
+                subcircuit,
+                offset,
+                qpd_qubits,
+                qpd,
+                classical_bit_index,
+            )
+        else:
+            raise ValueError(
+                f"""Unknown placeholder operation: {op.operation.name}.
+                Actual operation: {subcircuit.data[ind + offset]}"""
+            )
+
+    subcircuit = _finalize_subcircuit(subcircuit, qpd_qubits)
+    # Drop the qpd bits this term never writes to, so no circuit carries an
+    # unused classical register, and remember how many went so the sign they
+    # stood for can be put back during post-processing.
+    subcircuit, dropped = compact_qpd_register(subcircuit)
+    remaining = next((r.size for r in subcircuit.cregs if r.name == "qpd_meas"), 0)
+    return subcircuit, (remaining, dropped), labels_here
 
 
 def _check_measurement_spec(
@@ -358,127 +469,22 @@ def get_experiment_circuits(  # noqa: C901
             )
 
         # circuits
-        inserted_operations = 0
         obs_set_circuits = []
-        for obs_set in obs_subcircuits:
+        for obs_index, obs_set in enumerate(obs_subcircuits):
             cur_set_circuits = {}
             for id_meas_subcircuit_index, circ in obs_set.items():
-                subcircuit = circ.copy_empty_like()
-                subcircuit._data = circ._data.copy(copy_instructions=False)
-                offset = 0
-                classical_bit_index = 0
-                qpd_qubits = []  # store the qubit indices of qubits used for qpd
-                # measurements
-                labels_here: list = []  # (bundle, clbits) per communicating wire cut
-                # Placeholders are found by name in the subcircuit as it stands, not by
-                # the index they had when it was built. Transpiling against a backend
-                # commutes them past each other, since each looks like an ordinary
-                # single-qubit gate, and the walk below both reads them and accumulates
-                # ``offset`` on the assumption that it meets them front to back. Every
-                # placeholder name is unique within its subcircuit, so the lookup is
-                # exact, and sorting by it restores the order the walk needs.
-                position = {
-                    instruction.operation.name: index
-                    for index, instruction in enumerate(subcircuit.data)
-                }
-                placeholders_here = []
-                for recorded_ind, op in placeholder_locations[id_meas_subcircuit_index]:
-                    if op.operation.name not in position:
-                        raise QCutError(
-                            f"Placeholder '{op.operation.name}' is missing from its "
-                            "subcircuit. Transpilation is not allowed to remove or "
-                            "rename it, so the experiment cannot be built."
-                        )
-                    placeholders_here.append((position[op.operation.name], op))
-                placeholders_here.sort(key=lambda pair: pair[0])
-
-                for op_ind in placeholders_here:
-                    ind, op = op_ind
-
-                    parsed = parse_placeholder(op.operation.name)
-                    bundle = (
-                        bundle_of_cut.get(parsed[0]) if parsed is not None else None
-                    )
-                    if bundle is not None and bundle.kind != "single":
-                        (
-                            offset,
-                            classical_bit_index,
-                            inserted_operations,
-                        ) = _insert_bundle_qpd(
-                            ind,
-                            op,
-                            subcircuit,
-                            offset,
-                            qpd_qubits,
-                            qpd,
-                            bundle,
-                            placeholders,
-                            classical_bit_index,
-                            inserted_operations,
-                            labels_here,
-                        )
-
-                    elif "cut" in op.operation.name:
-                        (
-                            offset,
-                            classical_bit_index,
-                            inserted_operations,
-                        ) = _insert_2qubit_gate_cut_qpd(
-                            ind,
-                            op,
-                            subcircuit,
-                            offset,
-                            qpd_qubits,
-                            qpd,
-                            classical_bit_index,
-                            inserted_operations,
-                        )
-
-                    elif "Meas" in op.operation.name or "Init" in op.operation.name:
-                        (
-                            offset,
-                            classical_bit_index,
-                            inserted_operations,
-                        ) = _insert_wire_cut_qpd(
-                            ind,
-                            op,
-                            subcircuit,
-                            offset,
-                            qpd_qubits,
-                            qpd,
-                            classical_bit_index,
-                            inserted_operations,
-                        )
-                    else:
-                        raise ValueError(
-                            f"""Unknown placeholder operation: {op.operation.name}.
-                            Actual operation: {subcircuit.data[ind + offset]}"""
-                        )
-
-                subcircuit = _finalize_subcircuit(subcircuit, qpd_qubits)
-                # Drop the qpd bits this term never writes to, so no circuit carries an
-                # unused classical register, and remember how many went so the sign they
-                # stood for can be put back during post-processing.
-                subcircuit, dropped = compact_qpd_register(subcircuit)
-                remaining = next(
-                    (r.size for r in subcircuit.cregs if r.name == "qpd_meas"), 0
+                subcircuit, bits, labels_here = _build_experiment_circuit(
+                    circ,
+                    placeholder_locations[id_meas_subcircuit_index],
+                    qpd,
+                    bundle_of_cut,
+                    placeholders,
                 )
-                qpd_bits[
-                    (
-                        id_meas_experiment_index,
-                        len(obs_set_circuits),
-                        id_meas_subcircuit_index,
-                    )
-                ] = (remaining, dropped)
+                key = (id_meas_experiment_index, obs_index, id_meas_subcircuit_index)
+                qpd_bits[key] = bits
                 cur_set_circuits[id_meas_subcircuit_index] = subcircuit
                 if labels_here:
-                    label_clbits[
-                        (
-                            id_meas_experiment_index,
-                            len(obs_set_circuits),
-                            id_meas_subcircuit_index,
-                        )
-                    ] = labels_here
+                    label_clbits[key] = labels_here
             obs_set_circuits.append(cur_set_circuits)
         experiment_circuits.append(obs_set_circuits)
 
