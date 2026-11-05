@@ -157,7 +157,7 @@ def test_a_different_register_layout_changes_the_fingerprint():
 
     These two agree on every instruction and on the number of classical bits. They
     differ only in how those bits are grouped, which is exactly what
-    :func:`QCut.utils.circuit_utils.compact_qpd_register` changes and what decides
+    :func:`QCut.utils.circuit.compact_qpd_register` changes and what decides
     whether the counts come back as one field or two.
     """
     one = QuantumCircuit(QuantumRegister(1, "q"), ClassicalRegister(2, "meas"))

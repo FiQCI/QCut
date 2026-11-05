@@ -1,8 +1,8 @@
 """User-facing configuration for the cutting workflow.
 
-Options are collected once and carried on :class:`QCut.cutcircuit.CutCircuit`, which
-passes them to :class:`QCut.cutcircuit.CutExperiment`. Everything downstream reads them
-from there, so adding a knob does not mean widening five signatures.
+Options are collected once and carried on :class:`QCut.model. cutcircuit.CutCircuit`,
+which passes them to :class:`QCut.model.cutcircuit.CutExperiment`. Everything downstream
+reads them from there, so adding a knob does not mean widening five signatures.
 
 Most of them have to be fixed before the subcircuits are built, because they decide how
 the quasiprobability decomposition is formed and therefore what the coefficients mean. A
