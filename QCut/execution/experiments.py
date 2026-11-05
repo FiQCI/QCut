@@ -11,7 +11,6 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.circuit import (
     Qubit,
 )
-from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.converters import circuit_to_dag, dag_to_circuit
 
 from QCut.errors.qcuterror import QCutError
@@ -35,8 +34,9 @@ from QCut.qpd.qpd_operations import (
 )
 from QCut.transpilation.basis_transform import (
     _get_obs_subcircuits,
+    _measurement_basis_ops,
 )
-from QCut.utils.backend import _backend_gate_names
+from QCut.utils.backend import _device_basis
 from QCut.utils.circuit import (
     _remove_obsm,
     _remove_obsm_2,
@@ -221,8 +221,6 @@ def get_experiment_circuits(  # noqa: C901
     # nothing below needs. The experiment builds them on demand if it is ever asked.
     spec = None if qubits is not None else coerce_observables(observables, num_qubits)
 
-    check_circuit_type = cut_circuit.backend is not None
-
     # Planning a bundle and building the experiment circuits both read where the
     # placeholders sit, and they have to read the same positions. Building the
     # observable subcircuits goes through a DAG, which re-serialises the instructions in
@@ -256,46 +254,12 @@ def get_experiment_circuits(  # noqa: C901
             f" circuits will be generated to evaluate all expectation values."
         )
 
-    backend = None
-    if check_circuit_type:
-        backend = cut_circuit.backend
-        basis = _backend_gate_names(backend)
-        basis = ["r" if gate == "prx" else gate for gate in basis]
-        # A device's own gate list can name operations qiskit does not know, and it
-        # refuses those through ``basis_gates`` rather than ignoring them. IQM's
-        # resonator machines list ``move``, which shifts a state between a qubit and a
-        # resonator, so a Deneb-class backend used to fail here. The operations being
-        # translated below are single-qubit basis changes, so anything qiskit cannot
-        # name is of no use to them and is dropped.
-        known = set(get_standard_gate_name_mapping())
-        known.update(("measure", "reset", "delay", "barrier", "id"))
-        dropped = [gate for gate in basis if gate not in known]
-        if dropped:
-            logger.debug(
-                f"ignoring backend gate(s) {dropped}, which qiskit cannot take as a "
-                "basis gate, while translating the observable basis changes"
-            )
-        basis = [gate for gate in basis if gate in known]
-
-    obs_subcircuits = None
-
-    if check_circuit_type:
-        x_meas_ops = QuantumCircuit(1)
-        x_meas_ops.h(0)
-        x_meas_ops.name = "X-meas"
-        x_meas_ops = transpile(x_meas_ops, basis_gates=basis)
-
-        y_meas_ops = QuantumCircuit(1)
-        y_meas_ops.sdg(0)
-        y_meas_ops.h(0)
-        y_meas_ops.name = "Y-meas"
-        y_meas_ops = transpile(y_meas_ops, basis_gates=basis)
-
-        ops = {"X-meas": x_meas_ops, "Y-meas": y_meas_ops}
-
-        obs_subcircuits = _get_obs_subcircuits(subcircuits, measurement_settings, ops)
-    else:
-        obs_subcircuits = _get_obs_subcircuits(subcircuits, measurement_settings)
+    # With a backend, the subcircuits were transpiled for it, so what goes into them
+    # here has to be written in the device's gates too.
+    backend = cut_circuit.backend
+    basis = None if backend is None else _device_basis(backend)
+    ops = None if basis is None else _measurement_basis_ops(basis)
+    obs_subcircuits = _get_obs_subcircuits(subcircuits, measurement_settings, ops)
 
     _remove_obsm(obs_subcircuits)
 
@@ -381,7 +345,7 @@ def get_experiment_circuits(  # noqa: C901
                 )
             )
 
-        if check_circuit_type:
+        if basis is not None:
             qpd = tuple(
                 sub
                 if sub["op_0"] is None

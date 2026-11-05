@@ -1,4 +1,14 @@
+"""What a backend can do, however it describes itself."""
+
+from __future__ import annotations
+
+import logging
+
+from qiskit.circuit.library import get_standard_gate_name_mapping
+
 from QCut.errors.qcuterror import QCutError
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def is_resonator_backend(backend) -> bool:
@@ -40,6 +50,35 @@ def _backend_gate_names(backend) -> list[str]:
         "backend can be supported. In the meantime, build the experiment circuits from "
         "an untranspiled cut circuit and transpile them with transpile_experiments."
     )
+
+
+def _device_basis(backend) -> list[str]:
+    """The backend's gates as qiskit basis gate names.
+
+    What the experiment's own operations -- the observable basis changes and the QPD
+    terms -- are transpiled to when the subcircuits were transpiled for a device.
+
+    Raises:
+        QCutError: the backend names its gates in none of the ways
+            :func:`_backend_gate_names` knows.
+    """
+    basis = _backend_gate_names(backend)
+    basis = ["r" if gate == "prx" else gate for gate in basis]
+    # A device's own gate list can name operations qiskit does not know, and it
+    # refuses those through ``basis_gates`` rather than ignoring them. IQM's
+    # resonator machines list ``move``, which shifts a state between a qubit and a
+    # resonator, so a Deneb-class backend used to fail here. The basis changes
+    # translated with this are single-qubit, so anything qiskit cannot name is of no
+    # use to them and is dropped.
+    known = set(get_standard_gate_name_mapping())
+    known.update(("measure", "reset", "delay", "barrier", "id"))
+    dropped = [gate for gate in basis if gate not in known]
+    if dropped:
+        logger.debug(
+            f"ignoring backend gate(s) {dropped}, which qiskit cannot take as a "
+            "basis gate, while translating the observable basis changes"
+        )
+    return [gate for gate in basis if gate in known]
 
 
 def _backend_shot_cap(backend) -> int | None:

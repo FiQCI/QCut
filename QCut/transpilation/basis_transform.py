@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, transpile
 from qiskit.circuit import QuantumRegister
 from qiskit.circuit.library import HGate, SdgGate
 from qiskit.dagcircuit import DAGCircuit
@@ -82,6 +82,26 @@ class _ModifyMeasurementBasis(TransformationPass):
         if no_obs:
             return cloned_dag
         return dag
+
+
+def _measurement_basis_ops(basis: list[str]) -> dict[str, QuantumCircuit]:
+    """The X and Y basis changes, written in ``basis``.
+
+    Handed to :func:`_get_obs_subcircuits` for subcircuits already transpiled for a
+    device, so the gates it adds are ones the device takes.
+    """
+    x_meas_ops = QuantumCircuit(1)
+    x_meas_ops.h(0)
+    x_meas_ops.name = "X-meas"
+    x_meas_ops = transpile(x_meas_ops, basis_gates=basis)
+
+    y_meas_ops = QuantumCircuit(1)
+    y_meas_ops.sdg(0)
+    y_meas_ops.h(0)
+    y_meas_ops.name = "Y-meas"
+    y_meas_ops = transpile(y_meas_ops, basis_gates=basis)
+
+    return {"X-meas": x_meas_ops, "Y-meas": y_meas_ops}
 
 
 def _get_obs_subcircuits(
