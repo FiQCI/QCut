@@ -1,8 +1,6 @@
 import numpy as np
 import pytest
 from pydantic import TypeAdapter, ValidationError
-from QCut.job import handle as job_module
-from QCut.job.cutresult import CircuitResult
 from qiskit import QuantumCircuit
 from qiskit.circuit import CircuitInstruction, Gate, Parameter
 from qiskit.circuit.library import CXGate
@@ -12,6 +10,8 @@ from qiskit_aer.primitives import SamplerV2
 
 import QCut as ck
 from QCut import cut, cutGate
+from QCut.job import handle as job_module
+from QCut.job.cutresult import CircuitResult
 from QCut.options import CutOptions
 
 cut_qc = QuantumCircuit(4)

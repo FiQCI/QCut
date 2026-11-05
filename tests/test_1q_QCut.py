@@ -2,13 +2,13 @@
 
 import numpy as np
 import pytest
-from QCut.job.cutresult import SubResult, TotalResult
 from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
 
 import QCut as ck
 import tests.solutions_1q as sq
 from QCut.execution.circuit_knitting import run
+from QCut.job.cutresult import SubResult, TotalResult
 from QCut.post_process.postprocess import _process_results
 
 # import QCut as ck

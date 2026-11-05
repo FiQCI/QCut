@@ -8,7 +8,6 @@ of pieces while the distinct count grows linearly.
 
 import numpy as np
 import pytest
-from QCut.job.handle import _result
 from qiskit import ClassicalRegister, QuantumCircuit
 from qiskit.circuit import Gate, QuantumRegister
 from qiskit.circuit.library import CXGate, CZGate, UnitaryGate
@@ -20,6 +19,7 @@ from qiskit_aer.primitives import SamplerV2
 import QCut as ck
 from QCut import CutOptions, cutGate
 from QCut.execution import circuit_knitting as knit
+from QCut.job.handle import _result
 from QCut.utils.circuit import circuit_fingerprint
 
 #: Shot noise on the reconstructed values, in line with the rest of the suite.
