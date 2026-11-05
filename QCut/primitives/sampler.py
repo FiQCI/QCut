@@ -5,20 +5,14 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from qiskit import QuantumCircuit
 from qiskit.result import QuasiDistribution
 
 from QCut.errors.qcuterror import QCutError
 from QCut.execution.dispatch import DEFAULT_SHOTS
 from QCut.job.cutresult import RawResult
-from QCut.options import CutOptions
+from QCut.model.cutcircuit import CutCircuit
 from QCut.post_process.probabilities import QuasiProbabilities, estimate_probabilities
-from QCut.primitives.base import (
-    CutRunEstimate,
-    _as_list,
-    _check_circuit,
-    _CutPrimitive,
-)
+from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive
 from QCut.primitives.job import QCutPrimitiveJob
 
 
@@ -109,38 +103,38 @@ class CutQuasiSamplerJob(QCutPrimitiveJob):
         )
 
 
-def _measured_qubits(circuit: QuantumCircuit, index: int) -> list[int]:
-    """The qubit each classical bit is measured from, in classical bit order.
+def _measured_qubits(cut_circuit: CutCircuit, index: int) -> list[int]:
+    """The qubit each classical bit was measured from, in classical bit order.
 
-    That order is what puts the reconstructed bitstrings in qiskit's convention, with
-    classical bit zero rightmost.
+    Read from the final measurements the uncut circuit had, which splitting strips and
+    the cut circuit remembers. Classical bit order is what puts the reconstructed
+    bitstrings in qiskit's convention, with classical bit zero rightmost.
 
     Raises:
-        QCutError: the circuit measures nothing, measures into a classical bit twice,
-            or leaves a classical bit unmeasured.
+        QCutError: the uncut circuit measured nothing at its end, measured into a
+            classical bit twice, or left a classical bit unmeasured.
     """
     measured: dict[int, int] = {}
-    for instruction in circuit.data:
-        if instruction.operation.name != "measure":
-            continue
-        clbit = circuit.find_bit(instruction.clbits[0]).index
+    for qubit, clbit in cut_circuit.final_measurements:
         if clbit in measured:
             raise QCutError(
                 f"circuit {index} measures into classical bit {clbit} more than once"
             )
-        measured[clbit] = circuit.find_bit(instruction.qubits[0]).index
+        measured[clbit] = qubit
     if not measured:
         raise QCutError(
-            f"circuit {index} measures nothing. CutQuasiSampler reconstructs the "
-            "distribution of the measured qubits, so end the circuit in measurements."
+            f"circuit {index} was split from a circuit with no final measurements. "
+            "CutQuasiSampler reconstructs the distribution of the measured qubits, so "
+            "end the circuit in measurements before cutting it."
         )
-    unmeasured = [clbit for clbit in range(circuit.num_clbits) if clbit not in measured]
+    num_clbits = cut_circuit.uncut_num_clbits
+    unmeasured = [clbit for clbit in range(num_clbits) if clbit not in measured]
     if unmeasured:
         raise QCutError(
             f"circuit {index} never measures into classical bit(s) {unmeasured}, so "
             "their place in the outcome cannot be filled"
         )
-    return [measured[clbit] for clbit in range(circuit.num_clbits)]
+    return [measured[clbit] for clbit in range(num_clbits)]
 
 
 class CutQuasiSampler(_CutPrimitive):
@@ -148,42 +142,40 @@ class CutQuasiSampler(_CutPrimitive):
 
     Shaped like FiQCI-EMS's sampler, but what comes back is reconstructed rather than
     counted: a quasi-probability distribution over the measured bits, which can dip
-    below zero by the estimate's noise. The qubits are read off the circuit's final
-    measurements, and its bitstrings follow qiskit's convention, classical bit zero
-    rightmost.
+    below zero by the estimate's noise. The qubits are the ones the circuit measured at
+    its end before it was cut, and the bitstrings follow qiskit's convention, classical
+    bit zero rightmost.
 
-    Each circuit has to carry its cut markers, placed with :func:`QCut.cut` and
-    :func:`QCut.cutGate` or found with :func:`QCut.find_cuts`.
+    A cut circuit comes from :func:`QCut.get_locations_and_subcircuits` or
+    :func:`QCut.find_cuts`, and is run with the options it was made with. The sampler
+    does not transpile: for a backend with a coupling map, transpile each cut circuit
+    for that same backend with :func:`QCut.transpile_subcircuits` first.
 
     Args:
-        backend: the backend or V2 sampler to run on. A sampler is not transpiled for,
-            so it must take the circuits as built.
-        options (CutOptions): how to cut, for every run that is not given its own.
-            Defaults to :data:`QCut.DEFAULT_OPTIONS`.
+        backend: the backend or V2 sampler to run on. A sampler, like a backend
+            without a coupling map, takes the circuits as they are.
     """
 
-    def __init__(self, backend, options: CutOptions | None = None) -> None:
-        super().__init__(backend, options)
+    def __init__(self, backend) -> None:
+        super().__init__(backend)
 
     def run(
         self,
-        circuits: QuantumCircuit | list[QuantumCircuit],
+        circuits: CutCircuit | list[CutCircuit],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
-        options: CutOptions | None = None,
         **run_options,
     ) -> CutQuasiSamplerJob:
         """Submit the circuits and return without waiting for their results.
 
         Args:
-            circuits: a circuit or a list of them, each carrying its cut markers and
-                ending in the measurements whose distribution is wanted. Every
-                classical bit must be measured into exactly once.
+            circuits: a cut circuit or a list of them, each split from a circuit that
+                ended in the measurements whose distribution is wanted, measuring into
+                every classical bit exactly once.
             shots (int): shots per experiment circuit, as in
                 :func:`QCut.submit_experiments`.
             max_batch_size (int): the most circuits submitted in one ``run`` call. Each
                 input circuit is submitted in batches of its own.
-            options (CutOptions): how to cut, for this run only.
             **run_options: passed on to every ``run`` call on the backend.
 
         Returns:
@@ -191,20 +183,20 @@ class CutQuasiSampler(_CutPrimitive):
             :meth:`~CutQuasiSamplerJob.result` gives the distributions.
 
         Raises:
-            QCutError: a circuit has no cut markers, measures before its end, or its
+            QCutError: something other than a cut circuit was given, one is not
+                transpiled for this backend although it has a coupling map, or its
                 final measurements do not fill its classical bits once each.
         """
-        experiments = self._experiments(circuits, options)
+        experiments = self._experiments(circuits)
         return CutQuasiSamplerJob(
             self._submit(experiments, shots, max_batch_size, run_options)
         )
 
     def estimate(
         self,
-        circuits: QuantumCircuit | list[QuantumCircuit],
+        circuits: CutCircuit | list[CutCircuit],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
-        options: CutOptions | None = None,
     ) -> CutRunEstimate:
         """Work out what :meth:`run` will cost with the same arguments, submitting
         nothing.
@@ -213,16 +205,16 @@ class CutQuasiSampler(_CutPrimitive):
             CutRunEstimate: the jobs, circuits and shots of the whole run, and indexed
             by circuit, each circuit's own share.
         """
-        experiments = self._experiments(circuits, options)
+        experiments = self._experiments(circuits)
         return self._estimate(experiments, shots, max_batch_size)
 
-    def _experiments(self, circuits, options):
+    def _experiments(self, circuits):
         listed = _as_list(circuits)
         qubits = []
-        for index, circuit in enumerate(listed):
-            _check_circuit(circuit, index)
-            qubits.append(_measured_qubits(circuit, index))
+        for index, cut_circuit in enumerate(listed):
+            self._check(cut_circuit, index)
+            qubits.append(_measured_qubits(cut_circuit, index))
         return [
-            self._experiment(circuit, options, qubits=measured)
-            for circuit, measured in zip(listed, qubits)
+            self._experiment(cut_circuit, qubits=measured)
+            for cut_circuit, measured in zip(listed, qubits)
         ]
