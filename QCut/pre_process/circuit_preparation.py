@@ -7,6 +7,7 @@ inserting placeholder operations, and separating into subcircuits.
 from __future__ import annotations
 
 import logging
+from collections import Counter
 
 from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
 from qiskit.circuit import CircuitInstruction, Qubit
@@ -20,6 +21,47 @@ from QCut.pre_process.consolidate import consolidate_two_qubit_blocks, marker_ga
 from QCut.utils.circuit import NonCommutingGate
 
 logger: logging.Logger = logging.getLogger(__name__)
+
+
+def _final_measurements(
+    circuit: QuantumCircuit, stripped: QuantumCircuit | None = None
+) -> tuple[tuple[int, int], ...]:
+    """The measurements stripping would remove, as ``(qubit, clbit)`` indices.
+
+    In circuit order. ``stripped`` is the circuit with its final measurements already
+    removed, if the caller has it; it must be a copy of ``circuit``, so that the two
+    share their bits.
+    """
+    if stripped is None:
+        stripped = circuit.remove_final_measurements(inplace=False)
+    remaining = Counter(
+        (instruction.qubits[0], instruction.clbits[0])
+        for instruction in stripped.data
+        if instruction.operation.name == "measure"
+    )
+    final = []
+    for instruction in circuit.data:
+        if instruction.operation.name != "measure":
+            continue
+        bits = (instruction.qubits[0], instruction.clbits[0])
+        # A measurement left behind is not final. Any on the same bits come before
+        # the final one, so they are the ones to pass over.
+        if remaining[bits]:
+            remaining[bits] -= 1
+            continue
+        final.append((circuit.find_bit(bits[0]).index, circuit.find_bit(bits[1]).index))
+    return tuple(final)
+
+
+def _remember_final_measurements(
+    cut_circuit: CutCircuit,
+    circuit: QuantumCircuit,
+    stripped: QuantumCircuit | None = None,
+) -> CutCircuit:
+    """Record on ``cut_circuit`` what ``circuit`` measured at its end."""
+    cut_circuit.final_measurements = _final_measurements(circuit, stripped)
+    cut_circuit.uncut_num_clbits = circuit.num_clbits
+    return cut_circuit
 
 
 def _get_cut_locations(circuit):
@@ -387,6 +429,7 @@ def get_locations_and_subcircuits(
     options = resolve(options)
     prepared = circuit.copy()
     prepared.remove_final_measurements()
+    stripped = prepared
     prepared = prepared.decompose(["CutGate"])
 
     # Consolidation has to happen before the obs_i tags go on, since those touch every
@@ -416,4 +459,4 @@ def get_locations_and_subcircuits(
         f" and separated into {cut_circuit.num_subcircuits} subcircuits."
     )
 
-    return cut_circuit
+    return _remember_final_measurements(cut_circuit, circuit, stripped)

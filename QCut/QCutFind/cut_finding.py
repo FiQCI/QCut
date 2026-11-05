@@ -10,7 +10,10 @@ from qiskit.circuit import CircuitInstruction
 
 from QCut.errors.qcuterror import QCutError
 from QCut.options import CutOptions, resolve
-from QCut.pre_process.circuit_preparation import get_locations_and_subcircuits
+from QCut.pre_process.circuit_preparation import (
+    _remember_final_measurements,
+    get_locations_and_subcircuits,
+)
 from QCut.pre_process.consolidate import consolidate_two_qubit_blocks
 from QCut.QCutFind.graph_circuit_utils import circ_to_graph
 from QCut.QCutFind.metis import (
@@ -254,6 +257,9 @@ def find_cuts(  # noqa: C901
     if num_partitions == 1:
         return circuit, [], []
 
+    # Kept to record its final measurements on the result, which the circuit is
+    # stripped of here, before it is ever split.
+    measured = circuit
     circuit = circuit.remove_final_measurements(inplace=False)
 
     circuit = transpile(circuit, optimization_level=0, basis_gates=BASIS_GATES)
@@ -262,7 +268,9 @@ def find_cuts(  # noqa: C901
     if mode == "auto" and consolidate_two_qubit_blocks(circuit) is circuit:
         mode = "never"  # nothing was worth merging, so there is nothing to compare
     if mode == "auto":
-        return _cheaper_find_cuts(circuit, options)
+        return _remember_final_measurements(
+            _cheaper_find_cuts(circuit, options), measured
+        )
     if mode == "always" or mode == "auto":
         # Before the graph is built, so a merged run shows up as one edge to cut rather
         # than several. Nothing is marked yet, so every pair is a candidate.
@@ -360,4 +368,4 @@ def find_cuts(  # noqa: C901
         )
     _, final_cut_circuit, cut_circuit, cut_data, cut_data_test, labels = best
 
-    return final_cut_circuit
+    return _remember_final_measurements(final_cut_circuit, measured)

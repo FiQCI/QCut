@@ -34,8 +34,16 @@ class CutCircuit:
         uncut_num_qubits: int,
         backend=None,
         options: CutOptions | None = None,
+        final_measurements: tuple[tuple[int, int], ...] = (),
+        uncut_num_clbits: int = 0,
     ) -> None:
-        """Init."""
+        """Init.
+
+        ``final_measurements`` and ``uncut_num_clbits`` remember what the uncut circuit
+        measured at its end, since splitting strips those measurements: one
+        ``(qubit, clbit)`` pair per measurement, as indices into the uncut circuit, and
+        how many classical bits it had.
+        """
 
         self.subcircuits = subcircuits
         self.cut_locations = cut_locations
@@ -43,6 +51,8 @@ class CutCircuit:
         self.uncut_num_qubits = uncut_num_qubits
         self.backend = backend
         self.options = resolve(options)
+        self.final_measurements = tuple(final_measurements)
+        self.uncut_num_clbits = uncut_num_clbits
         self._gamma: tuple[float, float] | None = None
 
     def _costs(self) -> tuple[float, float]:
@@ -109,6 +119,8 @@ class CutCircuit:
                 backend=self.backend,
                 options=self.options,
                 uncut_num_qubits=self.uncut_num_qubits,
+                final_measurements=self.final_measurements,
+                uncut_num_clbits=self.uncut_num_clbits,
             )
 
     @property

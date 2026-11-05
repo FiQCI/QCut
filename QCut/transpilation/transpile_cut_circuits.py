@@ -408,6 +408,8 @@ def transpile_subcircuits(
             options=cut_circuit.options,
             uncut_num_qubits=cut_circuit.uncut_num_qubits,
             backend=backend,
+            final_measurements=cut_circuit.final_measurements,
+            uncut_num_clbits=cut_circuit.uncut_num_clbits,
         )
 
     def qiskit_translate(subcircuit, spans_for):
@@ -444,6 +446,8 @@ def transpile_subcircuits(
         options=cut_circuit.options,
         uncut_num_qubits=cut_circuit.uncut_num_qubits,
         backend=backend,
+        final_measurements=cut_circuit.final_measurements,
+        uncut_num_clbits=cut_circuit.uncut_num_clbits,
     )
 
 
