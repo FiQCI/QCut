@@ -12,8 +12,8 @@ from qiskit_aer import AerSimulator
 import QCut as ck
 from QCut import CutOptions, cut, cutGate
 from QCut.errors.qcuterror import QCutError
-from QCut.execution import circuit_knitting as knit
-from QCut.execution.circuit_knitting import MEASURE_SHARE
+from QCut.execution import waves
+from QCut.execution.waves import MEASURE_SHARE
 from QCut.qpd.bundle import plan_bundles
 from QCut.qpd.qpd_locc import (
     MAX_BLOCK,
@@ -462,11 +462,12 @@ def test_a_generous_batch_size_does_not_collapse_the_allocation():
 def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
     """Return how many shots each wave consumed, in wave order.
 
-    One :func:`QCut.circuit_knitting._dispatch` call is one wave, so counting inside the
-    backend and starting a new tally per call splits the run up the way the waves do.
+    One :func:`QCut.execution.dispatch._dispatch` call is one wave, so counting inside
+    the backend and starting a new tally per call splits the run up the way the waves
+    do. It is swapped where :mod:`QCut.execution.waves` looks it up.
     """
     per_wave: list[int] = []
-    original_dispatch = knit._dispatch
+    original_dispatch = waves._dispatch
     original_run = AerSimulator.run
 
     def counting(self, circuits, **kwargs):
@@ -478,7 +479,7 @@ def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
         per_wave.append(0)
         return original_dispatch(*args, **kwargs)
 
-    knit._dispatch = dispatch
+    waves._dispatch = dispatch
     AerSimulator.run = counting
     try:
         ck.run_experiments(
@@ -488,7 +489,7 @@ def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
             max_batch_size=max_batch_size,
         )
     finally:
-        knit._dispatch = original_dispatch
+        waves._dispatch = original_dispatch
         AerSimulator.run = original_run
     return per_wave
 

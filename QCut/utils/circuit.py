@@ -165,8 +165,9 @@ def _record_layout(circuit: QuantumCircuit, num_logical: int) -> QuantumCircuit:
 
     So the placement is left exactly as the transpiler made it, and the map from the
     subcircuit's own qubits to the wires holding them is recorded instead.
-    :func:`QCut.circuit_knitting._finalize_subcircuit` measures through the map, which
-    puts the bits in the order everything downstream expects without moving a gate.
+    :func:`QCut.execution.experiments._finalize_subcircuit` measures through the map,
+    which puts the bits in the order everything downstream expects without moving a
+    gate.
 
     Wires the layout did not use, and wires routing borrowed, are simply not in the map,
     so nothing measures them.

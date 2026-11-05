@@ -18,7 +18,8 @@ from qiskit_aer.primitives import SamplerV2
 
 import QCut as ck
 from QCut import CutOptions, cutGate
-from QCut.execution import circuit_knitting as knit
+from QCut.execution import dispatch
+from QCut.execution.submit import _runnable
 from QCut.job.handle import _result
 from QCut.utils.circuit import circuit_fingerprint
 
@@ -106,7 +107,7 @@ def _exact(circuit, observables):
 
 
 def _runnable_circuits(experiment):
-    return [circuit for _slot, circuit in knit._runnable(experiment)[0]]
+    return [circuit for _slot, circuit in _runnable(experiment)[0]]
 
 
 # --------------------------------------------------------------------------- #
@@ -268,20 +269,20 @@ def test_every_slot_receives_the_result_of_an_identical_circuit():
     """
     experiment = _experiment(_chain(), CHAIN_OBSERVABLES)
     batches = []
-    original = knit._submit
+    original = dispatch._submit
 
     def spy(backend, circuits, shots, max_batch_size, run_options):
         job = original(backend, circuits, shots, max_batch_size, run_options)
         batches.append((list(circuits), job))
         return job
 
-    knit._submit = spy
+    dispatch._submit = spy
     try:
         results = ck.run_experiments(
             experiment, shots=128, backend=AerSimulator(seed_simulator=1)
         )
     finally:
-        knit._submit = original
+        dispatch._submit = original
 
     assert sum(len(circuits) for circuits, _job in batches) == CHAIN_DISTINCT
 

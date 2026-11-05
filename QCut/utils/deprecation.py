@@ -52,12 +52,16 @@ def deprecated(
 #: under the old path: ``_combine_pauli_ops`` and ``_get_observable_circuit_index``
 #: (now in ``QCut.utils.observables``), ``is_resonator_backend`` (now in
 #: ``QCut.utils.backend``) and ``NonCommutingGate`` (now in ``QCut.utils.circuit``).
+#: ``QCut.execution.circuit_knitting`` was split, and the old path keeps only its public
+#: names. Its private helpers are in ``experiments``, ``dispatch``, ``waves``,
+#: ``submit`` and ``estimate`` under ``QCut.execution``.
 MOVED_MODULES: dict[str, str] = {
     "QCut.cutcircuit": "QCut.model.cutcircuit",
     "QCut.cutlocation": "QCut.model.cutlocation",
     "QCut.cutting": "QCut.pre_process",
     "QCut.cutting.circuit_preparation": "QCut.pre_process.circuit_preparation",
     "QCut.cutting.consolidate": "QCut.pre_process.consolidate",
+    "QCut.execution.circuit_knitting": "QCut.execution.run",
     "QCut.execution.backend_utility": "QCut.transpilation.transpile_cut_circuits",
     "QCut.execution.basis_transform": "QCut.transpilation.basis_transform",
     "QCut.execution.move_routing": "QCut.transpilation.move_routing",

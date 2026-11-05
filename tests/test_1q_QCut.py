@@ -7,7 +7,7 @@ from qiskit_aer import AerSimulator
 
 import QCut as ck
 import tests.solutions_1q as sq
-from QCut.execution.circuit_knitting import run
+from QCut.execution.run import run
 from QCut.job.cutresult import SubResult, TotalResult
 from QCut.post_process.postprocess import _process_results
 

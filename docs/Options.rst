@@ -164,7 +164,7 @@ outcome is what decides what C prepares.
 The waves do not get equal shares of the budget. A measuring shot buys precision for
 every group answering its shared circuit at once, while a preparing shot buys it for one
 group, so an even split over the subcircuits over-funds the measuring wave. It takes
-:data:`~QCut.circuit_knitting.MEASURE_SHARE` of the run instead, a sixth, and the later
+:data:`~QCut.execution.waves.MEASURE_SHARE` of the run instead, a sixth, and the later
 waves divide the rest evenly. The total is the same either way, so ``shots`` means what
 it always did.
 
