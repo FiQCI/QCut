@@ -6,18 +6,12 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 import numpy as np
-from qiskit import QuantumCircuit
 
 from QCut.execution.dispatch import DEFAULT_SHOTS
 from QCut.job.cutresult import RawResult
-from QCut.options import CutOptions
+from QCut.model.cutcircuit import CutCircuit
 from QCut.post_process.postprocess import estimate_expectation_values
-from QCut.primitives.base import (
-    CutRunEstimate,
-    _as_list,
-    _check_circuit,
-    _CutPrimitive,
-)
+from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive
 from QCut.primitives.job import QCutPrimitiveJob
 from QCut.utils.observables import ObservablesLike
 
@@ -99,7 +93,7 @@ def _pair_observables(circuits, observables, count: int) -> list:
     Raises:
         ValueError: the list of observables does not have one entry per circuit.
     """
-    if isinstance(circuits, QuantumCircuit):
+    if isinstance(circuits, CutCircuit):
         return [observables]
     if isinstance(observables, (list, tuple)):
         if len(observables) != count:
@@ -116,35 +110,34 @@ class CutEstimator(_CutPrimitive):
     """Expectation values of cut circuits, run on any backend or sampler.
 
     Shaped like FiQCI-EMS's estimator: made once for a backend, then :meth:`run` with
-    the circuits and the observables to estimate on them. Each circuit has to carry its
-    cut markers, placed with :func:`QCut.cut` and :func:`QCut.cutGate` or found with
-    :func:`QCut.find_cuts`. Every circuit is cut, transpiled for the backend when it has
-    a coupling map, and submitted before :meth:`run` returns.
+    the cut circuits and the observables to estimate on them. A cut circuit comes from
+    :func:`QCut.get_locations_and_subcircuits` or :func:`QCut.find_cuts`, and is run
+    with the options it was made with.
+
+    The estimator does not transpile, much as qiskit's primitives take circuits already
+    written for their target. For a backend with a coupling map, transpile each cut
+    circuit for that same backend with :func:`QCut.transpile_subcircuits` first.
 
     Args:
-        backend: the backend or V2 sampler to run on. A sampler is not transpiled for,
-            so it must take the circuits as built.
-        options (CutOptions): how to cut, for every run that is not given its own.
-            Defaults to :data:`QCut.DEFAULT_OPTIONS`.
+        backend: the backend or V2 sampler to run on. A sampler, like a backend
+            without a coupling map, takes the circuits as they are.
     """
 
-    def __init__(self, backend, options: CutOptions | None = None) -> None:
-        super().__init__(backend, options)
+    def __init__(self, backend) -> None:
+        super().__init__(backend)
 
     def run(
         self,
-        circuits: QuantumCircuit | list[QuantumCircuit],
+        circuits: CutCircuit | list[CutCircuit],
         observables: ObservablesLike | list[ObservablesLike],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
-        options: CutOptions | None = None,
         **run_options,
     ) -> CutEstimatorJob:
         """Submit the circuits and return without waiting for their results.
 
         Args:
-            circuits: a circuit or a list of them, each carrying its cut markers.
-                Final measurements are ignored.
+            circuits: a cut circuit or a list of them.
             observables: what to estimate, taken as qiskit's estimator takes them --
                 a label, a ``Pauli``, a ``SparsePauliOp``, a ``SparseObservable``, a
                 ``{label: coefficient}`` mapping, or a nested sequence of those. One
@@ -154,7 +147,6 @@ class CutEstimator(_CutPrimitive):
                 :func:`QCut.submit_experiments`.
             max_batch_size (int): the most circuits submitted in one ``run`` call. Each
                 input circuit is submitted in batches of its own.
-            options (CutOptions): how to cut, for this run only.
             **run_options: passed on to every ``run`` call on the backend.
 
         Returns:
@@ -162,22 +154,22 @@ class CutEstimator(_CutPrimitive):
             :meth:`~CutEstimatorJob.result` gives the expectation values.
 
         Raises:
-            QCutError: a circuit has no cut markers, or measures before its end.
+            QCutError: something other than a cut circuit was given, or one is not
+                transpiled for this backend although it has a coupling map.
             ValueError: the observables do not have one entry per circuit, or do not
                 fit their circuit.
         """
-        experiments = self._experiments(circuits, observables, options)
+        experiments = self._experiments(circuits, observables)
         return CutEstimatorJob(
             self._submit(experiments, shots, max_batch_size, run_options)
         )
 
     def estimate(
         self,
-        circuits: QuantumCircuit | list[QuantumCircuit],
+        circuits: CutCircuit | list[CutCircuit],
         observables: ObservablesLike | list[ObservablesLike],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
-        options: CutOptions | None = None,
     ) -> CutRunEstimate:
         """Work out what :meth:`run` will cost with the same arguments, submitting
         nothing.
@@ -186,15 +178,15 @@ class CutEstimator(_CutPrimitive):
             CutRunEstimate: the jobs, circuits and shots of the whole run, and indexed
             by circuit, each circuit's own share.
         """
-        experiments = self._experiments(circuits, observables, options)
+        experiments = self._experiments(circuits, observables)
         return self._estimate(experiments, shots, max_batch_size)
 
-    def _experiments(self, circuits, observables, options):
+    def _experiments(self, circuits, observables):
         listed = _as_list(circuits)
         paired = _pair_observables(circuits, observables, len(listed))
-        for index, circuit in enumerate(listed):
-            _check_circuit(circuit, index)
+        for index, cut_circuit in enumerate(listed):
+            self._check(cut_circuit, index)
         return [
-            self._experiment(circuit, options, observables=entry)
-            for circuit, entry in zip(listed, paired)
+            self._experiment(cut_circuit, observables=entry)
+            for cut_circuit, entry in zip(listed, paired)
         ]
