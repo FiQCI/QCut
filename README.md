@@ -67,13 +67,13 @@ print(ck.estimate_expectation_values(job.result()))
 
 `[0.9204 0.3866 -0.0315]`, against exact values of `[0.9211 0.3806 -0.0292]`.
 
-`find_cuts()` places the cuts itself instead, and `ck.estimate_run(experiment)` tells
-what a run will cost before anything is submitted. The
+`find_cuts()` finds and places cuts automatically instead, and `ck.estimate_run(experiment)` calculates
+what running an experiment will cost before submission. The
 [usage guide](https://jooniv.github.io/QCut/Usage.html) goes through each step.
 
 ## Several circuits at once
 
-`CutEstimator` and `CutQuasiSampler` run a list of cut circuits in one call, shaped like
+`CutEstimator` and `CutQuasiSampler` can run a list of cut circuits in one call, shaped like
 [FiQCI-EMS](https://github.com/FiQCI/fiqci-ems)'s estimator and sampler:
 
 ```python
