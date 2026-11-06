@@ -10,10 +10,17 @@ from copy import deepcopy
 
 from qiskit import QuantumCircuit, transpile
 from qiskit.circuit import QuantumRegister
-from qiskit.circuit.library import HGate, SdgGate
 from qiskit.dagcircuit import DAGCircuit
 from qiskit.transpiler import PassManager
 from qiskit.transpiler.basepasses import TransformationPass
+
+# The changes into the X and Y bases, ahead of a Z measurement.
+_X_MEAS = QuantumCircuit(1, name="X-meas")
+_X_MEAS.h(0)
+_Y_MEAS = QuantumCircuit(1, name="Y-meas")
+_Y_MEAS.sdg(0)
+_Y_MEAS.h(0)
+_BASIS_CHANGES = {"X-meas": _X_MEAS, "Y-meas": _Y_MEAS}
 
 
 def _apply_basis_change(
@@ -36,7 +43,7 @@ class _ModifyMeasurementBasis(TransformationPass):
     ):
 
         self.measurement_settings = measurement_settings
-        self.ops = ops
+        self.ops = {**_BASIS_CHANGES, **(ops or {})}
         super().__init__()
 
     def run(
@@ -65,17 +72,8 @@ class _ModifyMeasurementBasis(TransformationPass):
                 register = QuantumRegister(1)
                 mini_dag.add_qreg(register)
 
-                if ob == "X":
-                    if self.ops and "X-meas" in self.ops:
-                        _apply_basis_change(mini_dag, self.ops["X-meas"], register[0])
-                    else:
-                        mini_dag.apply_operation_back(HGate(), [register[0]])
-                elif ob == "Y":
-                    if self.ops and "Y-meas" in self.ops:
-                        _apply_basis_change(mini_dag, self.ops["Y-meas"], register[0])
-                    else:
-                        mini_dag.apply_operation_back(SdgGate(), [register[0]])
-                        mini_dag.apply_operation_back(HGate(), [register[0]])
+                if ob in ("X", "Y"):
+                    _apply_basis_change(mini_dag, self.ops[f"{ob}-meas"], register[0])
 
                 dag.substitute_node_with_dag(node, mini_dag)
 
@@ -90,18 +88,10 @@ def _measurement_basis_ops(basis: list[str]) -> dict[str, QuantumCircuit]:
     Handed to :func:`_get_obs_subcircuits` for subcircuits already transpiled for a
     device, so the gates it adds are ones the device takes.
     """
-    x_meas_ops = QuantumCircuit(1)
-    x_meas_ops.h(0)
-    x_meas_ops.name = "X-meas"
-    x_meas_ops = transpile(x_meas_ops, basis_gates=basis)
-
-    y_meas_ops = QuantumCircuit(1)
-    y_meas_ops.sdg(0)
-    y_meas_ops.h(0)
-    y_meas_ops.name = "Y-meas"
-    y_meas_ops = transpile(y_meas_ops, basis_gates=basis)
-
-    return {"X-meas": x_meas_ops, "Y-meas": y_meas_ops}
+    return {
+        key: transpile(change, basis_gates=basis)
+        for key, change in _BASIS_CHANGES.items()
+    }
 
 
 def _get_obs_subcircuits(
