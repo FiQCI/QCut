@@ -13,7 +13,7 @@ from QCut.execution.dispatch import (
     _has_measurements,
 )
 from QCut.execution.submit import _submission
-from QCut.execution.waves import _first_wave_jobs, _wave_budget
+from QCut.execution.waves import _first_wave_jobs, _later_wave_jobs, _wave_budget
 from QCut.model.cutcircuit import CutExperiment
 from QCut.utils.backend import _backend_shot_cap
 
@@ -83,18 +83,6 @@ def _estimated_batches(jobs, max_batch_size, cap) -> list[JobEstimate]:
     ]
 
 
-def _projected_wave_jobs(cut_experiment, wave: int, shots: int):
-    """A later wave's jobs as they would be if every group got an equal share."""
-    plan = cut_experiment.plan
-    return [
-        ([(group, obs, sub)], circuit, shots)
-        for group, obs_groups in enumerate(cut_experiment.experiments)
-        for obs, obs_group in enumerate(obs_groups)
-        for sub, circuit in obs_group.items()
-        if plan.waves.get(sub, 0) == wave
-    ]
-
-
 def estimate_run(
     cut_experiment: CutExperiment,
     shots: int = DEFAULT_SHOTS,
@@ -146,10 +134,16 @@ def estimate_run(
         max_batch_size,
         cap,
     )
+    # A later wave's split depends on what the one before measured, so it is projected
+    # as if every group got an equal share. With every share at least one, nothing is
+    # blanked, so no results are needed.
+    even = max(1, round(budget.later_total(shots) / budget.groups))
+    allocation = [even] * len(cut_experiment.experiments)
     for wave in range(1, plan.last_wave + 1):
-        even = max(1, round(budget.later_total(shots) / budget.groups))
         estimates += _estimated_batches(
-            _projected_wave_jobs(cut_experiment, wave, even), max_batch_size, cap
+            _later_wave_jobs(cut_experiment, wave, allocation, None),
+            max_batch_size,
+            cap,
         )
 
     return RunEstimate(_named(estimates), exact=plan.last_wave == 0)
