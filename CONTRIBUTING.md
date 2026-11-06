@@ -62,3 +62,10 @@ uv sync --group docs
 cd docs
 uv run sphinx-build -b html . build/sphinx/html -W -E
 ```
+
+To run everything CI checks except the tests, which is ruff, ty and the docs build, in one
+go:
+
+```shell
+uv run tox -e ci
+```
