@@ -3,6 +3,7 @@ Utility functions for working with quantum circuits in the context of circuit
 cutting and knitting.
 """
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import lru_cache
 
@@ -170,26 +171,16 @@ def _record_layout(circuit: QuantumCircuit, num_logical: int) -> QuantumCircuit:
 
 
 def _remove_obsm(subcircuits: list[dict[int, QuantumCircuit]]):
-
     for obs_set in subcircuits:
-        for ind, circ in obs_set.items():
-            j = 0
-            while j < len(circ.data):
-                if "obs" in circ[j].operation.name:
-                    circ.data.remove(circ[j])
-                else:
-                    j += 1
+        _remove_obsm_2(obs_set.values())
 
 
-def _remove_obsm_2(subcircuits: list[QuantumCircuit]):
-
+def _remove_obsm_2(subcircuits: Iterable[QuantumCircuit]):
+    """Remove the observable markers from each circuit, in place."""
     for circ in subcircuits:
-        j = 0
-        while j < len(circ.data):
-            if "obs" in circ[j].operation.name:
-                circ.data.remove(circ[j])
-            else:
-                j += 1
+        for j in reversed(range(len(circ.data))):
+            if "obs" in circ.data[j].operation.name:
+                del circ.data[j]
 
 
 @dataclass(frozen=True)
