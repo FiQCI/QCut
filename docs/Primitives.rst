@@ -90,6 +90,25 @@ expands the whole distribution unless asked. :code:`quasi_dist()` gives a Qiskit
 :ref:`probability distributions <probability-distributions>`, and
 :code:`job.standard_errors(i)` is a shortcut for it.
 
+Binding parameters
+------------------
+
+Both primitives take :code:`parameter_values`, a :code:`{parameter or name: value}` dict
+bound into the cut circuit before its experiment is built. It pairs with the circuits the
+way the observables do. A sweep is the same circuit listed once per set of values:
+
+.. code:: python
+
+   thetas = np.linspace(0, np.pi, 5)
+   job = estimator.run(
+       [cut_circuit] * len(thetas),
+       "ZZZZZ",
+       parameter_values=[{theta: t} for t in thetas],
+   )
+
+Each entry of the result is one point of the sweep. A circuit with a parameter left
+unbound is refused before anything is submitted.
+
 Running on a device
 -------------------
 
