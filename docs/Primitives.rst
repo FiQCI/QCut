@@ -43,9 +43,11 @@ The observables pair with the circuits the way FiQCI's estimator pairs them:
 - Anything else is a single observable used for every circuit.
 
 Each entry of the result belongs to one input circuit, in the order given.
-:code:`result[i].expectation_values` is shaped like that circuit's observables, and
-:code:`result[i].raw` is the :class:`~QCut.RawResult` it was estimated from.
-:code:`job.expectation_values(i)` is a shortcut for the first.
+:code:`result[i].expectation_values` is shaped like that circuit's observables,
+:code:`result[i].standard_errors` bounds their shot noise as
+:func:`~QCut.estimate_standard_errors` does, and :code:`result[i].raw` is the
+:class:`~QCut.RawResult` they were estimated from. :code:`job.expectation_values(i)` and
+:code:`job.standard_errors(i)` are shortcuts for the first two.
 
 Reconstructing distributions
 ----------------------------

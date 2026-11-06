@@ -22,6 +22,15 @@ job, so it can be checked on while the run is under way:
 :code:`run_experiments()` takes the same arguments and is the same as
 :code:`submit_experiments(...).result()`.
 
+:func:`~QCut.estimate_standard_errors` gives an upper bound on each value's shot noise,
+shaped like the values:
+
+.. code:: python
+
+   standard_errors = ck.estimate_standard_errors(job.result())
+
+It covers sampling error only, not device noise.
+
 The cost of an experiment run can be checked before submission:
 
 .. code:: python
