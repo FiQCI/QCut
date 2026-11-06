@@ -197,7 +197,8 @@ samples.
 When sampling, terms are drawn per cut with probability proportional to :math:`|c|`, and
 ``num_samples`` draws are taken (defaulting to ``max_exact_groups``). Repeated draws are
 collapsed, so drawing 500 times from a six term decomposition still builds six circuits.
-Set ``seed`` for a reproducible experiment set.
+Set ``seed`` for a reproducible experiment set. Without one, a seed is drawn and kept as
+``CutExperiment.seed``, so the same experiment can be built again.
 
 Sampling is not only a way to make large cases tractable. Enumerating gives every group the
 same number of shots and corrects with a weight afterwards, which is higher variance than
