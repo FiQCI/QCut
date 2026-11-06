@@ -88,6 +88,9 @@ class CutCircuit:
 
         Parameters on a cut gate are bound too. Those live on the cut location rather
         than in any subcircuit, but a generated QPD needs them numeric.
+
+        Every subcircuit is given all of ``parameters``; any it does not contain are
+        ignored.
         """
         bound_locations = [
             location.assign_parameters(parameters)
@@ -98,20 +101,17 @@ class CutCircuit:
 
         if inplace:
             for ind, circuit in enumerate(self.subcircuits):
-                try:
-                    self.subcircuits[ind] = circuit.assign_parameters(parameters)
-                except Exception:
-                    pass
+                self.subcircuits[ind] = circuit.assign_parameters(
+                    parameters, strict=False
+                )
             self.cut_locations = bound_locations
             return
 
         else:
-            new_circuits = []
-            for ind, circuit in enumerate(self.subcircuits):
-                try:
-                    new_circuits.append(circuit.assign_parameters(parameters))
-                except Exception:
-                    new_circuits.append(circuit)
+            new_circuits = [
+                circuit.assign_parameters(parameters, strict=False)
+                for circuit in self.subcircuits
+            ]
             return CutCircuit(
                 subcircuits=new_circuits,
                 cut_locations=bound_locations,
@@ -250,29 +250,28 @@ class CutExperiment:
         self, parameters: dict, inplace=False
     ) -> CutExperiment | None:
         """Assign parameters to the circuits. Same as qiskit
-        QuantumCircuit.assign_parameters."""
+        QuantumCircuit.assign_parameters.
+
+        Every circuit is given all of ``parameters``; any it does not contain are
+        ignored.
+        """
         if inplace:
             for exp_ind, subcircuits in enumerate(self.experiments):
                 for circ_ind, value in enumerate(subcircuits):
                     for ind, circuit in value.items():
-                        try:
-                            self.experiments[exp_ind][circ_ind][ind] = (
-                                circuit.assign_parameters(parameters)
-                            )
-                        except Exception:
-                            pass
+                        self.experiments[exp_ind][circ_ind][ind] = (
+                            circuit.assign_parameters(parameters, strict=False)
+                        )
             return
         else:
             new_experiments = []
             for exp_ind, subcircuits in enumerate(self.experiments):
                 new_subcircuits = []
                 for circ_ind, value in enumerate(subcircuits):
-                    new_circuits = {}
-                    for ind, circuit in value.items():
-                        try:
-                            new_circuits[ind] = circuit.assign_parameters(parameters)
-                        except Exception:
-                            new_circuits[ind] = circuit
+                    new_circuits = {
+                        ind: circuit.assign_parameters(parameters, strict=False)
+                        for ind, circuit in value.items()
+                    }
                     new_subcircuits.append(new_circuits)
                 new_experiments.append(new_subcircuits)
             return CutExperiment(
