@@ -122,20 +122,15 @@ def _get_placeholder_locations(subcircuits: list[QuantumCircuit]) -> list:
             the corresponding subcircuit, in circuit order.
 
     """
-    ops = []
-    for circ in subcircuits:
-        subops = []
-        for op in circ.data:
-            name = op.operation.name
-            if (
-                name.startswith("Meas")
-                or name.startswith("Init")
-                or (name.startswith("cut") and "_" in name)
-            ):
-                subops.append(op)
-        ops.append(subops)
-
-    return ops
+    return [
+        [
+            op
+            for op in circ.data
+            if op.operation.name.startswith(("Meas", "Init"))
+            or (op.operation.name.startswith("cut") and "_" in op.operation.name)
+        ]
+        for circ in subcircuits
+    ]
 
 
 def _transpiled(circuit: QuantumCircuit, basis, cache: dict) -> QuantumCircuit:
@@ -316,12 +311,12 @@ def get_experiment_circuits(  # noqa: C901
     if qubits is not None:
         _validate_qubits(cut_circuit.uncut_num_qubits, qubits)
 
-    num_qubits = 0
-    for subcircuit in cut_circuit.subcircuits:
-        crs = subcircuit.cregs
-        for cr in crs:
-            if cr.name == "meas":
-                num_qubits += cr.size
+    num_qubits = sum(
+        cr.size
+        for subcircuit in cut_circuit.subcircuits
+        for cr in subcircuit.cregs
+        if cr.name == "meas"
+    )
 
     # The circuits are built for the Pauli terms behind the observables, not for the
     # observables themselves: an observable is a weighted sum of terms, and separate
