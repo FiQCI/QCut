@@ -101,3 +101,19 @@ html_logo = "_static/images/logos/qcut-logo-1024.png"
 html_title = "QCut"
 html_favicon = "_static/images/logos/qcut-logo.svg"
 html_static_path = ["_static"]
+
+
+def _public_bases(app, name, obj, options, bases):
+    """List a private base's own bases in its place, since it is not documented."""
+    public = []
+    for base in bases:
+        if getattr(base, "__name__", "").startswith("_"):
+            _public_bases(app, name, obj, options, base_bases := list(base.__bases__))
+            public.extend(base_bases)
+        else:
+            public.append(base)
+    bases[:] = public
+
+
+def setup(app):
+    app.connect("autodoc-process-bases", _public_bases)
