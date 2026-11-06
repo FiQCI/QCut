@@ -56,6 +56,9 @@ backend, which is what lets e.g. `fiqci-ems <https://github.com/FiQCI/fiqci-ems>
        cut_experiment, backend=FiQCISampler(backend, mitigation_level=1)
    )
 
+The same goes for :class:`~QCut.ParallelBackend`, which spreads an experiment over
+several devices: see :ref:`several-backends`.
+
 Every batch is submitted before any of it is collected, so a run queues all its jobs at
 once. :code:`max_batch_size` bounds how many circuits go in one, and a target that
 batches on its own account is given that same size so it does not split a batch again.

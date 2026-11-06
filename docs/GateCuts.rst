@@ -3,7 +3,7 @@ Gate cuts
 
 Gate cuts can be used to cut two-qubit gates instead of cutting wires. This is done by inserting special gate cut instructions into the circuit.
 
-**Any** two-qubit gate can be cut. CZ, SWAP and iSWAP use hand-derived decompositions. For every other gate a quasiprobability decomposition is generated from the gate's own matrix via its KAK decomposition (see :doc:`../Theory`). Gates on more than two qubits are still transpiled down first, which turns them into several cuts.
+**Any** two-qubit gate can be cut. CZ, SWAP and iSWAP use hand-derived decompositions. For every other gate a quasiprobability decomposition is generated from the gate's own matrix via its KAK decomposition (see :doc:`Theory`). Gates on more than two qubits are still transpiled down first, which turns them into several cuts.
 
 Generating the decomposition rather than transpiling to CZ matters most for parametrised gates, whose sampling overhead depends on the angle. ``rzz(0.3)`` costs :math:`\gamma = 1 + 2|\sin\theta| \approx 1.59` over 6 subexperiments as itself, against :math:`\gamma = 9` over 36 subexperiments as two CZ cuts. The shot count scales as :math:`\gamma^2`, so that is a factor of roughly 32.
 
@@ -35,7 +35,7 @@ and ``ryy`` all qualify, as do the gates that differ from them only by single-qu
 operations. For angles :math:`\theta_s` the joint overhead is
 :math:`\gamma = 2\prod_s(1 + |\sin\theta_s|) - 1` against
 :math:`\prod_s(1 + 2|\sin\theta_s|)` for cutting them one at a time. The derivation is
-in :doc:`../Theory`.
+in :doc:`Theory`.
 
 .. code:: python
 
@@ -83,7 +83,7 @@ multiplies out to a generic unitary, which is no longer a single-axis rotation a
 can no longer be bundled with a parallel neighbour. ``consolidate`` therefore defaults
 to ``"auto"``, which costs both plans and keeps the cheaper one; ``"always"`` merges
 wherever it lowers the cost of that pair on its own, and ``"never"`` leaves every gate
-alone. See :doc:`../Options`.
+alone. See :doc:`Options`.
 
 Note that merging is what makes a run whose product is the identity free: two ``cx``
 gates on the same pair merge into an identity that needs no cut at all.

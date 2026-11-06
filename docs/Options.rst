@@ -236,7 +236,7 @@ Configuring cut finding options
 -------------------------------
 
 ``CutOptions`` also carries the options that ``find_cuts`` uses to steer the partitioner.
-These are documented on the :doc:`automatic cut finding <examples/AutomaticCuts>` page, and the defaults are
+These are documented on the :doc:`automatic cut finding <AutomaticCuts>` page, and the defaults are
 ``CutOptions.finder_num_partitions = 2``, ``CutOptions.finder_cut_mode = "wire"``,
 ``CutOptions.finder_candidates = 5``, ``CutOptions.finder_max_qubits = None``, and
 ``CutOptions.finder_seed = 0``.

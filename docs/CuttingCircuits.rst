@@ -59,7 +59,7 @@ automatically handled by QCut.
 :code:`cutGate()` marks a gate cut and :code:`cut()` a wire cut. Any two-qubit gate can
 be cut, with the decomposition derived from the gate's KAK coordinates, so the CX above
 is a single cut rather than a CZ with fix-up gates around it. See
-:doc:`gate cuts <examples/GateCuts>` and :doc:`wire cuts <examples/WireCuts>` for more on
+:doc:`gate cuts <GateCuts>` and :doc:`wire cuts <WireCuts>` for more on
 placing them, and :doc:`Theory` for where the decompositions come from.
 
 Extract cut locations and split into independent subcircuits
@@ -210,5 +210,17 @@ QCut comes with functionality for automatically finding good cut locations that 
 ``2 9.0``
 
 Here the finder reaches the :code:`optimal_gamma` the hand-placed cuts above did not. See
-:doc:`automatic cuts <examples/AutomaticCuts>` for the finder's own options and how it
+:doc:`automatic cuts <AutomaticCuts>` for the finder's own options and how it
 chooses.
+
+In depth
+--------
+
+Each kind of cut has a page of its own, with its own setup.
+
+.. toctree::
+   :maxdepth: 1
+
+   WireCuts
+   GateCuts
+   AutomaticCuts

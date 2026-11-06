@@ -1,5 +1,5 @@
-Basic Usage
-===========
+User guide
+==========
 
 QCut is a quantum circuit knitting package capable of efficiently partitioning
 quantum circuits with wire and gate cuts using advanced LOCC and joint rotation decompositions
@@ -10,8 +10,9 @@ with IQM’s qpus and the Finnish Quantum Computing Infrastructure (`FiQCI <http
 The pages below follow one example from start to finish, in the order a run goes: cut the
 circuit, transpile it for a device, then run it and reconstruct the results. Each page
 builds on the variables of the ones before it, and the imports are at the start of
-:doc:`CuttingCircuits`. :doc:`Primitives` covers running several cut circuits in one
-call.
+:doc:`CuttingCircuits`. The pages under it on wire, gate and automatic cuts go further
+into each, and set up their own examples. :doc:`Primitives` covers running several cut
+circuits in one call.
 
 Click :download:`here <notebooks/QCutBasicUsage.ipynb>` to download the example as a
 notebook.

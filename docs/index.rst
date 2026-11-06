@@ -1,8 +1,3 @@
-.. QCut documentation master file, created by
-   sphinx-quickstart on Mon Jul 22 18:11:00 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 QCut documentation
 ==================
 
@@ -16,23 +11,37 @@ QCut has been built at CSC - IT Center for Science (Finnish IT Center for Scienc
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Guide
 
    GettingStarted
    Usage
    Options
-   Examples
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Further reading
+
    Notebooks
    Theory
-   Acknowledgement
-   License
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Reference
+
    QCut
    Changelog
 
+.. toctree::
+   :maxdepth: 1
+   :caption: About
+
+   Acknowledgement
+   License
+
 :doc:`GettingStarted` covers installation and a first run.
 
-Benchmarks
-----------
+Why QCut
+--------
 
 ``benchmarks/QCutVsAddon.ipynb`` in the repository compares QCut against IBM's
 `qiskit-addon-cutting <https://github.com/Qiskit/qiskit-addon-cutting>`__ given the same

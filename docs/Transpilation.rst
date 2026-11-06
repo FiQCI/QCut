@@ -37,7 +37,7 @@ fit the device at all. The transpiled :code:`CutCircuit` remembers the backend i
 transpiled for, which is what :doc:`Primitives` check before running it.
 
 Plain circuits are transpiled as they are, which is what a backend handed circuits rather
-than an experiment needs. See :doc:`examples/ParallelBackends`.
+than an experiment needs. See :ref:`several-backends`.
 
 On an IQM backend both use IQM's own transpiler. Pass :code:`use_iqm_transpiler=False`
 for the ordinary Qiskit path. On a resonator device such as :code:`IQMFakeDeneb` the MOVE
