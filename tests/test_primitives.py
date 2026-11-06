@@ -16,6 +16,7 @@ from QCut import (
     CutEstimator,
     CutOptions,
     CutQuasiSampler,
+    ParallelBackend,
     cut,
     find_cuts,
     get_locations_and_subcircuits,
@@ -333,6 +334,17 @@ def test_a_bad_circuit_submits_nothing():
 def test_a_backend_is_needed():
     with pytest.raises(QCutError, match="backend"):
         CutEstimator(None)
+
+
+@pytest.mark.sim
+def test_a_parallel_backend_shares_the_circuits_evenly():
+    """Each input is submitted in batches of its own, so they all come in the same
+    sizes, here 8 then 2. Taking turns used to put both 8s on one backend, [16, 4]."""
+    backend = ParallelBackend([AerSimulator(), AerSimulator()])
+    job = CutEstimator(backend).run([_cut(), _cut()], "ZZZZ", max_batch_size=8)
+
+    assert len(job.result()) == 2
+    assert backend.submitted == [10, 10]
 
 
 # -- the job ----------------------------------------------------------------------- #
