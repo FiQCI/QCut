@@ -68,174 +68,88 @@ def _remember_final_measurements(
 
 
 def _get_cut_locations(circuit):
-    index = 0  # index of the current instruction in circuit_data
-    circuit_data = circuit.data
+    """Remove the cut markers from ``circuit`` and return where they stood.
+
+    A location's index is its marker's position once the markers before it are gone.
+    """
     cut_locations = []
-
-    # loop through circuit instructions
-    # if operation is a Cut() instruction remove it and add registers and
-    # offset index to cut_locations
-
-    # rename variables to be more descriptive (namely qs)
-    while index < len(circuit):
-        op = circuit_data[index]
-        if "Cut" in op.operation.name:
-            # find qubits for Cut operation
-            qubits = [circuit.find_bit(qubit).registers[0] for qubit in op.qubits]
-
-            # remove the cut operation
-            circuit_data.remove(op)
-
-            # append to cut_locations
-            if len(qubits) == 1:
-                cut_locations.append(SingleQubitCutLocation((qubits[0], index)))
-            else:
-                gate_name = op.operation.name.replace("Cut", "").lower()
-                # CutTwoQubitGate markers carry the gate so a QPD can be generated
-                # from it. The per-gate markers do not need to.
-                cut_locations.append(
-                    CutLocation(
-                        (qubits, index),
-                        gate_name=gate_name,
-                        gate=getattr(op.operation, "gate", None),
-                    )
+    markers = []
+    for position, instruction in enumerate(circuit.data):
+        operation = instruction.operation
+        if "Cut" not in operation.name:
+            continue
+        index = position - len(markers)
+        markers.append(position)
+        qubits = [circuit.find_bit(qubit).registers[0] for qubit in instruction.qubits]
+        if len(qubits) == 1:
+            cut_locations.append(SingleQubitCutLocation((qubits[0], index)))
+        else:
+            # CutTwoQubitGate markers carry the gate so a QPD can be generated from
+            # it. The per-gate markers do not need to.
+            cut_locations.append(
+                CutLocation(
+                    (qubits, index),
+                    gate_name=operation.name.replace("Cut", "").lower(),
+                    gate=getattr(operation, "gate", None),
                 )
-
-            # adjust index to account for removed operation
-            index -= 1
-        index += 1
-
+            )
+    for position in reversed(markers):
+        del circuit.data[position]
     return cut_locations
 
 
 def _insert_cut_nodes(circuit, cut_locations):
-    circuit_data = circuit.data
-    cut_index = 0
+    """Put each cut's two placeholders where its marker stood."""
     offset = 0
-    for cut_location in cut_locations:
-        measure_node = NonCommutingGate(f"Meas_{cut_index}")
-
-        initialize_node = NonCommutingGate(f"Init_{cut_index}")
-
-        prefix = (
-            f"cut{cut_location.gate_name.upper()}"
-            if isinstance(cut_location, CutLocation)
-            else ""
-        )
-        cut_czc = NonCommutingGate(f"{prefix}_c_{cut_index}")
-
-        cut_czt = NonCommutingGate(f"{prefix}_t_{cut_index}")
-
-        cut_index += 1
-
-        cur_ops = (
-            (measure_node, initialize_node)
-            if isinstance(cut_location, SingleQubitCutLocation)
-            else (cut_czc, cut_czt)
-        )
-
-        if isinstance(cut_location, SingleQubitCutLocation):
-            for ph_op in cur_ops:
-                circuit_data.insert(
-                    cut_location.index + offset,
-                    CircuitInstruction(
-                        operation=ph_op,
-                        qubits=[Qubit(cut_location.qubits[0], cut_location.qubits[1])],
-                    ),
-                )
-
-                offset += 1
-
+    for cut_index, location in enumerate(cut_locations):
+        if isinstance(location, SingleQubitCutLocation):
+            names, wires = ("Meas", "Init"), [location.qubits] * 2
         else:
-            circuit_data.insert(
-                cut_location.index + offset,
+            prefix = f"cut{location.gate_name.upper()}"
+            names, wires = (f"{prefix}_c", f"{prefix}_t"), location.qubits
+        for name, (register, bit) in zip(names, wires):
+            circuit.data.insert(
+                location.index + offset,
                 CircuitInstruction(
-                    operation=cur_ops[0],
-                    qubits=[
-                        Qubit(cut_location.qubits[0][0], cut_location.qubits[0][1])
-                    ],
+                    NonCommutingGate(f"{name}_{cut_index}"), [Qubit(register, bit)]
                 ),
             )
-
             offset += 1
-
-            circuit_data.insert(
-                cut_location.index + offset,
-                CircuitInstruction(
-                    operation=cur_ops[1],
-                    qubits=[
-                        Qubit(cut_location.qubits[1][0], cut_location.qubits[1][1])
-                    ],
-                ),
-            )
-
-            offset += 1
-
     return circuit
 
 
 def _move_to_new_wire(orig: QuantumCircuit) -> QuantumCircuit:
-    # Create the new circuit and add registers
-    offset = 0
+    """Copy ``orig``, moving each qubit onto a fresh wire after every ``Meas``."""
     new = QuantumCircuit(name=orig.name + "_rebuilt")
     for creg in orig.cregs:
         new.add_register(ClassicalRegister(creg.size, creg.name))
     for qreg in orig.qregs:
         new.add_register(QuantumRegister(0, qreg.name))
+    qubit_map = {qubit: Qubit() for qubit in orig.qubits}
+    new.add_bits(list(qubit_map.values()))
 
-    # Create fresh Qubit objects for each original wire
-    # and record a mapping old_qubit -> new_qubit
-    qubit_map = {}
-    new_qubits = []
-    for idx, q_old in enumerate(orig.qubits):
-        q_new = Qubit()
-        new_qubits.append(q_new)
-        qubit_map[q_old] = q_new
-    new.add_bits(new_qubits)
-
-    # 3) Replay every instruction, splitting on Measure
+    offset = 0
     for instruction in orig.data:
-        inst, qargs, cargs = (
-            instruction.operation,
-            instruction.qubits,
-            instruction.clbits,
+        qubits = instruction.qubits
+        new.append(
+            instruction.operation, [qubit_map[q] for q in qubits], instruction.clbits
         )
-        # map every qarg via our current mapping
-        mapped_qs = [qubit_map[q] for q in qargs]
-
-        if inst.name.startswith("Meas"):
-            # append this measurement on the current wire
-            new.append(inst, mapped_qs, cargs)
-
-            # now allocate a fresh wire for all future uses of qargs[0]
-            q_fresh = Qubit()
-            new.add_bits([q_fresh])
-            new.qubits.remove(q_fresh)
-            new.qubits.insert(orig.find_bit(qargs[0]).index + 1 + offset, q_fresh)
+        if instruction.operation.name.startswith("Meas"):
+            # Later uses of the qubit go on a fresh wire, placed right after this one.
+            fresh = Qubit()
+            new.add_bits([fresh])
+            new.qubits.remove(fresh)
             offset += 1
-            # update the mapping so q_old -> q_fresh going forward
-            qubit_map[qargs[0]] = q_fresh
-
-        else:
-            # just copy the gate over to mapped_qs
-            new.append(inst, mapped_qs, cargs)
+            new.qubits.insert(orig.find_bit(qubits[0]).index + offset, fresh)
+            qubit_map[qubits[0]] = fresh
 
     return new
 
 
 def _separate_subcircuits(circuit):
-    dag = circuit_to_dag(circuit)
-
-    circs = dag.separable_circuits(remove_idle_qubits=True)
-
-    new_circs = []
-    for i in circs:
-        circ = dag_to_circuit(i)
-        if len(circ.qubits) == 0:
-            continue
-        new_circs.append(circ)
-
-    return new_circs
+    """The circuit's disconnected parts, each as a circuit of its own."""
+    parts = circuit_to_dag(circuit).separable_circuits(remove_idle_qubits=True)
+    return [circ for circ in map(dag_to_circuit, parts) if circ.num_qubits]
 
 
 def _add_cbits(subcircuits):
