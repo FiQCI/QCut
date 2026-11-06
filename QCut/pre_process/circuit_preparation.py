@@ -257,13 +257,11 @@ def _split(
             rebuilt.append(CircuitInstruction(instruction.operation, qubits))
         fixed_circs.append(rebuilt)
 
+    fixed_circs = construct_final_subcircuits(fixed_circs, max_qubits)
     if len(fixed_circs) <= 1:
         raise QCutError(
             "Invalid cuts. Check documentation to see how cuts should be placed."
         )
-
-    if max_qubits and len(fixed_circs) != len(max_qubits):
-        fixed_circs = construct_final_subcircuits(fixed_circs, max_qubits)
 
     return CutCircuit(
         _record_spent_qubits(fixed_circs),
