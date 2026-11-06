@@ -56,18 +56,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def extract_cuts(graph, labels):  # noqa: C901
-    cut_edges = []
-
-    for u, v in graph.edge_list():
-        if labels[u] != labels[v]:
-            cut_edges.append((u, v))
-
-    cut_data_test = []
-
-    for edge in cut_edges:
-        cut_data_test.append(graph.get_edge_data(edge[0], edge[1]))
-        # Collect all unique nodes involved in cut_edges
-    cut_nodes = set()
+    cut_edges = [(u, v) for u, v in graph.edge_list() if labels[u] != labels[v]]
+    cut_data_test = [graph.get_edge_data(u, v) for u, v in cut_edges]
     cut_data = []
     for u, v in cut_edges:
         # Get all edges connected to u and v (excluding the cut edge itself)
@@ -94,9 +84,6 @@ def extract_cuts(graph, labels):  # noqa: C901
             ]
             min_edge = min(filtered_edges, key=lambda x: x[2])
             cut_data.append(min_edge)
-
-        cut_nodes.add(u)
-        cut_nodes.add(v)
 
     return cut_data, cut_data_test
 
@@ -322,28 +309,15 @@ def find_cuts(  # noqa: C901
                 cuts,
             )
 
-        cut_circuit = add_cuts_to_circuit(circuit, cut_data, cut_data_test)
-
-        if max_qubits is not None:
-            final_cut_circuit = get_locations_and_subcircuits(
-                cut_circuit, max_qubits=max_qubits, options=options
-            )
-        else:
-            final_cut_circuit = get_locations_and_subcircuits(
-                cut_circuit, options=options
-            )
-
+        split = get_locations_and_subcircuits(
+            add_cuts_to_circuit(circuit, cut_data, cut_data_test),
+            max_qubits=max_qubits,
+            options=options,
+        )
         # Costed after refinement, because refinement can add cuts of its own.
-        cost = plan_cost(final_cut_circuit, options)
+        cost = plan_cost(split, options)
         if best is None or cost < best[0]:
-            best = (
-                cost,
-                final_cut_circuit,
-                cut_circuit,
-                cut_data,
-                cut_data_test,
-                labels,
-            )
+            best = (cost, split)
 
     if best is None:  # pragma: no cover - there is always at least one candidate
         raise QCutError("no candidate partition could be costed")
@@ -353,6 +327,4 @@ def find_cuts(  # noqa: C901
             f"Costed {len(candidates)} candidate partition(s), keeping one at "
             f"gamma={best[0]:.6g}."
         )
-    _, final_cut_circuit, cut_circuit, cut_data, cut_data_test, labels = best
-
-    return _remember_final_measurements(final_cut_circuit, measured)
+    return _remember_final_measurements(best[1], measured)
