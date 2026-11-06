@@ -26,7 +26,7 @@ class CutQuasiSamplerEntry:
     raw: RawResult
 
     @property
-    def standard_error(self) -> float:
+    def standard_error(self) -> float | None:
         """An upper bound on each quasi-probability's shot noise, the same for all.
 
         See :attr:`QCut.QuasiProbabilities.standard_error`.
@@ -73,7 +73,7 @@ class CutQuasiSamplerResult(Sequence):
         """
         return [entry.quasi_dist(top) for entry in self._entries]
 
-    def standard_errors(self) -> list[float]:
+    def standard_errors(self) -> list[float | None]:
         """Every circuit's standard error, in the order the circuits were given."""
         return [entry.standard_error for entry in self._entries]
 
@@ -109,7 +109,9 @@ class CutQuasiSamplerJob(QCutPrimitiveJob):
             return result.quasi_probabilities()
         return result[index].quasi_probabilities
 
-    def standard_errors(self, index: int | None = None) -> list[float] | float:
+    def standard_errors(
+        self, index: int | None = None
+    ) -> list[float | None] | float | None:
         """Wait for the run and return the standard errors.
 
         Args:

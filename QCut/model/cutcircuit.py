@@ -4,7 +4,7 @@ a group of circuits."""
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import Iterable, Literal, overload
 
 from qiskit import QuantumCircuit
 from qiskit.primitives.containers.observables_array import ObservablesArray
@@ -82,7 +82,17 @@ class CutCircuit:
         """The least these same cuts could cost with every decomposition available."""
         return self._costs()[1]
 
-    def assign_parameters(self, parameters: dict, inplace=False) -> CutCircuit | None:
+    @overload
+    def assign_parameters(
+        self, parameters: dict, inplace: Literal[False] = ...
+    ) -> CutCircuit: ...
+
+    @overload
+    def assign_parameters(self, parameters: dict, inplace: Literal[True]) -> None: ...
+
+    def assign_parameters(
+        self, parameters: dict, inplace: bool = False
+    ) -> CutCircuit | None:
         """Assign parameters to the circuits. Same as qiskit
         QuantumCircuit.assign_parameters.
 

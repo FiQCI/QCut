@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 from collections import Counter
+from typing import cast
 
 from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
 from qiskit.circuit import CircuitInstruction, Qubit
@@ -33,7 +34,9 @@ def _final_measurements(
     share their bits.
     """
     if stripped is None:
-        stripped = circuit.remove_final_measurements(inplace=False)
+        stripped = cast(
+            QuantumCircuit, circuit.remove_final_measurements(inplace=False)
+        )
     remaining = Counter(
         (instruction.qubits[0], instruction.clbits[0])
         for instruction in stripped.data
