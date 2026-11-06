@@ -9,28 +9,23 @@ from qiskit.transpiler import PassManager
 from qiskit.transpiler.basepasses import TransformationPass
 from qiskit.transpiler.passes import BasisTranslator, UnrollCustomDefinitions
 
-# define the cut location marker
-cut_op = QuantumCircuit(1, name="Cut")
-cut_op = cut_op.to_instruction(label="Cut")
-cut_op.definition = None
+
+def _marker(name: str, num_qubits: int) -> Instruction:
+    """An opaque instruction marking where a cut goes."""
+    marker = QuantumCircuit(num_qubits, name=name).to_instruction(label=name)
+    marker.definition = None
+    return marker
+
+
+cut_op = _marker("Cut", 1)
+cutCZ_op = _marker("CutCZ", 2)
+cutSWAP_op = _marker("CutSWAP", 2)
+cutISWAP_op = _marker("CutISWAP", 2)
 
 
 def cut() -> QuantumCircuit | Instruction:
     """Return a single qubit wire cut instruction."""
     return cut_op
-
-
-cutCZ_op = QuantumCircuit(2, name="CutCZ")
-cutCZ_op = cutCZ_op.to_instruction(label="CutCZ")
-cutCZ_op.definition = None
-
-cutSWAP_op = QuantumCircuit(2, name="CutSWAP")
-cutSWAP_op = cutSWAP_op.to_instruction(label="CutSWAP")
-cutSWAP_op.definition = None
-
-cutISWAP_op = QuantumCircuit(2, name="CutISWAP")
-cutISWAP_op = cutISWAP_op.to_instruction(label="CutISWAP")
-cutISWAP_op.definition = None
 
 
 def cutCZ() -> QuantumCircuit | Instruction:
