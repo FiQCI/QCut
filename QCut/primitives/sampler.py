@@ -12,7 +12,7 @@ from QCut.execution.dispatch import DEFAULT_SHOTS
 from QCut.job.cutresult import RawResult
 from QCut.model.cutcircuit import CutCircuit
 from QCut.post_process.probabilities import QuasiProbabilities, estimate_probabilities
-from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive
+from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive, _pair
 from QCut.primitives.job import QCutPrimitiveJob
 
 
@@ -188,6 +188,7 @@ class CutQuasiSampler(_CutPrimitive):
         circuits: CutCircuit | list[CutCircuit],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
+        parameter_values: dict | list[dict] | None = None,
         **run_options,
     ) -> CutQuasiSamplerJob:
         """Submit the circuits and return without waiting for their results.
@@ -200,6 +201,10 @@ class CutQuasiSampler(_CutPrimitive):
                 :func:`QCut.submit_experiments`.
             max_batch_size (int): the most circuits submitted in one ``run`` call. Each
                 input circuit is submitted in batches of its own.
+            parameter_values: ``{parameter or name: value}`` to bind into the circuit.
+                With a list of circuits, a list with one entry per circuit, or one
+                for every circuit. For a sweep, list the same circuit once per set of
+                values.
             **run_options: passed on to every ``run`` call on the backend.
 
         Returns:
@@ -208,10 +213,12 @@ class CutQuasiSampler(_CutPrimitive):
 
         Raises:
             QCutError: something other than a cut circuit was given, one is not
-                transpiled for this backend although it has a coupling map, or its
-                final measurements do not fill its classical bits once each.
+                transpiled for this backend although it has a coupling map, has
+                parameters left unbound, or its final measurements do not fill its
+                classical bits once each.
+            ValueError: the parameter values do not have one entry per circuit.
         """
-        experiments = self._experiments(circuits)
+        experiments = self._experiments(circuits, parameter_values)
         return CutQuasiSamplerJob(
             self._submit(experiments, shots, max_batch_size, run_options)
         )
@@ -221,6 +228,7 @@ class CutQuasiSampler(_CutPrimitive):
         circuits: CutCircuit | list[CutCircuit],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
+        parameter_values: dict | list[dict] | None = None,
     ) -> CutRunEstimate:
         """Work out what :meth:`run` will cost with the same arguments, submitting
         nothing.
@@ -229,16 +237,18 @@ class CutQuasiSampler(_CutPrimitive):
             CutRunEstimate: the jobs, circuits and shots of the whole run, and indexed
             by circuit, each circuit's own share.
         """
-        experiments = self._experiments(circuits)
+        experiments = self._experiments(circuits, parameter_values)
         return self._estimate(experiments, shots, max_batch_size)
 
-    def _experiments(self, circuits):
+    def _experiments(self, circuits, parameter_values):
         listed = _as_list(circuits)
-        qubits = []
-        for index, cut_circuit in enumerate(listed):
+        values = _pair(circuits, parameter_values, len(listed), "parameter_values")
+        bound, qubits = [], []
+        for index, (cut_circuit, entry) in enumerate(zip(listed, values)):
             self._check(cut_circuit, index)
+            bound.append(self._bind(cut_circuit, entry, index))
             qubits.append(_measured_qubits(cut_circuit, index))
         return [
             self._experiment(cut_circuit, qubits=measured)
-            for cut_circuit, measured in zip(listed, qubits)
+            for cut_circuit, measured in zip(bound, qubits)
         ]

@@ -56,6 +56,38 @@ def _as_list(circuits: CutCircuit | list[CutCircuit]) -> list[CutCircuit]:
     return listed
 
 
+def _pair(circuits, values, count: int, name: str) -> list:
+    """One entry of ``values`` per circuit, broadcast the way FiQCI's primitives do it.
+
+    One circuit takes ``values`` exactly as given. With a list of circuits, a list or
+    tuple gives one entry per circuit, and anything else is used for every circuit.
+
+    Raises:
+        ValueError: the list does not have one entry per circuit.
+    """
+    if isinstance(circuits, CutCircuit):
+        return [values]
+    if isinstance(values, (list, tuple)):
+        if len(values) != count:
+            raise ValueError(
+                f"{count} circuit(s) were given but {len(values)} {name} entries. "
+                "With a list of circuits, give one entry per circuit, or a single one "
+                "for all of them."
+            )
+        return list(values)
+    return [values] * count
+
+
+def _unbound_parameters(cut_circuit: CutCircuit) -> list[str]:
+    """Names of the parameters left unbound, in the subcircuits or on a cut gate."""
+    names = {param.name for sub in cut_circuit.subcircuits for param in sub.parameters}
+    for location in cut_circuit.cut_locations:
+        gate = getattr(location, "gate", None)
+        for value in gate.params if gate is not None else ():
+            names.update(param.name for param in getattr(value, "parameters", ()))
+    return sorted(names)
+
+
 class _CutPrimitive:
     """The backend a primitive runs on, and the steps every run takes: check each cut
     circuit, build its experiment, then submit them all."""
@@ -95,6 +127,24 @@ class _CutPrimitive:
                 "this primitive runs on. Transpile it for this one with "
                 "QCut.transpile_subcircuits(cut_circuit, backend)."
             )
+
+    def _bind(
+        self, cut_circuit: CutCircuit, parameter_values: dict | None, index: int
+    ) -> CutCircuit:
+        """Bind ``parameter_values`` into a cut circuit and check nothing is left.
+
+        Raises:
+            QCutError: a parameter is still unbound.
+        """
+        if parameter_values is not None:
+            cut_circuit = cut_circuit.assign_parameters(parameter_values)
+        unbound = _unbound_parameters(cut_circuit)
+        if unbound:
+            raise QCutError(
+                f"circuit {index} has unbound parameters {unbound}. Give their values "
+                "in parameter_values."
+            )
+        return cut_circuit
 
     def _experiment(
         self,

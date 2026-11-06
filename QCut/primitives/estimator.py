@@ -14,7 +14,7 @@ from QCut.post_process.postprocess import (
     estimate_expectation_values,
     estimate_standard_errors,
 )
-from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive
+from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive, _pair
 from QCut.primitives.job import QCutPrimitiveJob
 from QCut.utils.observables import ObservablesLike
 
@@ -114,29 +114,6 @@ class CutEstimatorJob(QCutPrimitiveJob):
         )
 
 
-def _pair_observables(circuits, observables, count: int) -> list:
-    """One observables entry per circuit, broadcast the way FiQCI's estimator does it.
-
-    One circuit takes the observables exactly as given. With a list of circuits, a list
-    or tuple of observables gives one entry per circuit, and anything else is one
-    observable used for every circuit.
-
-    Raises:
-        ValueError: the list of observables does not have one entry per circuit.
-    """
-    if isinstance(circuits, CutCircuit):
-        return [observables]
-    if isinstance(observables, (list, tuple)):
-        if len(observables) != count:
-            raise ValueError(
-                f"{count} circuit(s) were given but {len(observables)} observable "
-                "entries. With a list of circuits, give one entry per circuit, each an "
-                "observable or a list of them, or a single observable for all of them."
-            )
-        return list(observables)
-    return [observables] * count
-
-
 class CutEstimator(_CutPrimitive):
     """Expectation values of cut circuits, run on any backend or sampler.
 
@@ -163,6 +140,7 @@ class CutEstimator(_CutPrimitive):
         observables: ObservablesLike | list[ObservablesLike],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
+        parameter_values: dict | list[dict] | None = None,
         **run_options,
     ) -> CutEstimatorJob:
         """Submit the circuits and return without waiting for their results.
@@ -178,6 +156,9 @@ class CutEstimator(_CutPrimitive):
                 :func:`QCut.submit_experiments`.
             max_batch_size (int): the most circuits submitted in one ``run`` call. Each
                 input circuit is submitted in batches of its own.
+            parameter_values: ``{parameter or name: value}`` to bind into the circuit,
+                paired with the circuits the way ``observables`` is. For a sweep, list
+                the same circuit once per set of values.
             **run_options: passed on to every ``run`` call on the backend.
 
         Returns:
@@ -185,12 +166,13 @@ class CutEstimator(_CutPrimitive):
             :meth:`~CutEstimatorJob.result` gives the expectation values.
 
         Raises:
-            QCutError: something other than a cut circuit was given, or one is not
-                transpiled for this backend although it has a coupling map.
-            ValueError: the observables do not have one entry per circuit, or do not
-                fit their circuit.
+            QCutError: something other than a cut circuit was given, one is not
+                transpiled for this backend although it has a coupling map, or one
+                has parameters left unbound.
+            ValueError: the observables or parameter values do not have one entry per
+                circuit, or the observables do not fit their circuit.
         """
-        experiments = self._experiments(circuits, observables)
+        experiments = self._experiments(circuits, observables, parameter_values)
         return CutEstimatorJob(
             self._submit(experiments, shots, max_batch_size, run_options)
         )
@@ -201,6 +183,7 @@ class CutEstimator(_CutPrimitive):
         observables: ObservablesLike | list[ObservablesLike],
         shots: int = DEFAULT_SHOTS,
         max_batch_size: int = 100,
+        parameter_values: dict | list[dict] | None = None,
     ) -> CutRunEstimate:
         """Work out what :meth:`run` will cost with the same arguments, submitting
         nothing.
@@ -209,15 +192,18 @@ class CutEstimator(_CutPrimitive):
             CutRunEstimate: the jobs, circuits and shots of the whole run, and indexed
             by circuit, each circuit's own share.
         """
-        experiments = self._experiments(circuits, observables)
+        experiments = self._experiments(circuits, observables, parameter_values)
         return self._estimate(experiments, shots, max_batch_size)
 
-    def _experiments(self, circuits, observables):
+    def _experiments(self, circuits, observables, parameter_values):
         listed = _as_list(circuits)
-        paired = _pair_observables(circuits, observables, len(listed))
-        for index, cut_circuit in enumerate(listed):
+        paired = _pair(circuits, observables, len(listed), "observable")
+        values = _pair(circuits, parameter_values, len(listed), "parameter_values")
+        bound = []
+        for index, (cut_circuit, entry) in enumerate(zip(listed, values)):
             self._check(cut_circuit, index)
+            bound.append(self._bind(cut_circuit, entry, index))
         return [
             self._experiment(cut_circuit, observables=entry)
-            for cut_circuit, entry in zip(listed, paired)
+            for cut_circuit, entry in zip(bound, paired)
         ]
