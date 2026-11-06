@@ -29,6 +29,14 @@ Reorganised source
   :code:`QCut.utils.backend` rather than :code:`QCut.execution.circuit_knitting`. A
   filter on :code:`QCut` still catches all of them.
 
+Parallel backends
+-----------------
+
+- :code:`ParallelBackend` gives each batch to the backend with the fewest shots so far,
+  rather than to the next one in turn, which put large batches of the same size on the
+  same backend. :code:`submitted_shots` reports the shots each backend was given, and
+  the backend is safe to call from several threads at once.
+
 **Version 2.4.0**
 =================
 
