@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use QCut in your research, please cite it as below."
+type: software
+title: "QCut: A quantum circuit knitting package for gate and resetless wire cuts"
+abstract: >-
+  QCut is a quantum circuit knitting package built on top of Qiskit for performing
+  gate cuts and resetless wire cuts, allowing simulation of larger quantum circuits
+  on smaller quantum devices or simulators at the cost of a circuit/shot overhead.
+authors:
+  - family-names: Nivala
+    given-names: Joonas
+    affiliation: "CSC – IT Center for Science"
+  - family-names: Muff
+    given-names: Jake
+    affiliation: "VTT Technical Research Centre of Finland"
+version: 2.5.0
+date-released: 2026-11-04
+license: Apache-2.0
+repository-code: "https://github.com/FiQCI/QCut"
+url: "https://github.com/FiQCI/QCut"
+keywords:
+  - quantum computing
+  - circuit cutting
+  - circuit knitting
+  - qiskit
