@@ -74,6 +74,22 @@ Fixes
 
 - :code:`CutCircuit.assign_parameters()` and :code:`CutExperiment.assign_parameters()`
   bind parameters spread across several subcircuits.
+- :code:`find_cuts()` no longer raises :code:`IndexError` for a circuit whose two-qubit
+  gates act only on high-index qubits. The graph it partitions is now built without
+  state shared between calls, which also stops two parts of one wire from sharing a
+  node.
+
+Deprecations
+------------
+
+- Importing QCut with qiskit older than 2.1 raises a :code:`FutureWarning`. QCut 3.0 is
+  planned to need qiskit 2.1 or newer.
+
+Misc
+----
+
+- Dead and duplicated code removed throughout.
+
 
 **Version 2.4.0**
 =================
