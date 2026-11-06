@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
+from qiskit.circuit.library import RZZGate
 from qiskit.providers import JobStatus
 from qiskit.providers.fake_provider import GenericBackendV2
 from qiskit.quantum_info import SparsePauliOp, Statevector
@@ -18,6 +19,7 @@ from QCut import (
     CutQuasiSampler,
     ParallelBackend,
     cut,
+    cutGate,
     estimate_standard_errors,
     find_cuts,
     get_locations_and_subcircuits,
@@ -361,6 +363,79 @@ def test_a_parallel_backend_shares_the_circuits_evenly():
 
     assert len(job.result()) == 2
     assert backend.submitted == [10, 10]
+
+
+# -- parameter values -------------------------------------------------------------- #
+
+THETA, PHI = Parameter("theta"), Parameter("phi")
+
+
+def _parametrised(cut_gate=True):
+    """theta in a subcircuit, and phi only on the cut gate."""
+    circuit = QuantumCircuit(3)
+    circuit.ry(THETA, 0)
+    circuit.cx(0, 1)
+    circuit.h(2)
+    if cut_gate:
+        circuit.append(**cutGate(RZZGate(PHI), 1, 2))
+    else:
+        circuit.rzz(PHI, 1, 2)
+    return circuit
+
+
+@pytest.mark.sim
+def test_a_sweep_binds_each_circuit_its_own_values():
+    cut_circuit = get_locations_and_subcircuits(_parametrised())
+    thetas = [0.3, 1.2, 2.5]
+    values = [{THETA: theta, PHI: 0.7} for theta in thetas]
+    job = CutEstimator(AerSimulator(seed_simulator=9)).run(
+        [cut_circuit] * 3, [["IIZ", "XII"]] * 3, shots=SHOTS, parameter_values=values
+    )
+
+    for entry, value in zip(job.result(), values):
+        uncut = _parametrised(cut_gate=False).assign_parameters(value)
+        expected = [_exact(uncut, "IIZ"), _exact(uncut, "XII")]
+        assert np.allclose(entry.expectation_values, expected, atol=TOLERANCE)
+
+
+@pytest.mark.sim
+def test_sampler_binds_parameter_values_by_name():
+    circuit = _parametrised()
+    circuit.measure_all()
+    values = {"theta": 1.1, "phi": 0.4}
+    sampler = CutQuasiSampler(AerSimulator(seed_simulator=10))
+    job = sampler.run(
+        get_locations_and_subcircuits(circuit), shots=SHOTS, parameter_values=values
+    )
+    distribution = job.quasi_probabilities(0)
+
+    uncut = _parametrised(cut_gate=False).assign_parameters(values)
+    for bitstring, probability in Statevector(uncut).probabilities_dict().items():
+        assert abs(distribution[bitstring] - probability) < TOLERANCE
+
+
+def test_a_parameter_left_unbound_submits_nothing():
+    """phi is only on the cut gate, so the subcircuits alone would not show it."""
+    backend = _NeverDoneBackend()
+    cut_circuit = get_locations_and_subcircuits(_parametrised())
+    with pytest.raises(QCutError, match=r"circuit 1 has unbound parameters \['phi'\]"):
+        CutEstimator(backend).run(
+            [cut_circuit, cut_circuit],
+            "ZZZ",
+            parameter_values=[{THETA: 0.1, PHI: 0.2}, {THETA: 0.1}],
+        )
+    assert backend.jobs == []
+
+    with pytest.raises(QCutError, match=r"\['phi', 'theta'\]"):
+        CutEstimator(backend).estimate(cut_circuit, "ZZZ")
+
+
+def test_parameter_values_need_one_entry_per_circuit():
+    cut_circuit = get_locations_and_subcircuits(_parametrised())
+    with pytest.raises(ValueError, match="2 parameter_values entries"):
+        CutEstimator(_NeverDoneBackend()).run(
+            [cut_circuit] * 3, "ZZZ", parameter_values=[{THETA: 0.1}, {THETA: 0.2}]
+        )
 
 
 # -- the job ----------------------------------------------------------------------- #
