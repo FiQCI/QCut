@@ -5,6 +5,24 @@ Changelog
 **[WIP] Version 2.5.0**
 =======================
 
+Primitives
+----------
+
+- New :code:`CutEstimator` and :code:`CutQuasiSampler`, shaped like
+  `FiQCI-EMS <https://github.com/FiQCI/fiqci-ems>`__'s estimator and sampler.
+  They run a list of cut circuits in one call and return a job, which gives
+  each circuit's expectation values or quasi-probability distribution together with
+  its standard error. See `Primitives <https://jooniv.github.io/QCut/Primitives.html>`__.
+- They take :code:`parameter_values`, bound into each circuit before its experiment is
+  built. A sweep is the same circuit listed once per set of values. A circuit with a
+  parameter left unbound is refused before anything is submitted.
+- They do not transpile. A cut circuit for a backend with a coupling map has to be
+  transpiled for that same backend with :code:`transpile_subcircuits()` first.
+- :code:`CutCircuit` records the final measurements of the circuit it was split from as
+  :code:`final_measurements` and :code:`uncut_num_clbits`, which is where the sampler
+  reads the measured qubits from. :code:`find_cuts()` and
+  :code:`get_locations_and_subcircuits()` fill them in.
+
 Reorganised source
 ------------------
 
@@ -180,7 +198,7 @@ Observables as qiskit's estimator takes them
 - :code:`run()` and :code:`run_cut_circuit()` take :code:`run_options` as well.
 - Added :code:`ParallelBackend`, which runs an experiment on several backends at once,
   each batch transpiled for the one about to run it.
-  See `Running on several backends <https://jooniv.github.io/QCut/examples/ParallelBackends.html>`__.
+  See `Running on several backends <https://jooniv.github.io/QCut/Hardware.html#running-on-several-backends>`__.
 - Added :code:`transpile_circuits()`, which takes a :code:`CutCircuit`, a
   :code:`CutExperiment` or plain circuits.
 - :code:`transpile_experiments()` defaults to :code:`optimization_level=3` rather than
