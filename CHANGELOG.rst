@@ -43,6 +43,12 @@ Standard errors
 - New :code:`estimate_standard_errors()` gives an upper bound on the shot noise of each
   estimated expectation value, shaped like the values.
 
+Sampling
+--------
+
+- A sampled decomposition without a :code:`seed` records the one it drew as
+  :code:`CutExperiment.seed`.
+
 Fixes
 -----
 
