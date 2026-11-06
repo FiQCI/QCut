@@ -301,3 +301,31 @@ def test_no_budget_leaves_the_split_free_to_be_uneven():
 
     budgeted = ck.find_cuts(_finder_circuit().copy(), options=options)
     assert plan_cost(free, options) <= plan_cost(budgeted, options) + 1e-9
+
+
+def _segments_are_distinct(circuit: QuantumCircuit) -> None:
+    """Every gate puts one new node on each of its qubits, shared with no other."""
+    from QCut.QCutFind.graph_circuit_utils import circ_to_graph
+
+    _, nodes_on_qubit = circ_to_graph(circuit)
+    nodes = [node for segment in nodes_on_qubit.values() for node in segment]
+    assert len(nodes) == len(set(nodes)) == 2 * circuit.size()
+
+
+def test_graph_nodes_are_not_reused_after_a_fresh_pair_of_qubits():
+    """A gate on two unseen qubits used to lower the next free node id."""
+    circuit = QuantumCircuit(11)
+    circuit.cx(0, 1)
+    circuit.cx(1, 9)
+    circuit.cx(2, 3)
+    for _ in range(3):
+        circuit.cx(0, 1)
+    _segments_are_distinct(circuit)
+
+
+def test_graph_builds_when_only_high_qubits_interact():
+    """The graph used to be sized from operation positions, not from its node ids."""
+    circuit = QuantumCircuit(10)
+    circuit.cx(8, 9)
+    circuit.cx(8, 9)
+    _segments_are_distinct(circuit)
