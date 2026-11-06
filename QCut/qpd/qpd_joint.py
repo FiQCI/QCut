@@ -51,11 +51,6 @@ def gamma_separate(thetas: list[float]) -> float:
     return float(np.prod([1 + 2 * abs(np.sin(theta)) for theta in thetas]))
 
 
-def _bit_value(bits: tuple[int, ...]) -> int:
-    """Read a bit tuple as an integer, first element most significant."""
-    return int("".join(str(bit) for bit in bits), 2)
-
-
 def _z_gates(circuit: QuantumCircuit, bits: tuple[int, ...]) -> None:
     """Apply ``Z`` to every qubit whose bit is set."""
     for qubit, bit in enumerate(bits):
@@ -109,12 +104,9 @@ def _diagonal_terms(
     """Return the ``i == j`` terms, one per bit pattern, with no measurements."""
     terms = []
     for bits, coefficient in coefficients.items():
-        ops = []
-        for _ in range(2):
-            circuit = QuantumCircuit(width, name="Z_" + "".join(map(str, bits)))
-            _z_gates(circuit, bits)
-            ops.append(circuit)
-        terms.append({"op_0": ops[0], "op_1": ops[1], "c": coefficient**2})
+        circuit = QuantumCircuit(width, name="Z_" + "".join(map(str, bits)))
+        _z_gates(circuit, bits)
+        terms.append({"op_0": circuit, "op_1": circuit.copy(), "c": coefficient**2})
     return terms
 
 
@@ -199,7 +191,7 @@ def joint_rotation_qpd(thetas: list[float], tol: float = DEFAULT_TOL) -> list[di
 
     terms = _diagonal_terms(width, coefficients)
     for i, j in itertools.combinations(patterns, 2):
-        if _bit_value(i) < _bit_value(j):
+        if i < j:  # equal-length bit tuples order as the integers they spell
             i, j = j, i
         prefactor = 2 * coefficients[i] * coefficients[j]
         if abs(prefactor) <= tol:
