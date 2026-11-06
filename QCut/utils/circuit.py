@@ -8,7 +8,7 @@ from functools import lru_cache
 
 import numpy as np
 from qiskit import ClassicalRegister, QuantumCircuit
-from qiskit.circuit import Barrier, ControlFlowOp, Instruction, Qubit
+from qiskit.circuit import Barrier, ControlFlowOp, Instruction
 from qiskit.circuit.library import get_standard_gate_name_mapping
 
 

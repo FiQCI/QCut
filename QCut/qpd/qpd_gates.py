@@ -227,10 +227,6 @@ i_minus_init.h(0)
 i_minus_init.z(0)
 i_minus_init.s(0)
 
-sdg_meas = QuantumCircuit(1, 1, name="sdg_meas")
-sdg_meas.sdg(0)
-sdg_meas.measure(0, 0)
-
 i_gate = QuantumCircuit(1, name="I")
 i_gate.id(0)
 

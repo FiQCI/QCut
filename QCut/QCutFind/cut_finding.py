@@ -241,21 +241,8 @@ def find_cuts(  # noqa: C901
     max_qubits = options.max_qubits
     cuts = options.finder_cut_mode
 
-    if num_partitions is None:
-        if max_qubits is None:
-            raise ValueError("Either num_partitions or max_qubits must be specified.")
-        num_partitions = len(max_qubits)
-    elif max_qubits is not None and len(max_qubits) != num_partitions:
-        raise ValueError(
-            "If both num_partitions and max_qubits are specified, length of"
-            "max_qubits must match num_partitions."
-        )
-
-    if (max_qubits is not None and len(max_qubits) < 2) or num_partitions < 2:
+    if num_partitions < 2:
         raise ValueError("Number of partitions has to be at least 2")
-
-    if num_partitions == 1:
-        return circuit, [], []
 
     # Kept to record its final measurements on the result, which the circuit is
     # stripped of here, before it is ever split.
@@ -271,7 +258,7 @@ def find_cuts(  # noqa: C901
         return _remember_final_measurements(
             _cheaper_find_cuts(circuit, options), measured
         )
-    if mode == "always" or mode == "auto":
+    if mode == "always":
         # Before the graph is built, so a merged run shows up as one edge to cut rather
         # than several. Nothing is marked yet, so every pair is a candidate.
         circuit = consolidate_two_qubit_blocks(circuit)

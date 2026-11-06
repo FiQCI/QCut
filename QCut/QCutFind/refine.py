@@ -74,22 +74,8 @@ def revert_wire_cut_cost(graph, cut_data_test, cut_data):  # noqa: C901
                 best_neigh = None
 
             leftNode = best_neigh
-            neighbours = [x for x in graph.neighbors(leftNode) if x != leftLeftNode]
-            filtered = neighbours
-            filtered.append(leftNode)
-            filtered.sort()
-
-            # Should never be reached
-            if len(filtered) == 0:
-                raise RuntimeError(
-                    "No valid neighbours found for filtered list; cannot proceed."
-                    "If you encounter this open an issue in github"
-                )
-
-            rightNode = leftNode
-
             connected_2q_gates = []
-            nodes_to_explore = [rightNode]
+            nodes_to_explore = [leftNode]
             prev_leftNodes = [leftNode]
 
             for i in nodes_to_explore:
@@ -211,13 +197,6 @@ def swap_qubits(  # noqa: C901
         for n in nodes_set:
             # Combine in_edges/out_edges, filter by gate edges, deduplicate
             for e in graph.in_edges(n):
-                if is_gate_edge(e):
-                    u, v, d = e
-                    key = (u, v) if u <= v else (v, u)
-                    if key not in seen_pairs:
-                        seen_pairs.add(key)
-                        res.append((u, v, d))
-            for e in graph.out_edges(n):
                 if is_gate_edge(e):
                     u, v, d = e
                     key = (u, v) if u <= v else (v, u)

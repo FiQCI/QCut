@@ -281,14 +281,11 @@ def _record_spent_qubits(subcircuits):
 
 
 def get_qubit_map(subcircuits: list[QuantumCircuit]):
-    def filter_obs_i(qc_data):
-        return [i for i in qc_data if "obs" in i.operation.name]
-
     map_qubit = {}
     count = 0
-    for ind, i in enumerate(reversed(subcircuits)):
+    for i in reversed(subcircuits):
         for j in sorted(
-            filter_obs_i(i.data),
+            [elem for elem in i.data if "obs" in elem.operation.name],
             key=lambda x: i.find_bit(x.qubits[0]).index,
             reverse=True,
         ):

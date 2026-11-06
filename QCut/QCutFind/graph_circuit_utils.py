@@ -244,15 +244,11 @@ def circ_to_graph(circuit, mode="both"):  # noqa: C901
                 added[-1],
                 (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
             )
-            if ind == []:
-                G.add_edge(op[1][2][0], added[-1], (op[1][2][0], get_wire_weight(mode)))
+
+            if len(ind) == 1:
+                G.add_edge(ind[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode)))
             else:
-                if len(ind) == 1:
-                    G.add_edge(
-                        ind[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind[-1], ind[-2], (op[1][2][0], get_wire_weight(mode)))
+                G.add_edge(ind[-1], ind[-2], (op[1][2][0], get_wire_weight(mode)))
         elif op[1][2][0] not in track_nodes.keys():
             update_added(added_set, added, op)
 
@@ -272,15 +268,11 @@ def circ_to_graph(circuit, mode="both"):  # noqa: C901
                 added[-1],
                 (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
             )
-            if ind == []:
-                G.add_edge(op[1][2][1], added[-1], (op[1][2][1], get_wire_weight(mode)))
+
+            if len(ind) == 1:
+                G.add_edge(ind[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode)))
             else:
-                if len(ind) == 1:
-                    G.add_edge(
-                        ind[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind[-1], ind[-2], (op[1][2][1], get_wire_weight(mode)))
+                G.add_edge(ind[-1], ind[-2], (op[1][2][1], get_wire_weight(mode)))
         else:
             update_added(added_set, added, op)
             track_nodes[op[1][2][0]].append(added[-2])
@@ -296,24 +288,16 @@ def circ_to_graph(circuit, mode="both"):  # noqa: C901
                 added[-1],
                 (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
             )
-            if ind0 == []:
-                G.add_edge(op[1][2][0], added[-1], (op[1][2][0], get_wire_weight(mode)))
+
+            if len(ind0) == 1:
+                G.add_edge(ind0[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode)))
             else:
-                if len(ind0) == 1:
-                    G.add_edge(
-                        ind0[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind0[-1], ind0[-2], (op[1][2][0], get_wire_weight(mode)))
-            if ind1 == []:
-                G.add_edge(op[1][2][1], added[-2], (op[1][2][1], get_wire_weight(mode)))
+                G.add_edge(ind0[-1], ind0[-2], (op[1][2][0], get_wire_weight(mode)))
+
+            if len(ind1) == 1:
+                G.add_edge(ind1[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode)))
             else:
-                if len(ind1) == 1:
-                    G.add_edge(
-                        ind1[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind1[-1], ind1[-2], (op[1][2][1], get_wire_weight(mode)))
+                G.add_edge(ind1[-1], ind1[-2], (op[1][2][1], get_wire_weight(mode)))
 
     # Remove nodes with degree 0 (not connected to anything)
     isolated_nodes = [node for node in G.node_indices() if G.degree(node) == 0]
