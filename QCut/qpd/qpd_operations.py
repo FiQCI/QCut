@@ -176,6 +176,23 @@ def plan_cost(cut_circuit, options, respect_backend: bool = True) -> float:
     return total
 
 
+def _insert_block(subcircuit, at, block, qubits, clbit_index) -> int:
+    """Replace the placeholder at ``at`` with ``block`` acting on ``qubits``.
+
+    A ``measure`` in the block writes classical bit ``clbit_index``. Returns how far
+    the instructions after it moved.
+    """
+    subcircuit.data.pop(at)
+    for subop in reversed(block.data):
+        clbits = (
+            [subcircuit.cregs[0][clbit_index]]
+            if subop.operation.name == "measure"
+            else []
+        )
+        subcircuit._data.insert(at, CircuitInstruction(subop.operation, qubits, clbits))
+    return len(block.data) - 1
+
+
 def _insert_wire_cut_qpd(
     ind,
     op,
@@ -185,71 +202,26 @@ def _insert_wire_cut_qpd(
     qpd,
     classical_bit_index,
 ):
-    if "Meas" in op.operation.name:  # if measure channel remove placeholder
-        # and insert current
-        # qpd operation
-        qubit_index = subcircuit.find_bit(op.qubits[0]).index
-        subcircuit.data.pop(ind + offset)  # remove placeholder
-        # measure channel
-        qpd_qubits.append(qubit_index)  # store index
-        qubits_for_operation = [subcircuit.qubits[qubit_index]]
-        meas_op = qpd[int(op.operation.name.split("_")[-1])]["op_0"]
-        if meas_op.name == "id-meas":  # if identity measure channel
-            # store indices
-            # remove extra classical bits and registers
-            # _adjust_cregs(subcircuit)
-            for subop in reversed(meas_op.data):
-                subcircuit._data.insert(
-                    ind + offset,
-                    CircuitInstruction(
-                        operation=subop.operation, qubits=qubits_for_operation
-                    ),
-                )
-        else:
-            for subop in reversed(meas_op.data):
-                if subop.operation.name == "measure":
-                    subcircuit._data.insert(
-                        ind + offset,
-                        CircuitInstruction(
-                            operation=subop.operation,
-                            qubits=qubits_for_operation,
-                            clbits=[subcircuit.cregs[0][classical_bit_index]],
-                        ),
-                    )
-                else:
-                    subcircuit._data.insert(
-                        ind + offset,
-                        CircuitInstruction(
-                            operation=subop.operation,
-                            qubits=qubits_for_operation,
-                        ),
-                    )
-
-            # increment classical bit counter
+    row = qpd[int(op.operation.name.split("_")[-1])]
+    if "Meas" in op.operation.name:
+        qpd_qubits.append(subcircuit.find_bit(op.qubits[0]).index)
+        block = row["op_0"]
+        offset += _insert_block(
+            subcircuit, ind + offset, block, op.qubits[:1], classical_bit_index
+        )
+        # The identity channel measures nothing, so it takes no bit.
+        if block.name != "id-meas":
             classical_bit_index += 1
 
-        offset += len(meas_op.data) - 1
-
     if "Init" in op.operation.name:
-        subcircuit.data.pop(ind + offset)
-        init_op = qpd[int(op.operation.name.split("_")[-1])]["op_1"]
-        qubits_for_operation = [
-            subcircuit.qubits[subcircuit.find_bit(x).index] for x in op.qubits
-        ]
-        for subop in reversed(init_op.data):
-            subcircuit._data.insert(
-                ind + offset,
-                CircuitInstruction(
-                    operation=subop.operation, qubits=qubits_for_operation
-                ),
-            )
-
-        offset += len(init_op) - 1
+        offset += _insert_block(
+            subcircuit, ind + offset, row["op_1"], op.qubits, classical_bit_index
+        )
 
     return offset, classical_bit_index
 
 
-def _insert_2qubit_gate_cut_qpd(  # noqa: C901
+def _insert_2qubit_gate_cut_qpd(
     ind,
     op,
     subcircuit,
@@ -258,73 +230,15 @@ def _insert_2qubit_gate_cut_qpd(  # noqa: C901
     qpd,
     classical_bit_index,
 ):
-    if "_c_" in op.operation.name:  # if measure channel remove placeholder
-        # and insert current
-        # qpd operation
-
-        qubit_index = subcircuit.find_bit(op.qubits[0]).index
-        subcircuit.data.pop(ind + offset)  # remove placeholder
-        # measure channel
-        # qpd_qubits.append(qubit_index)  # store index
-        qubits_for_operation = [subcircuit.qubits[qubit_index]]
-        meas_op = qpd[int(op.operation.name.split("_")[-1])]["op_0"]
-        for subop in reversed(meas_op.data):
-            if subop.operation.name in ["measure"]:
-                subcircuit._data.insert(
-                    ind + offset,
-                    CircuitInstruction(
-                        operation=subop.operation,
-                        qubits=qubits_for_operation,
-                        clbits=[subcircuit.cregs[0][classical_bit_index]],
-                    ),
-                )
-            else:
-                subcircuit._data.insert(
-                    ind + offset,
-                    CircuitInstruction(
-                        operation=subop.operation,
-                        qubits=qubits_for_operation,
-                    ),
-                )
-
-        # increment classical bit counter
-        classical_bit_index += 1
-
-        offset += len(meas_op) - 1
-
-    if "_t_" in op.operation.name:
-        # and insert current
-        # qpd operation
-        qubit_index = subcircuit.find_bit(op.qubits[0]).index
-        subcircuit.data.pop(ind + offset)  # remove placeholder
-        # measure channel
-        # qpd_qubits.append(qubit_index)  # store index
-        qubits_for_operation = [subcircuit.qubits[qubit_index]]
-        meas_op = qpd[int(op.operation.name.split("_")[-1])]["op_1"]
-
-        for subop in reversed(meas_op.data):
-            if subop.operation.name in ["measure"]:
-                subcircuit._data.insert(
-                    ind + offset,
-                    CircuitInstruction(
-                        operation=subop.operation,
-                        qubits=qubits_for_operation,
-                        clbits=[subcircuit.cregs[0][classical_bit_index]],
-                    ),
-                )
-            else:
-                subcircuit._data.insert(
-                    ind + offset,
-                    CircuitInstruction(
-                        operation=subop.operation,
-                        qubits=qubits_for_operation,
-                    ),
-                )
-
-        # increment classical bit counter
-        classical_bit_index += 1
-
-        offset += len(meas_op) - 1
+    row = qpd[int(op.operation.name.split("_")[-1])]
+    for side, key in (("_c_", "op_0"), ("_t_", "op_1")):
+        if side in op.operation.name:
+            offset += _insert_block(
+                subcircuit, ind + offset, row[key], op.qubits[:1], classical_bit_index
+            )
+            # Taken even when the block measures nothing. Unwritten bits are dropped
+            # afterwards and their sign restored, see compact_qpd_register.
+            classical_bit_index += 1
 
     return offset, classical_bit_index
 
