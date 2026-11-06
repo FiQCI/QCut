@@ -17,9 +17,8 @@ from QCut.execution.waves import MEASURE_SHARE
 from QCut.qpd.bundle import plan_bundles
 from QCut.qpd.qpd_locc import (
     MAX_BLOCK,
-    _label_sign,
     _lagrangians,
-    _parity,
+    _sign,
     _span,
     _symplectic,
     gamma_local,
@@ -101,7 +100,7 @@ def test_decomposition_reconstructs_the_identity_channel(width):
         measured = unitary[:, _column(term["label"])]
         prepared_label = tuple(int(bit) for bit in term["op_1"].name.split("-")[-1])
         prepared = unitary[:, _column(prepared_label)]
-        weight = term["c"] / _label_sign(term["label"]) / _parity(width) * dimension
+        weight = term["c"] / _sign(term["label"]) * dimension
         total += weight * _prepare_and_project(
             width,
             unitary,
