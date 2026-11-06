@@ -10,3 +10,4 @@ Worked examples as notebooks, each runnable on its own.
    QAOA Example <notebooks/QCutQAOAExample.ipynb>
    Cut Options Example <notebooks/QCutOptionsExample.ipynb>
    Probability Distributions <notebooks/QCutProbabilities.ipynb>
+   Simpler Cut Primitive example <notebooks/QCutPrimitiveSimple.ipynb>
