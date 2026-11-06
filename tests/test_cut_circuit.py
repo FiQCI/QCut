@@ -10,8 +10,8 @@ from qiskit_aer.primitives import SamplerV2
 
 import QCut as ck
 from QCut import cut, cutGate
-from QCut.execution import job as job_module
-from QCut.execution.qcutresult import CircuitResult
+from QCut.job import handle as job_module
+from QCut.job.cutresult import CircuitResult
 from QCut.options import CutOptions
 
 cut_qc = QuantumCircuit(4)
@@ -46,6 +46,45 @@ def test_cut_circuit_assign_parameters():
                         assert "mult" not in elem.name
                 else:
                     assert True
+
+
+def _spread_parameters():
+    """One parameter in each of two subcircuits, so neither holds all of them."""
+    first, second = Parameter("first"), Parameter("second")
+    circuit = QuantumCircuit(4)
+    circuit.ry(first, 0)
+    circuit.cx(0, 1)
+    circuit.append(cut(), [1])
+    circuit.cx(1, 2)
+    circuit.ry(second, 3)
+    circuit.cx(2, 3)
+    return ck.get_locations_and_subcircuits(circuit), first, second
+
+
+@pytest.mark.parametrize("inplace", [False, True])
+@pytest.mark.parametrize("by_name", [False, True])
+def test_parameters_spread_over_subcircuits_are_all_bound(inplace, by_name):
+    """Every subcircuit is given all the parameters and ignores those it lacks.
+
+    Strict binding used to raise on each subcircuit for the parameter it lacked, and
+    the failure was swallowed, leaving every subcircuit unbound.
+    """
+    spread, first, second = _spread_parameters()
+    values = {"first": 0.1, "second": 0.2} if by_name else {first: 0.1, second: 0.2}
+    experiment = ck.get_experiment_circuits(spread, "ZZZZ")
+
+    bound_circuit = spread.assign_parameters(values, inplace=inplace)
+    bound_experiment = experiment.assign_parameters(values, inplace=inplace)
+    if inplace:
+        bound_circuit, bound_experiment = spread, experiment
+
+    assert all(not sub.parameters for sub in bound_circuit.subcircuits)
+    assert all(
+        not circuit.parameters
+        for group in bound_experiment.experiments
+        for setting in group
+        for circuit in setting.values()
+    )
 
 
 observables = ["IIIZ", "IIZI", "IZII", "IIZZ"]
@@ -102,7 +141,7 @@ def test_results_carry_their_own_experiment():
 
 def test_results_without_an_experiment_say_so():
     """A hand-built result carries nothing, so the estimator cannot interpret it."""
-    from QCut.execution.qcutresult import RawResult
+    from QCut.job.cutresult import RawResult
 
     bare = RawResult([], 1024)
     assert bare.experiment is None

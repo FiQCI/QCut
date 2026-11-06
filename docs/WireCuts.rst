@@ -51,7 +51,7 @@ measures tells the side that prepares what it saw, and the block then costs
 
 The shot count scales as :math:`\gamma^2`, so a block of two is around five times
 cheaper and a block of three around eighteen times. The construction is ancilla-free and
-is derived in :doc:`../Theory`.
+is derived in :doc:`Theory`.
 
 .. code:: python
 
@@ -94,4 +94,4 @@ The advertised :math:`\gamma` assumes the prepared state follows the measured ou
 shot by shot. Emulating that with batched runs and post-selection costs extra, and at a
 single wire that extra outweighs the gain, which is why ``wire_cut_communication``
 defaults to ``"auto"`` and applies only to blocks of two or more. ``"always"`` uses it
-for any block including single wires, and ``"never"`` for none. See :doc:`../Options`.
+for any block including single wires, and ``"never"`` for none. See :doc:`Options`.

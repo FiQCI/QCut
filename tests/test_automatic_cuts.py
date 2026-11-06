@@ -10,7 +10,7 @@ import QCut as ck
 import tests.solutions_automatic_cuts as sq
 from QCut import CutOptions, find_cuts
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.circuit_knitting import run_cut_circuit
+from QCut.execution.run import run_cut_circuit
 from QCut.QCutFind.combine_subcircuits import construct_final_subcircuits
 
 #: Bound on each expectation value. The failure this guards against, a cut circuit that
@@ -301,3 +301,55 @@ def test_no_budget_leaves_the_split_free_to_be_uneven():
 
     budgeted = ck.find_cuts(_finder_circuit().copy(), options=options)
     assert plan_cost(free, options) <= plan_cost(budgeted, options) + 1e-9
+
+
+def _segments_are_distinct(circuit: QuantumCircuit) -> None:
+    """Every gate puts one new node on each of its qubits, shared with no other."""
+    from QCut.QCutFind.graph_circuit_utils import circ_to_graph
+
+    _, nodes_on_qubit = circ_to_graph(circuit)
+    nodes = [node for segment in nodes_on_qubit.values() for node in segment]
+    assert len(nodes) == len(set(nodes)) == 2 * circuit.size()
+
+
+def test_graph_nodes_are_not_reused_after_a_fresh_pair_of_qubits():
+    """A gate on two unseen qubits used to lower the next free node id."""
+    circuit = QuantumCircuit(11)
+    circuit.cx(0, 1)
+    circuit.cx(1, 9)
+    circuit.cx(2, 3)
+    for _ in range(3):
+        circuit.cx(0, 1)
+    _segments_are_distinct(circuit)
+
+
+def test_graph_builds_when_only_high_qubits_interact():
+    """The graph used to be sized from operation positions, not from its node ids."""
+    circuit = QuantumCircuit(10)
+    circuit.cx(8, 9)
+    circuit.cx(8, 9)
+    _segments_are_distinct(circuit)
+
+
+def _chain_with_idle_qubits() -> QuantumCircuit:
+    """A chain on qubits 0-3, with 4 and 5 left out of it."""
+    circuit = QuantumCircuit(6)
+    circuit.h(0)
+    for qubit in range(3):
+        circuit.cx(qubit, qubit + 1)
+    circuit.x(5)
+    return circuit
+
+
+def test_qubits_no_cut_separates_join_a_cut_part():
+    """They used to come back as one-qubit subcircuits of their own."""
+    cut_circuit = find_cuts(_chain_with_idle_qubits(), options=CutOptions(seed=1))
+    assert sorted(cut_circuit.num_qubits) == [3, 3]
+
+
+def test_idle_qubits_do_not_make_a_cut_that_separates_nothing_valid():
+    """The idle qubits used to count as the parts the cut produced."""
+    circuit = _chain_with_idle_qubits()
+    circuit.append(ck.cutCZ(), [0, 1])  # the cx before it still joins 0 and 1
+    with pytest.raises(QCutError, match="Invalid cuts"):
+        ck.get_locations_and_subcircuits(circuit)

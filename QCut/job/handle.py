@@ -12,7 +12,7 @@ from qiskit.providers import JobStatus
 from qiskit.providers.exceptions import JobTimeoutError
 
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.qcutresult import CircuitResult, RawResult
+from QCut.job.cutresult import CircuitResult, RawResult
 
 logger: logging.Logger = logging.getLogger(__name__)
 

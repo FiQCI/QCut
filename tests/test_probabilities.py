@@ -11,14 +11,14 @@ from qiskit_aer import AerSimulator
 
 import QCut as ck
 from QCut import CutOptions, cut, cutGate
-from QCut.execution.postprocess import estimate_expectation_values, walsh_hadamard
-from QCut.execution.probabilities import (
+from QCut.post_process.postprocess import estimate_expectation_values, walsh_hadamard
+from QCut.post_process.probabilities import (
     DEFAULT_TOP,
     QuasiProbabilities,
-    _all_z_paulis_for_subset,
     _dense_values,
     _separable_form,
 )
+from QCut.utils.observables import _all_z_paulis_for_subset
 
 SHOTS = 40000
 

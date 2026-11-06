@@ -1,16 +1,20 @@
 """User-facing configuration for the cutting workflow.
 
-Options are collected once and carried on :class:`QCut.cutcircuit.CutCircuit`, which
-passes them to :class:`QCut.cutcircuit.CutExperiment`. Everything downstream reads them
-from there, so adding a knob does not mean widening five signatures.
+Options are collected once and carried on :class:`QCut.model.cutcircuit.CutCircuit`,
+which passes them to :class:`QCut.model.cutcircuit.CutExperiment`. Everything downstream
+reads them from there, so adding a knob does not mean widening five signatures.
 
 Most of them have to be fixed before the subcircuits are built, because they decide how
 the quasiprobability decomposition is formed and therefore what the coefficients mean. A
 :class:`CutOptions` is frozen for that reason. ``deduplicate`` is the exception: it
 changes only how an experiment is submitted, so it can be flipped on a built
-:class:`QCut.cutcircuit.CutExperiment`. It lives here anyway, so that
+:class:`QCut.model.cutcircuit.CutExperiment`. It lives here anyway, so that
 :func:`QCut.estimate_run` and :func:`QCut.submit_experiments` read one setting and
 cannot disagree about what a run costs.
+
+TODO: add a separate ``JobOptions`` for how a run is submitted, starting with whether
+the primitives batch circuits across experiments. ``deduplicate`` and the
+``max_batch_size`` and ``run_options`` arguments may belong there too.
 """
 
 from __future__ import annotations
@@ -70,7 +74,8 @@ class CutOptions:
     :data:`ExpansionStrategy`. Under ``"auto"``, ``max_exact_groups`` is the largest
     exact group count still enumerated rather than sampled. When sampling,
     ``num_samples`` draws are taken, defaulting to ``max_exact_groups``, and ``seed``
-    fixes the sampler for a reproducible experiment set.
+    fixes the sampler for a reproducible experiment set. Without one, a seed is drawn
+    and kept as ``CutExperiment.seed``.
 
     ``deduplicate`` submits each distinct experiment circuit once and shares its result
     between every slot it fills, rather than running the same circuit once per group.

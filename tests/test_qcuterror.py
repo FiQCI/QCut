@@ -2,9 +2,10 @@
 
 from qiskit import QuantumCircuit
 
-# import QCut as ck
-from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
 from QCut.errors.qcuterror import QCutError
+
+# import QCut as ck
+from QCut.pre_process.circuit_preparation import get_locations_and_subcircuits
 
 qc = QuantumCircuit(2)
 qc.h(0)

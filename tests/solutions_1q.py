@@ -2,7 +2,7 @@ from qiskit import QuantumCircuit, QuantumRegister
 from qiskit.quantum_info import SparsePauliOp
 
 from QCut import cut
-from QCut.cutlocation import SingleQubitCutLocation as CutLocation
+from QCut.model.cutlocation import SingleQubitCutLocation as CutLocation
 
 qc_1 = QuantumCircuit(3)
 qc_1.x(0)

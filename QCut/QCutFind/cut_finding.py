@@ -8,10 +8,13 @@ import rustworkx as rx
 from qiskit import transpile
 from qiskit.circuit import CircuitInstruction
 
-from QCut.cutting.circuit_preparation import get_locations_and_subcircuits
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks
 from QCut.errors.qcuterror import QCutError
 from QCut.options import CutOptions, resolve
+from QCut.pre_process.circuit_preparation import (
+    _remember_final_measurements,
+    get_locations_and_subcircuits,
+)
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks
 from QCut.QCutFind.graph_circuit_utils import circ_to_graph
 from QCut.QCutFind.metis import (
     BUDGET_UFACTORS,
@@ -53,18 +56,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def extract_cuts(graph, labels):  # noqa: C901
-    cut_edges = []
-
-    for u, v in graph.edge_list():
-        if labels[u] != labels[v]:
-            cut_edges.append((u, v))
-
-    cut_data_test = []
-
-    for edge in cut_edges:
-        cut_data_test.append(graph.get_edge_data(edge[0], edge[1]))
-        # Collect all unique nodes involved in cut_edges
-    cut_nodes = set()
+    cut_edges = [(u, v) for u, v in graph.edge_list() if labels[u] != labels[v]]
+    cut_data_test = [graph.get_edge_data(u, v) for u, v in cut_edges]
     cut_data = []
     for u, v in cut_edges:
         # Get all edges connected to u and v (excluding the cut edge itself)
@@ -91,9 +84,6 @@ def extract_cuts(graph, labels):  # noqa: C901
             ]
             min_edge = min(filtered_edges, key=lambda x: x[2])
             cut_data.append(min_edge)
-
-        cut_nodes.add(u)
-        cut_nodes.add(v)
 
     return cut_data, cut_data_test
 
@@ -238,22 +228,12 @@ def find_cuts(  # noqa: C901
     max_qubits = options.max_qubits
     cuts = options.finder_cut_mode
 
-    if num_partitions is None:
-        if max_qubits is None:
-            raise ValueError("Either num_partitions or max_qubits must be specified.")
-        num_partitions = len(max_qubits)
-    elif max_qubits is not None and len(max_qubits) != num_partitions:
-        raise ValueError(
-            "If both num_partitions and max_qubits are specified, length of"
-            "max_qubits must match num_partitions."
-        )
-
-    if (max_qubits is not None and len(max_qubits) < 2) or num_partitions < 2:
+    if num_partitions < 2:
         raise ValueError("Number of partitions has to be at least 2")
 
-    if num_partitions == 1:
-        return circuit, [], []
-
+    # Kept to record its final measurements on the result, which the circuit is
+    # stripped of here, before it is ever split.
+    measured = circuit
     circuit = circuit.remove_final_measurements(inplace=False)
 
     circuit = transpile(circuit, optimization_level=0, basis_gates=BASIS_GATES)
@@ -262,8 +242,10 @@ def find_cuts(  # noqa: C901
     if mode == "auto" and consolidate_two_qubit_blocks(circuit) is circuit:
         mode = "never"  # nothing was worth merging, so there is nothing to compare
     if mode == "auto":
-        return _cheaper_find_cuts(circuit, options)
-    if mode == "always" or mode == "auto":
+        return _remember_final_measurements(
+            _cheaper_find_cuts(circuit, options), measured
+        )
+    if mode == "always":
         # Before the graph is built, so a merged run shows up as one edge to cut rather
         # than several. Nothing is marked yet, so every pair is a candidate.
         circuit = consolidate_two_qubit_blocks(circuit)
@@ -327,28 +309,15 @@ def find_cuts(  # noqa: C901
                 cuts,
             )
 
-        cut_circuit = add_cuts_to_circuit(circuit, cut_data, cut_data_test)
-
-        if max_qubits is not None:
-            final_cut_circuit = get_locations_and_subcircuits(
-                cut_circuit, max_qubits=max_qubits, options=options
-            )
-        else:
-            final_cut_circuit = get_locations_and_subcircuits(
-                cut_circuit, options=options
-            )
-
+        split = get_locations_and_subcircuits(
+            add_cuts_to_circuit(circuit, cut_data, cut_data_test),
+            max_qubits=max_qubits,
+            options=options,
+        )
         # Costed after refinement, because refinement can add cuts of its own.
-        cost = plan_cost(final_cut_circuit, options)
+        cost = plan_cost(split, options)
         if best is None or cost < best[0]:
-            best = (
-                cost,
-                final_cut_circuit,
-                cut_circuit,
-                cut_data,
-                cut_data_test,
-                labels,
-            )
+            best = (cost, split)
 
     if best is None:  # pragma: no cover - there is always at least one candidate
         raise QCutError("no candidate partition could be costed")
@@ -358,6 +327,4 @@ def find_cuts(  # noqa: C901
             f"Costed {len(candidates)} candidate partition(s), keeping one at "
             f"gamma={best[0]:.6g}."
         )
-    _, final_cut_circuit, cut_circuit, cut_data, cut_data_test, labels = best
-
-    return final_cut_circuit
+    return _remember_final_measurements(best[1], measured)

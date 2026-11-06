@@ -12,12 +12,13 @@ from qiskit.circuit import Gate, Instruction
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.transpiler import PassManager, Target
 
-from QCut.cutcircuit import CutCircuit, CutExperiment
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.move_routing import is_resonator_backend, move_route
+from QCut.model.cutcircuit import CutCircuit, CutExperiment
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.qpd.bundle import locate_placeholders, plan_bundles
-from QCut.utils.circuit_utils import (
+from QCut.transpilation.move_routing import move_route
+from QCut.utils.backend import is_resonator_backend
+from QCut.utils.circuit import (
     MarkerSpan,
     _drop_barriers,
     _fence_markers,
@@ -30,6 +31,8 @@ from QCut.utils.circuit_utils import (
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+# TODO(3.0): import directly once the qiskit floor is 1.4 or newer, and drop the
+# manual fallback in _drop_identities.
 try:
     from qiskit.transpiler.passes import RemoveIdentityEquivalent
 
@@ -400,14 +403,7 @@ def transpile_subcircuits(
             barriers_to_markers(route(subcircuit), marker_names)
             for subcircuit in cut_circuit.subcircuits
         ]
-        return CutCircuit(
-            subcircuits=transpiled,
-            cut_locations=cut_circuit.cut_locations,
-            map_qubit=cut_circuit.map_qubit,
-            options=cut_circuit.options,
-            uncut_num_qubits=cut_circuit.uncut_num_qubits,
-            backend=backend,
-        )
+        return cut_circuit._replace(subcircuits=transpiled, backend=backend)
 
     def qiskit_translate(subcircuit, spans_for):
         translated = transpile(
@@ -436,14 +432,7 @@ def transpile_subcircuits(
         for index, subcircuit in enumerate(cut_circuit.subcircuits)
     ]
 
-    return CutCircuit(
-        subcircuits=transpiled,
-        cut_locations=cut_circuit.cut_locations,
-        map_qubit=cut_circuit.map_qubit,
-        options=cut_circuit.options,
-        uncut_num_qubits=cut_circuit.uncut_num_qubits,
-        backend=backend,
-    )
+    return cut_circuit._replace(subcircuits=transpiled, backend=backend)
 
 
 def transpile_experiments(
@@ -502,23 +491,7 @@ def transpile_experiments(
         for exps in cut_experiment.experiments
     ]
 
-    return CutExperiment(
-        subexperiments,
-        cut_locations=cut_experiment.cut_locations,
-        map_qubit=cut_experiment.map_qubit,
-        coefficients=cut_experiment.coefficients,
-        observables=cut_experiment._observables,
-        qubits=cut_experiment.qubits,
-        options=cut_experiment.options,
-        backend=backend,
-        num_draws=cut_experiment._num_draws,
-        plan=cut_experiment.plan,
-        qpd_bits=cut_experiment.qpd_bits,
-        gamma=cut_experiment.gamma,
-        optimal_gamma=cut_experiment.optimal_gamma,
-        can_reconstruct_probabilities=cut_experiment.can_reconstruct_probabilities,
-        uncut_num_qubits=cut_experiment._uncut_num_qubits,
-    )
+    return cut_experiment._replace(experiments=subexperiments, backend=backend)
 
 
 def transpile_circuits(

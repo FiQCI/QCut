@@ -4,21 +4,37 @@ a group of circuits."""
 
 from __future__ import annotations
 
-from typing import Iterable
+import copy
+from typing import Iterable, Literal, overload
 
 from qiskit import QuantumCircuit
 from qiskit.primitives.containers.observables_array import ObservablesArray
 from qiskit.quantum_info import SparsePauliOp
 
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
-from QCut.execution.observables import (
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
+from QCut.options import CutOptions, resolve
+from QCut.utils.observables import (
     ObservablesLike,
     ObservableSpec,
+    _all_z_paulis_for_subset,
     coerce_observables,
     per_term_observables,
 )
-from QCut.execution.probabilities import _all_z_paulis_for_subset
-from QCut.options import CutOptions, resolve
+
+
+# TODO(3.0): use assign_parameters(strict=False) directly once the floor is qiskit 2.1.
+def _assign_present(circuit: QuantumCircuit, parameters: dict) -> QuantumCircuit:
+    """Bind the parameters ``circuit`` has and ignore the rest.
+
+    Some qiskit releases (1.2, 2.0) still raise for an unknown name even with
+    ``strict=False``.
+    """
+    present = {
+        key: value
+        for key, value in parameters.items()
+        if not isinstance(key, str) or circuit.has_parameter(key)
+    }
+    return circuit.assign_parameters(present, strict=False)
 
 
 class CutCircuit:
@@ -34,8 +50,16 @@ class CutCircuit:
         uncut_num_qubits: int,
         backend=None,
         options: CutOptions | None = None,
+        final_measurements: tuple[tuple[int, int], ...] = (),
+        uncut_num_clbits: int = 0,
     ) -> None:
-        """Init."""
+        """Init.
+
+        ``final_measurements`` and ``uncut_num_clbits`` remember what the uncut circuit
+        measured at its end, since splitting strips those measurements: one
+        ``(qubit, clbit)`` pair per measurement, as indices into the uncut circuit, and
+        how many classical bits it had.
+        """
 
         self.subcircuits = subcircuits
         self.cut_locations = cut_locations
@@ -43,6 +67,8 @@ class CutCircuit:
         self.uncut_num_qubits = uncut_num_qubits
         self.backend = backend
         self.options = resolve(options)
+        self.final_measurements = tuple(final_measurements)
+        self.uncut_num_clbits = uncut_num_clbits
         self._gamma: tuple[float, float] | None = None
 
     def _costs(self) -> tuple[float, float]:
@@ -62,6 +88,13 @@ class CutCircuit:
             )
         return self._gamma
 
+    def _replace(self, **changes) -> CutCircuit:
+        """A copy with ``changes`` applied, its cost worked out again when asked for."""
+        new = copy.copy(self)
+        new.__dict__.update(changes)
+        new._gamma = None
+        return new
+
     @property
     def gamma(self) -> float:
         """Sampling overhead of this split, as it will actually be run."""
@@ -72,12 +105,25 @@ class CutCircuit:
         """The least these same cuts could cost with every decomposition available."""
         return self._costs()[1]
 
-    def assign_parameters(self, parameters: dict, inplace=False) -> CutCircuit | None:
+    @overload
+    def assign_parameters(
+        self, parameters: dict, inplace: Literal[False] = ...
+    ) -> CutCircuit: ...
+
+    @overload
+    def assign_parameters(self, parameters: dict, inplace: Literal[True]) -> None: ...
+
+    def assign_parameters(
+        self, parameters: dict, inplace: bool = False
+    ) -> CutCircuit | None:
         """Assign parameters to the circuits. Same as qiskit
         QuantumCircuit.assign_parameters.
 
         Parameters on a cut gate are bound too. Those live on the cut location rather
         than in any subcircuit, but a generated QPD needs them numeric.
+
+        Every subcircuit is given all of ``parameters``; any it does not contain are
+        ignored.
         """
         bound_locations = [
             location.assign_parameters(parameters)
@@ -86,30 +132,12 @@ class CutCircuit:
             for location in self.cut_locations
         ]
 
+        bound = [_assign_present(circuit, parameters) for circuit in self.subcircuits]
         if inplace:
-            for ind, circuit in enumerate(self.subcircuits):
-                try:
-                    self.subcircuits[ind] = circuit.assign_parameters(parameters)
-                except Exception:
-                    pass
+            self.subcircuits[:] = bound
             self.cut_locations = bound_locations
-            return
-
-        else:
-            new_circuits = []
-            for ind, circuit in enumerate(self.subcircuits):
-                try:
-                    new_circuits.append(circuit.assign_parameters(parameters))
-                except Exception:
-                    new_circuits.append(circuit)
-            return CutCircuit(
-                subcircuits=new_circuits,
-                cut_locations=bound_locations,
-                map_qubit=self.map_qubit,
-                backend=self.backend,
-                options=self.options,
-                uncut_num_qubits=self.uncut_num_qubits,
-            )
+            return None
+        return self._replace(subcircuits=bound, cut_locations=bound_locations)
 
     @property
     def num_qubits(self):
@@ -165,7 +193,7 @@ class CutExperiment:
         observables themselves are built on demand -- see :attr:`observables`.
 
         ``observables`` is taken the way qiskit's estimator takes them, and is kept as
-        an :class:`QCut.execution.observables.ObservableSpec`.
+        an :class:`QCut.utils.observables.ObservableSpec`.
         """
 
         self.experiments = experiment_circuits
@@ -193,9 +221,9 @@ class CutExperiment:
         An experiment built from ``qubits`` is built for every Pauli Z over them, and
         there are ``2**k`` of those. They all share one measurement setting, so none of
         them shapes a circuit, and reconstructing the distribution does not go through
-        them either, see :func:`QCut.execution.probabilities._separable_form`. So they
-        are built here, on demand, for whoever does want them: estimating them one at a
-        time with :func:`QCut.estimate_expectation_values` still works.
+        them either, see :func:`QCut.post_process.probabilities._separable_form`. So
+        they are built here, on demand, for whoever does want them: estimating them one
+        at a time with :func:`QCut.estimate_expectation_values` still works.
 
         Raises:
             ValueError: the experiment was given ``qubits`` but not the width they span,
@@ -238,48 +266,32 @@ class CutExperiment:
         self, parameters: dict, inplace=False
     ) -> CutExperiment | None:
         """Assign parameters to the circuits. Same as qiskit
-        QuantumCircuit.assign_parameters."""
+        QuantumCircuit.assign_parameters.
+
+        Every circuit is given all of ``parameters``; any it does not contain are
+        ignored.
+        """
         if inplace:
-            for exp_ind, subcircuits in enumerate(self.experiments):
-                for circ_ind, value in enumerate(subcircuits):
-                    for ind, circuit in value.items():
-                        try:
-                            self.experiments[exp_ind][circ_ind][ind] = (
-                                circuit.assign_parameters(parameters)
-                            )
-                        except Exception:
-                            pass
-            return
-        else:
-            new_experiments = []
-            for exp_ind, subcircuits in enumerate(self.experiments):
-                new_subcircuits = []
-                for circ_ind, value in enumerate(subcircuits):
-                    new_circuits = {}
-                    for ind, circuit in value.items():
-                        try:
-                            new_circuits[ind] = circuit.assign_parameters(parameters)
-                        except Exception:
-                            new_circuits[ind] = circuit
-                    new_subcircuits.append(new_circuits)
-                new_experiments.append(new_subcircuits)
-            return CutExperiment(
-                experiment_circuits=new_experiments,
-                cut_locations=self.cut_locations,
-                backend=self.backend,
-                map_qubit=self.map_qubit,
-                coefficients=self.coefficients,
-                observables=self._observables,
-                qubits=self.qubits,
-                options=self.options,
-                num_draws=self._num_draws,
-                plan=self.plan,
-                qpd_bits=self.qpd_bits,
-                gamma=self._gamma,
-                optimal_gamma=self._optimal_gamma,
-                can_reconstruct_probabilities=self._can_reconstruct_probabilities,
-                uncut_num_qubits=self._uncut_num_qubits,
-            )
+            for group in self.experiments:
+                for circuits in group:
+                    for ind, circuit in circuits.items():
+                        circuits[ind] = _assign_present(circuit, parameters)
+            return None
+        return self._replace(
+            experiments=[
+                [
+                    {ind: _assign_present(c, parameters) for ind, c in circuits.items()}
+                    for circuits in group
+                ]
+                for group in self.experiments
+            ]
+        )
+
+    def _replace(self, **changes) -> CutExperiment:
+        """A copy with ``changes`` applied."""
+        new = copy.copy(self)
+        new.__dict__.update(changes)
+        return new
 
     @property
     def num_qubits(self):
@@ -319,6 +331,14 @@ class CutExperiment:
     def sampled(self):
         """Whether the decomposition was sampled rather than fully enumerated."""
         return self._num_draws is not None
+
+    @property
+    def seed(self) -> int | None:
+        """The seed the decomposition was sampled with, ``None`` if it was enumerated.
+
+        Pass it as ``CutOptions(seed=...)`` to build the same experiment again.
+        """
+        return self.options.seed if self.sampled else None
 
     @property
     def num_obs_groups(self):

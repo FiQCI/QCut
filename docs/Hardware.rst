@@ -1,9 +1,34 @@
+Running on hardware
+===================
+
+Running on FiQCI
+----------------
+
+For running on real hardware through the Lumi supercomputer’s FiQCI
+partition follow the instructions
+`here <https://docs.csc.fi/computing/quantum-computing/helmi/running-on-helmi/>`__.
+If you are used to using Qiskit on jupyter notebooks it is recommended
+to use the `Lumi web
+interface <https://docs.lumi-supercomputer.eu/runjobs/webui/>`__.
+
+`fiqci-ems <https://github.com/FiQCI/fiqci-ems>`__ can run the experiments too, with its
+error mitigation applied: see :doc:`RunningExperiments`.
+
+Running on other hardware
+-------------------------
+
+Running on other providers such as IBM is untested at the moment but as
+long as the hardware can be accessed with Qiskit version > 1.0 QCut
+should be compatible.
+
+.. _several-backends:
+
 Running on several backends
-===========================
+---------------------------
 
 A cut experiment is a collection of many independent circuits, so it does not have to run on one
 machine. :class:`~QCut.ParallelBackend` takes several backends and
-hands them the batches in turn.
+gives each batch to the one with the fewest shots so far.
 
 .. code:: python
 
@@ -31,7 +56,7 @@ hands them the batches in turn.
    backend.submitted  # circuits given to each, e.g. [1728, 1728]
 
 Why it can be shared
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 QCut submits every batch of a wave before collecting any of it, so the machines queue at
 the same time rather than one after another. Communicating wire cuts still run in waves,
@@ -40,10 +65,11 @@ wave are independent and are shared like any others.
 
 The experiment is not transpiled beforehand. Each batch is transpiled for the backend
 about to run it, so only one batch is ever held in its transpiled form and the
-experiment itself stays as it was built.
+experiment itself stays as it was built. Pass untranspiled cut circuits; each batch is
+transpiled for the device it lands on.
 
 Machines of different sizes
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A batch only goes to a backend with room for it, so the pieces that fit anywhere are
 shared while the widest go to the backends that can fit them. Cutting a circuit into a
@@ -58,7 +84,7 @@ If nothing is wide enough for a subcircuit, QCut says so rather than letting the
 refuse the job. Cut into smaller pieces with ``max_qubits``, or pass a larger backend.
 
 Writing your own
-----------------
+~~~~~~~~~~~~~~~~
 
 ``ParallelBackend`` is not special: QCut asks a backend only for
 ``run(circuits, shots=..., **options)`` returning a job whose ``result()`` gives counts

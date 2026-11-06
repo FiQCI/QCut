@@ -118,6 +118,37 @@ def test_a_seed_makes_the_experiment_reproducible():
     assert len(other.coefficients) == len(first.coefficients)
 
 
+def _experiment(options):
+    cut_circuit = ck.get_locations_and_subcircuits(
+        _circuit(RZZGate(0.9)), options=options
+    )
+    return ck.get_experiment_circuits(cut_circuit, OBSERVABLES)
+
+
+def test_an_unseeded_sample_records_its_seed_and_can_be_rebuilt():
+    unseeded = _experiment(CutOptions(expansion="sample", num_samples=50))
+    assert isinstance(unseeded.seed, int)
+
+    rebuilt = _experiment(
+        CutOptions(expansion="sample", num_samples=50, seed=unseeded.seed)
+    )
+    assert rebuilt.seed == unseeded.seed
+    assert np.allclose(list(rebuilt.coefficients), list(unseeded.coefficients))
+    assert [
+        [{sub: str(c) for sub, c in obs.items()} for obs in group]
+        for group in rebuilt.experiments
+    ] == [
+        [{sub: str(c) for sub, c in obs.items()} for obs in group]
+        for group in unseeded.experiments
+    ]
+
+
+def test_a_given_seed_is_kept_and_an_enumeration_has_none():
+    seeded = _experiment(CutOptions(expansion="sample", num_samples=50, seed=11))
+    assert seeded.seed == 11
+    assert _experiment(CutOptions(expansion="exact")).seed is None
+
+
 @pytest.mark.sim
 def test_repeated_draws_are_collapsed():
     """Drawing 500 times from a 6 term decomposition must not build 500 circuits."""

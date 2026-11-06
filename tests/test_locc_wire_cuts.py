@@ -12,22 +12,19 @@ from qiskit_aer import AerSimulator
 import QCut as ck
 from QCut import CutOptions, cut, cutGate
 from QCut.errors.qcuterror import QCutError
-from QCut.execution import circuit_knitting as knit
-from QCut.execution.circuit_knitting import MEASURE_SHARE
+from QCut.execution import waves
+from QCut.execution.waves import MEASURE_SHARE
 from QCut.qpd.bundle import plan_bundles
 from QCut.qpd.qpd_locc import (
     MAX_BLOCK,
-    _label_sign,
     _lagrangians,
-    _parity,
-    _span,
-    _symplectic,
+    _sign,
     gamma_local,
     gamma_locc,
     locc_wire_qpd,
     mub_unitaries,
 )
-from QCut.utils.circuit_utils import _remove_obsm_2
+from QCut.utils.circuit import _remove_obsm_2
 
 TOLERANCE = 0.1
 
@@ -63,7 +60,20 @@ def test_bases_are_mutually_unbiased(width):
         assert np.abs(overlap - 1 / dimension).max() < 1e-10
 
 
-@pytest.mark.parametrize("width", WIDTHS, ids=[f"n{w}" for w in WIDTHS])
+def _span(generators: list[tuple[int, int]]) -> set[tuple[int, int]]:
+    """Return every element of the subspace the generators span."""
+    elements = {(0, 0)}
+    for a, b in generators:
+        elements |= {(x ^ a, y ^ b) for x, y in elements}
+    return elements
+
+
+def _symplectic(left: tuple[int, int], right: tuple[int, int]) -> int:
+    """Return the symplectic form of two Pauli strings, zero when they commute."""
+    return (bin(left[0] & right[1]).count("1") + bin(right[0] & left[1]).count("1")) % 2
+
+
+@pytest.mark.parametrize("width", range(1, MAX_BLOCK + 1))
 def test_the_pauli_partition_is_a_symplectic_spread(width):
     """The commuting sets must partition the non-identity Paulis exactly once each.
 
@@ -101,7 +111,7 @@ def test_decomposition_reconstructs_the_identity_channel(width):
         measured = unitary[:, _column(term["label"])]
         prepared_label = tuple(int(bit) for bit in term["op_1"].name.split("-")[-1])
         prepared = unitary[:, _column(prepared_label)]
-        weight = term["c"] / _label_sign(term["label"]) / _parity(width) * dimension
+        weight = term["c"] / _sign(term["label"]) * dimension
         total += weight * _prepare_and_project(
             width,
             unitary,
@@ -462,11 +472,12 @@ def test_a_generous_batch_size_does_not_collapse_the_allocation():
 def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
     """Return how many shots each wave consumed, in wave order.
 
-    One :func:`QCut.circuit_knitting._dispatch` call is one wave, so counting inside the
-    backend and starting a new tally per call splits the run up the way the waves do.
+    One :func:`QCut.execution.dispatch._dispatch` call is one wave, so counting inside
+    the backend and starting a new tally per call splits the run up the way the waves
+    do. It is swapped where :mod:`QCut.execution.waves` looks it up.
     """
     per_wave: list[int] = []
-    original_dispatch = knit._dispatch
+    original_dispatch = waves._dispatch
     original_run = AerSimulator.run
 
     def counting(self, circuits, **kwargs):
@@ -478,7 +489,7 @@ def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
         per_wave.append(0)
         return original_dispatch(*args, **kwargs)
 
-    knit._dispatch = dispatch
+    waves._dispatch = dispatch
     AerSimulator.run = counting
     try:
         ck.run_experiments(
@@ -488,7 +499,7 @@ def _shots_per_wave(experiment, shots=2048, max_batch_size=100):
             max_batch_size=max_batch_size,
         )
     finally:
-        knit._dispatch = original_dispatch
+        waves._dispatch = original_dispatch
         AerSimulator.run = original_run
     return per_wave
 

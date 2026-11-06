@@ -2,6 +2,99 @@
 Changelog
 =========
 
+**Version 2.5.0**
+=================
+
+Primitives
+----------
+
+- New :code:`CutEstimator` and :code:`CutQuasiSampler`, shaped like
+  `FiQCI-EMS <https://github.com/FiQCI/fiqci-ems>`__'s estimator and sampler.
+  They run a list of cut circuits in one call and return a job, which gives
+  each circuit's expectation values or quasi-probability distribution together with
+  its standard error. See `Primitives <https://jooniv.github.io/QCut/Primitives.html>`__.
+- They take :code:`parameter_values`, bound into each circuit before its experiment is
+  built. A sweep is the same circuit listed once per set of values. A circuit with a
+  parameter left unbound is refused before anything is submitted.
+- They do not transpile. A cut circuit for a backend with a coupling map has to be
+  transpiled for that same backend with :code:`transpile_subcircuits()` first.
+- :code:`CutCircuit` records the final measurements of the circuit it was split from as
+  :code:`final_measurements` and :code:`uncut_num_clbits`, which is where the sampler
+  reads the measured qubits from. :code:`find_cuts()` and
+  :code:`get_locations_and_subcircuits()` fill them in.
+
+Reorganised source
+------------------
+
+- Modules are regrouped in a more sensible way: :code:`QCut.model` (the cut circuit and its
+  cut locations), :code:`QCut.pre_process` (was :code:`QCut.cutting`),
+  :code:`QCut.transpilation`, :code:`QCut.job` and :code:`QCut.post_process`, with
+  shared helpers in :code:`QCut.utils`. Everything exported from :code:`QCut` itself is
+  unchanged.
+- :code:`QCut.execution.circuit_knitting` is split into :code:`experiments`,
+  :code:`dispatch`, :code:`waves`, :code:`submit`, :code:`estimate` and :code:`run`
+  under :code:`QCut.execution`. :code:`run()`, :code:`run_cut_circuit()` and
+  :code:`run_experiments()` are in :code:`QCut.execution.run`.
+- The old module paths, such as :code:`QCut.execution.probabilities`,
+  :code:`QCut.cutcircuit` or :code:`QCut.execution.circuit_knitting`, still import but
+  raise a :code:`FutureWarning` naming the new path, and are planned to be removed in
+  3.0. They give back the new modules, so a class imported from either path is the
+  same class, and results pickled under the old paths still load.
+- Helpers whose names start with an underscore are not public API, and those that moved
+  to a different module than the rest of their file cannot be imported from the old
+  path.
+- Log records come from the new modules, e.g. :code:`QCut.execution.dispatch` or
+  :code:`QCut.utils.backend` rather than :code:`QCut.execution.circuit_knitting`. A
+  filter on :code:`QCut` still catches all of them.
+
+Parallel backends
+-----------------
+
+- :code:`ParallelBackend` gives each batch to the backend with the fewest shots so far,
+  rather than to the next one in turn, which put large batches of the same size on the
+  same backend. :code:`submitted_shots` reports the shots each backend was given, and
+  the backend is safe to call from several threads at once.
+
+Standard errors
+---------------
+
+- New :code:`estimate_standard_errors()` gives an upper bound on the shot noise of each
+  estimated expectation value, shaped like the values.
+- A reconstructed distribution carries the same bound for its quasi-probabilities as
+  :code:`QuasiProbabilities.standard_error`.
+
+Sampling
+--------
+
+- A sampled decomposition without a :code:`seed` records the one it drew as
+  :code:`CutExperiment.seed`.
+
+Fixes
+-----
+
+- :code:`CutCircuit.assign_parameters()` and :code:`CutExperiment.assign_parameters()`
+  bind parameters spread across several subcircuits.
+- :code:`find_cuts()` no longer raises :code:`IndexError` for a circuit whose two-qubit
+  gates act only on high-index qubits. The graph it partitions is now built without
+  state shared between calls, which also stops two parts of one wire from sharing a
+  node.
+- :code:`find_cuts()` and :code:`get_locations_and_subcircuits()` add qubits that no
+  cut separates from anything to an existing subcircuit, rather than returning each as
+  a one-qubit subcircuit of its own. A cut that separates nothing is refused even when
+  the circuit has such qubits.
+
+Deprecations
+------------
+
+- Importing QCut with qiskit older than 2.1 raises a :code:`FutureWarning`. QCut 3.0 is
+  planned to need qiskit 2.1 or newer.
+
+Misc
+----
+
+- Dead and duplicated code removed throughout.
+
+
 **Version 2.4.0**
 =================
 
@@ -125,7 +218,7 @@ Observables as qiskit's estimator takes them
 - :code:`run()` and :code:`run_cut_circuit()` take :code:`run_options` as well.
 - Added :code:`ParallelBackend`, which runs an experiment on several backends at once,
   each batch transpiled for the one about to run it.
-  See `Running on several backends <https://jooniv.github.io/QCut/examples/ParallelBackends.html>`__.
+  See `Running on several backends <https://jooniv.github.io/QCut/Hardware.html#running-on-several-backends>`__.
 - Added :code:`transpile_circuits()`, which takes a :code:`CutCircuit`, a
   :code:`CutExperiment` or plain circuits.
 - :code:`transpile_experiments()` defaults to :code:`optimization_level=3` rather than

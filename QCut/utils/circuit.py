@@ -3,31 +3,14 @@ Utility functions for working with quantum circuits in the context of circuit
 cutting and knitting.
 """
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import lru_cache
 
 import numpy as np
 from qiskit import ClassicalRegister, QuantumCircuit
-from qiskit.circuit import Barrier, ControlFlowOp, Qubit
+from qiskit.circuit import Barrier, ControlFlowOp, Instruction
 from qiskit.circuit.library import get_standard_gate_name_mapping
-
-
-def _count_gates(circuit: QuantumCircuit) -> dict[Qubit, int]:
-    """Count the number of gates acting on each qubit in a QuantumCircuit.
-
-    Args:
-        circuit (QuantumCircuit): The input quantum circuit.
-
-    Returns:
-        dict[Qubit, int]: A dictionary mapping each qubit to the number of gates
-        acting on it.
-    """
-    gate_count = dict.fromkeys(circuit.qubits, 0)
-    for instruction in circuit.data:
-        for qubit in instruction.qubits:
-            gate_count[qubit] += 1
-
-    return gate_count
 
 
 def _fence_markers(circuit: QuantumCircuit, names: set[str]) -> QuantumCircuit:
@@ -82,9 +65,17 @@ def markers_to_barriers(circuit: QuantumCircuit, names: set[str]) -> QuantumCirc
     return out
 
 
+class NonCommutingGate(Instruction):
+    def __init__(self, name="Init_1"):
+        super().__init__(name=name, num_qubits=1, num_clbits=0, params=[])
+        self._opaque = True
+
+    def __repr__(self):
+        return f"{self.name}"
+
+
 def barriers_to_markers(circuit: QuantumCircuit, names: set[str]) -> QuantumCircuit:
     """Turn the labelled barriers back into placeholders, once transpiling is done."""
-    from QCut.cutting.circuit_preparation import NonCommutingGate
 
     out = circuit.copy_empty_like()
     for instruction in circuit.data:
@@ -157,8 +148,9 @@ def _record_layout(circuit: QuantumCircuit, num_logical: int) -> QuantumCircuit:
 
     So the placement is left exactly as the transpiler made it, and the map from the
     subcircuit's own qubits to the wires holding them is recorded instead.
-    :func:`QCut.circuit_knitting._finalize_subcircuit` measures through the map, which
-    puts the bits in the order everything downstream expects without moving a gate.
+    :func:`QCut.execution.experiments._finalize_subcircuit` measures through the map,
+    which puts the bits in the order everything downstream expects without moving a
+    gate.
 
     Wires the layout did not use, and wires routing borrowed, are simply not in the map,
     so nothing measures them.
@@ -179,26 +171,16 @@ def _record_layout(circuit: QuantumCircuit, num_logical: int) -> QuantumCircuit:
 
 
 def _remove_obsm(subcircuits: list[dict[int, QuantumCircuit]]):
-
     for obs_set in subcircuits:
-        for ind, circ in obs_set.items():
-            j = 0
-            while j < len(circ.data):
-                if "obs" in circ[j].operation.name:
-                    circ.data.remove(circ[j])
-                else:
-                    j += 1
+        _remove_obsm_2(obs_set.values())
 
 
-def _remove_obsm_2(subcircuits: list[QuantumCircuit]):
-
+def _remove_obsm_2(subcircuits: Iterable[QuantumCircuit]):
+    """Remove the observable markers from each circuit, in place."""
     for circ in subcircuits:
-        j = 0
-        while j < len(circ.data):
-            if "obs" in circ[j].operation.name:
-                circ.data.remove(circ[j])
-            else:
-                j += 1
+        for j in reversed(range(len(circ.data))):
+            if "obs" in circ.data[j].operation.name:
+                del circ.data[j]
 
 
 @dataclass(frozen=True)
@@ -253,7 +235,6 @@ def split_markers(
     order. Everything downstream reads placeholders one at a time, so this is what keeps
     the widening confined to transpilation.
     """
-    from QCut.cutting.circuit_preparation import NonCommutingGate
 
     out = circuit.copy_empty_like()
     for instruction in circuit.data:
