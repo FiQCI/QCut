@@ -276,7 +276,10 @@ def merge_locals(
     Every run of single-qubit gates on a qubit becomes one gate, and a run that comes
     to the identity none at all. That costs a few matrix products per QPD, once, and
     every experiment circuit built from the result then carries fewer instructions.
+    With no locals at all, ``op`` comes back as it is.
     """
+    if all(pre is None and post is None for pre, post in locals_):
+        return op
     out = QuantumCircuit(op.num_qubits, op.num_clbits, name=f"{op.name}'")
     runs: list[list[Gate]] = [[] if pre is None else [pre] for pre, _ in locals_]
     index = {bit: i for i, bit in enumerate(op.qubits)}
@@ -311,15 +314,6 @@ def merge_locals(
             runs[qubit].append(post)
         flush(qubit)
     return out
-
-
-def _with_locals(
-    primitive: QuantumCircuit, pre: Gate | None, post: Gate | None
-) -> QuantumCircuit:
-    """Return ``pre . primitive . post``, merged into as few gates as it takes."""
-    if pre is None and post is None:
-        return primitive.copy()
-    return merge_locals(primitive, [(pre, post)])
 
 
 def qpd_from_u(u: np.ndarray, tol: float = DEFAULT_TOL) -> list[dict]:
@@ -382,8 +376,8 @@ def qpd_from_gate(gate: Gate, tol: float = DEFAULT_TOL) -> list[dict]:
     pre_1, post_1 = _local_gate(decomposition.K2l), _local_gate(decomposition.K1l)
     if any(g is not None for g in (pre_0, post_0, pre_1, post_1)):
         for term in qpd:
-            term["op_0"] = _with_locals(term["op_0"], pre_0, post_0)
-            term["op_1"] = _with_locals(term["op_1"], pre_1, post_1)
+            term["op_0"] = merge_locals(term["op_0"], [(pre_0, post_0)])
+            term["op_1"] = merge_locals(term["op_1"], [(pre_1, post_1)])
 
     logger.debug(
         "generated %d-term QPD for '%s', gamma=%.6f (optimal %.6f, gap %.2e)",

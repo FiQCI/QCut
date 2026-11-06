@@ -275,20 +275,6 @@ def single_axis_theta(gate: Gate) -> float:
     return frame[0]
 
 
-def _with_side_locals(
-    op: QuantumCircuit, locals_: list[tuple[Gate | None, Gate | None]]
-) -> QuantumCircuit:
-    """Wrap one side's joint operation in the per-gate local unitaries.
-
-    Gate ``s`` owns qubit ``s`` of the side, and its locals do not commute with the
-    joint operation, so the order is fixed: the pre-locals, then the joint operation,
-    then the post-locals.
-    """
-    if all(pre is None and post is None for pre, post in locals_):
-        return op
-    return merge_locals(op, locals_)
-
-
 def joint_rotation_qpd_from_gates(
     gates: list[Gate], flipped: list[bool] | None = None, tol: float = DEFAULT_TOL
 ) -> list[dict] | None:
@@ -320,11 +306,13 @@ def joint_rotation_qpd_from_gates(
         per_side[0].append(locals_[0])
         per_side[1].append(locals_[1])
 
+    # Gate s owns qubit s of each side. Its locals do not commute with the joint
+    # operation, so merge_locals keeps them around it: pre-locals, joint, post-locals.
     terms = joint_rotation_qpd(thetas, tol)
     return [
         {
-            "op_0": _with_side_locals(term["op_0"], per_side[0]),
-            "op_1": _with_side_locals(term["op_1"], per_side[1]),
+            "op_0": merge_locals(term["op_0"], per_side[0]),
+            "op_1": merge_locals(term["op_1"], per_side[1]),
             "c": term["c"],
         }
         for term in terms
