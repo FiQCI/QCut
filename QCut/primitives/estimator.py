@@ -10,7 +10,10 @@ import numpy as np
 from QCut.execution.dispatch import DEFAULT_SHOTS
 from QCut.job.cutresult import RawResult
 from QCut.model.cutcircuit import CutCircuit
-from QCut.post_process.postprocess import estimate_expectation_values
+from QCut.post_process.postprocess import (
+    estimate_expectation_values,
+    estimate_standard_errors,
+)
 from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive
 from QCut.primitives.job import QCutPrimitiveJob
 from QCut.utils.observables import ObservablesLike
@@ -23,6 +26,9 @@ class CutEstimatorEntry:
     #: One value per observable, shaped like the observables given for the circuit.
     #: A single observable gives a zero-dimensional array.
     expectation_values: np.ndarray
+    #: An upper bound on each value's shot noise, shaped the same. See
+    #: :func:`QCut.estimate_standard_errors`.
+    standard_errors: np.ndarray
     #: The raw counts the values were estimated from.
     raw: RawResult
 
@@ -44,6 +50,10 @@ class CutEstimatorResult(Sequence):
     def expectation_values(self) -> list[np.ndarray]:
         """Every circuit's expectation values, in the order the circuits were given."""
         return [entry.expectation_values for entry in self._entries]
+
+    def standard_errors(self) -> list[np.ndarray]:
+        """Every circuit's standard errors, in the order the circuits were given."""
+        return [entry.standard_errors for entry in self._entries]
 
     def __repr__(self) -> str:
         """Represent as the values."""
@@ -77,9 +87,30 @@ class CutEstimatorJob(QCutPrimitiveJob):
             return result.expectation_values()
         return result[index].expectation_values
 
+    def standard_errors(
+        self, index: int | None = None
+    ) -> list[np.ndarray] | np.ndarray:
+        """Wait for the run and return the standard errors.
+
+        Args:
+            index (int): the input circuit to return them for, or ``None`` for every
+                circuit's, in the order the circuits were given.
+        """
+        result = self.result()
+        if index is None:
+            return result.standard_errors()
+        return result[index].standard_errors
+
     def _build(self, raws: list[RawResult]) -> CutEstimatorResult:
         return CutEstimatorResult(
-            [CutEstimatorEntry(estimate_expectation_values(raw), raw) for raw in raws]
+            [
+                CutEstimatorEntry(
+                    estimate_expectation_values(raw),
+                    estimate_standard_errors(raw),
+                    raw,
+                )
+                for raw in raws
+            ]
         )
 
 
