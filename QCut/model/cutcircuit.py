@@ -4,6 +4,7 @@ a group of circuits."""
 
 from __future__ import annotations
 
+import copy
 from typing import Iterable, Literal, overload
 
 from qiskit import QuantumCircuit
@@ -87,6 +88,13 @@ class CutCircuit:
             )
         return self._gamma
 
+    def _replace(self, **changes) -> CutCircuit:
+        """A copy with ``changes`` applied, its cost worked out again when asked for."""
+        new = copy.copy(self)
+        new.__dict__.update(changes)
+        new._gamma = None
+        return new
+
     @property
     def gamma(self) -> float:
         """Sampling overhead of this split, as it will actually be run."""
@@ -124,26 +132,12 @@ class CutCircuit:
             for location in self.cut_locations
         ]
 
+        bound = [_assign_present(circuit, parameters) for circuit in self.subcircuits]
         if inplace:
-            for ind, circuit in enumerate(self.subcircuits):
-                self.subcircuits[ind] = _assign_present(circuit, parameters)
+            self.subcircuits[:] = bound
             self.cut_locations = bound_locations
-            return
-
-        else:
-            new_circuits = [
-                _assign_present(circuit, parameters) for circuit in self.subcircuits
-            ]
-            return CutCircuit(
-                subcircuits=new_circuits,
-                cut_locations=bound_locations,
-                map_qubit=self.map_qubit,
-                backend=self.backend,
-                options=self.options,
-                uncut_num_qubits=self.uncut_num_qubits,
-                final_measurements=self.final_measurements,
-                uncut_num_clbits=self.uncut_num_clbits,
-            )
+            return None
+        return self._replace(subcircuits=bound, cut_locations=bound_locations)
 
     @property
     def num_qubits(self):
@@ -278,41 +272,26 @@ class CutExperiment:
         ignored.
         """
         if inplace:
-            for exp_ind, subcircuits in enumerate(self.experiments):
-                for circ_ind, value in enumerate(subcircuits):
-                    for ind, circuit in value.items():
-                        self.experiments[exp_ind][circ_ind][ind] = _assign_present(
-                            circuit, parameters
-                        )
-            return
-        else:
-            new_experiments = []
-            for exp_ind, subcircuits in enumerate(self.experiments):
-                new_subcircuits = []
-                for circ_ind, value in enumerate(subcircuits):
-                    new_circuits = {
-                        ind: _assign_present(circuit, parameters)
-                        for ind, circuit in value.items()
-                    }
-                    new_subcircuits.append(new_circuits)
-                new_experiments.append(new_subcircuits)
-            return CutExperiment(
-                experiment_circuits=new_experiments,
-                cut_locations=self.cut_locations,
-                backend=self.backend,
-                map_qubit=self.map_qubit,
-                coefficients=self.coefficients,
-                observables=self._observables,
-                qubits=self.qubits,
-                options=self.options,
-                num_draws=self._num_draws,
-                plan=self.plan,
-                qpd_bits=self.qpd_bits,
-                gamma=self._gamma,
-                optimal_gamma=self._optimal_gamma,
-                can_reconstruct_probabilities=self._can_reconstruct_probabilities,
-                uncut_num_qubits=self._uncut_num_qubits,
-            )
+            for group in self.experiments:
+                for circuits in group:
+                    for ind, circuit in circuits.items():
+                        circuits[ind] = _assign_present(circuit, parameters)
+            return None
+        return self._replace(
+            experiments=[
+                [
+                    {ind: _assign_present(c, parameters) for ind, c in circuits.items()}
+                    for circuits in group
+                ]
+                for group in self.experiments
+            ]
+        )
+
+    def _replace(self, **changes) -> CutExperiment:
+        """A copy with ``changes`` applied."""
+        new = copy.copy(self)
+        new.__dict__.update(changes)
+        return new
 
     @property
     def num_qubits(self):

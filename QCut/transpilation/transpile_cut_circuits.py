@@ -403,16 +403,7 @@ def transpile_subcircuits(
             barriers_to_markers(route(subcircuit), marker_names)
             for subcircuit in cut_circuit.subcircuits
         ]
-        return CutCircuit(
-            subcircuits=transpiled,
-            cut_locations=cut_circuit.cut_locations,
-            map_qubit=cut_circuit.map_qubit,
-            options=cut_circuit.options,
-            uncut_num_qubits=cut_circuit.uncut_num_qubits,
-            backend=backend,
-            final_measurements=cut_circuit.final_measurements,
-            uncut_num_clbits=cut_circuit.uncut_num_clbits,
-        )
+        return cut_circuit._replace(subcircuits=transpiled, backend=backend)
 
     def qiskit_translate(subcircuit, spans_for):
         translated = transpile(
@@ -441,16 +432,7 @@ def transpile_subcircuits(
         for index, subcircuit in enumerate(cut_circuit.subcircuits)
     ]
 
-    return CutCircuit(
-        subcircuits=transpiled,
-        cut_locations=cut_circuit.cut_locations,
-        map_qubit=cut_circuit.map_qubit,
-        options=cut_circuit.options,
-        uncut_num_qubits=cut_circuit.uncut_num_qubits,
-        backend=backend,
-        final_measurements=cut_circuit.final_measurements,
-        uncut_num_clbits=cut_circuit.uncut_num_clbits,
-    )
+    return cut_circuit._replace(subcircuits=transpiled, backend=backend)
 
 
 def transpile_experiments(
@@ -509,23 +491,7 @@ def transpile_experiments(
         for exps in cut_experiment.experiments
     ]
 
-    return CutExperiment(
-        subexperiments,
-        cut_locations=cut_experiment.cut_locations,
-        map_qubit=cut_experiment.map_qubit,
-        coefficients=cut_experiment.coefficients,
-        observables=cut_experiment._observables,
-        qubits=cut_experiment.qubits,
-        options=cut_experiment.options,
-        backend=backend,
-        num_draws=cut_experiment._num_draws,
-        plan=cut_experiment.plan,
-        qpd_bits=cut_experiment.qpd_bits,
-        gamma=cut_experiment.gamma,
-        optimal_gamma=cut_experiment.optimal_gamma,
-        can_reconstruct_probabilities=cut_experiment.can_reconstruct_probabilities,
-        uncut_num_qubits=cut_experiment._uncut_num_qubits,
-    )
+    return cut_experiment._replace(experiments=subexperiments, backend=backend)
 
 
 def transpile_circuits(
