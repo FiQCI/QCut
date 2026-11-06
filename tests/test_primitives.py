@@ -231,6 +231,19 @@ def test_sampler_gives_a_qiskit_quasi_distribution():
     assert job.quasi_probabilities(1) is result[1].quasi_probabilities
 
 
+@pytest.mark.sim
+def test_sampler_entries_carry_their_standard_errors():
+    job = CutQuasiSampler(AerSimulator(seed_simulator=8)).run(
+        _measured_cut(3), shots=1024
+    )
+    result = job.result()
+    per_z_string = estimate_standard_errors(result[0].raw).reshape(-1)[0]
+
+    assert result[0].standard_error == pytest.approx((1 - 2**-3) * per_z_string)
+    assert job.standard_errors(0) == result[0].standard_error
+    assert result.standard_errors() == [result[0].standard_error]
+
+
 def test_sampler_needs_final_measurements():
     with pytest.raises(QCutError, match="no final measurements"):
         CutQuasiSampler(_NeverDoneBackend()).run(_cut())

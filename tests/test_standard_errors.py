@@ -5,6 +5,7 @@ import pytest
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import CXGate
 from qiskit.quantum_info import SparsePauliOp
+from qiskit_aer import AerSimulator
 
 import QCut as ck
 from QCut import CutOptions, cut, cutGate
@@ -13,7 +14,7 @@ from QCut.job.cutresult import RawResult
 SHOTS = 1000
 
 
-def _experiment(observables, options=None):
+def _experiment(observables=None, options=None, qubits=None):
     """A gate cut and a wire cut, whose 48 groups all weigh 0.25."""
     circuit = QuantumCircuit(4)
     for qubit in range(4):
@@ -23,7 +24,7 @@ def _experiment(observables, options=None):
     circuit.append(cut(), [2])
     circuit.cx(2, 3)
     cut_circuit = ck.get_locations_and_subcircuits(circuit, options=options)
-    return ck.get_experiment_circuits(cut_circuit, observables)
+    return ck.get_experiment_circuits(cut_circuit, observables, qubits)
 
 
 def _errors(experiment, shots=SHOTS):
@@ -68,6 +69,36 @@ def test_the_errors_are_shaped_like_the_values():
     errors = _errors(_experiment([["IIIZ", "ZIII"], ["ZZZZ", "IIZI"]]))
     assert errors.shape == (2, 2)
     assert _errors(_experiment("ZZZZ")).shape == ()
+
+
+@pytest.mark.sim
+def test_a_distribution_is_bounded_like_its_z_strings():
+    """Each probability is a weighted sum of the Z strings, read from the same shots."""
+    experiment = _experiment(qubits=[0, 1, 2, 3])
+    results = ck.submit_experiments(
+        experiment, backend=AerSimulator(seed_simulator=1), shots=SHOTS
+    ).result()
+    distribution = ck.estimate_probabilities(results)
+    z_strings = ck.estimate_expectation_values(results)
+
+    # p(x) = 2**-k (1 + sum_S (-1)**(x.S) <Z_S>), so the bound carries over.
+    labels = [next(iter(term)) for term in experiment.observables.tolist()]
+    for bitstring in distribution:
+        signs = [
+            (-1) ** sum(int(b) for b, z in zip(bitstring, label) if z == "Z")
+            for label in labels
+        ]
+        rebuilt = (1 + np.dot(signs, z_strings)) / 2**4
+        assert distribution[bitstring] == pytest.approx(rebuilt)
+
+    per_z_string = _errors(experiment)[0]
+    assert distribution.standard_error == pytest.approx((1 - 2**-4) * per_z_string)
+    marginal = distribution.marginal([0])
+    assert marginal.standard_error == pytest.approx(per_z_string / 2)
+
+
+def test_a_distribution_built_by_hand_has_no_standard_error():
+    assert ck.QuasiProbabilities({"0": 0.5, "1": 0.5}).standard_error is None
 
 
 def test_results_without_an_experiment_are_refused():
