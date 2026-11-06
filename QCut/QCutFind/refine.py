@@ -33,17 +33,14 @@ def revert_wire_cut_cost(graph, cut_data_test, cut_data):  # noqa: C901
 
     wirecuts.sort(key=lambda x: x[1][0])
 
-    wirecuts_grouped = groupby(wirecuts, key=lambda x: x[1])
-
-    wirecuts_grouped_sorted = []
-    for key, group in wirecuts_grouped:
-        wirecuts_grouped_sorted.append(list(group))
-        wirecuts_grouped_sorted[-1].sort(key=lambda x: x[0][2][0], reverse=True)
+    wirecuts_grouped_sorted = [
+        sorted(group, key=lambda x: x[0][2][0], reverse=True)
+        for _, group in groupby(wirecuts, key=lambda x: x[1])
+    ]
 
     res = []
     for group in wirecuts_grouped_sorted:
         prev_cost = -1
-        group = list(group)
         for wirecut in group:
             zero_edges = graph.in_edges(wirecut[0][0])
 
@@ -154,8 +151,8 @@ def swap_qubits(  # noqa: C901
     """
     Multi-partition qubit reallocation.
 
-    - receivers: list[ {partition_label: deficit} ]
-    - givers:    list[ {partition_label: excess} ]
+    - receivers: dict[partition_label] -> deficit
+    - givers:    dict[partition_label] -> excess
     - labels:    dict[node_id] -> partition_label
     - nodes_on_qubit: dict[qubit_index] -> list[node_id] (topological order)
     """
@@ -174,9 +171,7 @@ def swap_qubits(  # noqa: C901
             cut_data.append((u, v, d))
             cut_data_test.append(d)
 
-    # Build mutable counters for givers/receivers
-    recv = {list(d.keys())[0]: list(d.values())[0] for d in receivers}
-    give = {list(d.keys())[0]: list(d.values())[0] for d in givers}
+    recv = dict(receivers)  # counted down as qubits are handed over
 
     # Determine owner label for each qubit (mode of node labels on that wire)
     qubit_owner = {}
@@ -251,8 +246,8 @@ def swap_qubits(  # noqa: C901
 
     # Main allocation loop across all givers
     # For determinism, iterate givers in sorted label order
-    for giver_label in sorted(give.keys()):
-        remaining = give[giver_label]
+    for giver_label in sorted(givers):
+        remaining = givers[giver_label]
         if remaining <= 0:
             continue
 
@@ -290,11 +285,6 @@ def swap_qubits(  # noqa: C901
             # Update counters
             recv[rpick] -= 1
             remaining -= 1
-
-        give[giver_label] = remaining
-
-    # Rebuild receivers list in-place to reflect updated deficits
-    receivers[:] = [{k: v} for k, v in recv.items() if v > 0]
 
 
 def refine_cuts(
@@ -334,14 +324,8 @@ def refine_cuts(
         nodes_on_qubit, labels_loc, len(max_qubits)
     )
     res = give_receive_qubits(qubits_per_partition_val, max_qubits)
-    receivers = [
-        {key: value["receive"]} for key, value in res.items() if value["receive"] > 0
-    ]
-    givers = [
-        {key: abs(value["receive"])}
-        for key, value in res.items()
-        if value["receive"] < 0
-    ]
+    receivers = {k: v["receive"] for k, v in res.items() if v["receive"] > 0}
+    givers = {k: -v["receive"] for k, v in res.items() if v["receive"] < 0}
     swap_qubits(
         graph,
         cut_data_test_loc,
