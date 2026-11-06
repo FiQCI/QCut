@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from dataclasses import dataclass
 
 from qiskit.result import QuasiDistribution
 
 from QCut.errors.qcuterror import QCutError
 from QCut.execution.dispatch import DEFAULT_SHOTS
+from QCut.execution.experiments import get_experiment_circuits
 from QCut.job.cutresult import RawResult
 from QCut.model.cutcircuit import CutCircuit
 from QCut.post_process.probabilities import QuasiProbabilities, estimate_probabilities
-from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive, _pair
+from QCut.primitives.base import CutRunEstimate, _CutPrimitive, _CutResult
 from QCut.primitives.job import QCutPrimitiveJob
 
 
@@ -47,19 +47,8 @@ class CutQuasiSamplerEntry:
         )
 
 
-class CutQuasiSamplerResult(Sequence):
+class CutQuasiSamplerResult(_CutResult):
     """What a :class:`CutQuasiSampler` run gives back: one entry per input circuit."""
-
-    def __init__(self, entries: list[CutQuasiSamplerEntry]) -> None:
-        self._entries = list(entries)
-
-    def __getitem__(self, index):
-        """The entry of one input circuit."""
-        return self._entries[index]
-
-    def __len__(self) -> int:
-        """How many circuits the run took."""
-        return len(self._entries)
 
     def quasi_probabilities(self) -> list[QuasiProbabilities]:
         """Every circuit's distribution, in the order the circuits were given."""
@@ -82,18 +71,9 @@ class CutQuasiSamplerResult(Sequence):
         return f"CutQuasiSamplerResult({self.quasi_probabilities()})"
 
 
-class CutQuasiSamplerJob(QCutPrimitiveJob):
+class CutQuasiSamplerJob(QCutPrimitiveJob[CutQuasiSamplerResult]):
     """A :class:`CutQuasiSampler` run. :meth:`result` gives a
     :class:`CutQuasiSamplerResult`."""
-
-    def result(self, timeout: float | None = None) -> CutQuasiSamplerResult:
-        """Wait for every circuit and return their distributions.
-
-        Args:
-            timeout (float): seconds to wait for the whole run before giving up, or
-                ``None`` to wait as long as it takes.
-        """
-        return super().result(timeout)
 
     def quasi_probabilities(
         self, index: int | None = None
@@ -182,9 +162,6 @@ class CutQuasiSampler(_CutPrimitive):
             without a coupling map, takes the circuits as they are.
     """
 
-    def __init__(self, backend) -> None:
-        super().__init__(backend)
-
     def run(
         self,
         circuits: CutCircuit | list[CutCircuit],
@@ -243,14 +220,9 @@ class CutQuasiSampler(_CutPrimitive):
         return self._estimate(experiments, shots, max_batch_size)
 
     def _experiments(self, circuits, parameter_values):
-        listed = _as_list(circuits)
-        values = _pair(circuits, parameter_values, len(listed), "parameter_values")
-        bound, qubits = [], []
-        for index, (cut_circuit, entry) in enumerate(zip(listed, values)):
-            self._check(cut_circuit, index)
-            bound.append(self._bind(cut_circuit, entry, index))
-            qubits.append(_measured_qubits(cut_circuit, index))
+        bound = self._bound(circuits, parameter_values)
+        qubits = [_measured_qubits(cut, index) for index, cut in enumerate(bound)]
         return [
-            self._experiment(cut_circuit, qubits=measured)
+            get_experiment_circuits(cut_circuit, qubits=measured)
             for cut_circuit, measured in zip(bound, qubits)
         ]

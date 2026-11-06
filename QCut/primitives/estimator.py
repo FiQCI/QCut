@@ -2,19 +2,25 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from dataclasses import dataclass
 
 import numpy as np
 
 from QCut.execution.dispatch import DEFAULT_SHOTS
+from QCut.execution.experiments import get_experiment_circuits
 from QCut.job.cutresult import RawResult
 from QCut.model.cutcircuit import CutCircuit
 from QCut.post_process.postprocess import (
     estimate_expectation_values,
     estimate_standard_errors,
 )
-from QCut.primitives.base import CutRunEstimate, _as_list, _CutPrimitive, _pair
+from QCut.primitives.base import (
+    CutRunEstimate,
+    _as_list,
+    _CutPrimitive,
+    _CutResult,
+    _pair,
+)
 from QCut.primitives.job import QCutPrimitiveJob
 from QCut.utils.observables import ObservablesLike
 
@@ -33,19 +39,8 @@ class CutEstimatorEntry:
     raw: RawResult
 
 
-class CutEstimatorResult(Sequence):
+class CutEstimatorResult(_CutResult):
     """What a :class:`CutEstimator` run gives back: one entry per input circuit."""
-
-    def __init__(self, entries: list[CutEstimatorEntry]) -> None:
-        self._entries = list(entries)
-
-    def __getitem__(self, index):
-        """The entry of one input circuit."""
-        return self._entries[index]
-
-    def __len__(self) -> int:
-        """How many circuits the run took."""
-        return len(self._entries)
 
     def expectation_values(self) -> list[np.ndarray]:
         """Every circuit's expectation values, in the order the circuits were given."""
@@ -60,18 +55,9 @@ class CutEstimatorResult(Sequence):
         return f"CutEstimatorResult({self.expectation_values()})"
 
 
-class CutEstimatorJob(QCutPrimitiveJob):
+class CutEstimatorJob(QCutPrimitiveJob[CutEstimatorResult]):
     """A :class:`CutEstimator` run, whose :meth:`result` is a
     :class:`CutEstimatorResult`."""
-
-    def result(self, timeout: float | None = None) -> CutEstimatorResult:
-        """Wait for every circuit and return their expectation values.
-
-        Args:
-            timeout (float): seconds to wait for the whole run before giving up, or
-                ``None`` to wait as long as it takes.
-        """
-        return super().result(timeout)
 
     def expectation_values(
         self, index: int | None = None
@@ -130,9 +116,6 @@ class CutEstimator(_CutPrimitive):
         backend: the backend or V2 sampler to run on. A sampler, like a backend
             without a coupling map, takes the circuits as they are.
     """
-
-    def __init__(self, backend) -> None:
-        super().__init__(backend)
 
     def run(
         self,
@@ -196,14 +179,9 @@ class CutEstimator(_CutPrimitive):
         return self._estimate(experiments, shots, max_batch_size)
 
     def _experiments(self, circuits, observables, parameter_values):
-        listed = _as_list(circuits)
-        paired = _pair(circuits, observables, len(listed), "observable")
-        values = _pair(circuits, parameter_values, len(listed), "parameter_values")
-        bound = []
-        for index, (cut_circuit, entry) in enumerate(zip(listed, values)):
-            self._check(cut_circuit, index)
-            bound.append(self._bind(cut_circuit, entry, index))
+        paired = _pair(circuits, observables, len(_as_list(circuits)), "observable")
+        bound = self._bound(circuits, parameter_values)
         return [
-            self._experiment(cut_circuit, observables=entry)
+            get_experiment_circuits(cut_circuit, entry)
             for cut_circuit, entry in zip(bound, paired)
         ]

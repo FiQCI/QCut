@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import threading
 import time
+from typing import Generic, TypeVar
 
 from qiskit.providers import JobStatus
 from qiskit.providers.exceptions import JobTimeoutError
@@ -11,8 +12,10 @@ from qiskit.providers.exceptions import JobTimeoutError
 from QCut.job.cutresult import RawResult
 from QCut.job.handle import _FINAL, PartialBatch, QCutJob, _aggregate
 
+R = TypeVar("R")
 
-class QCutPrimitiveJob:
+
+class QCutPrimitiveJob(Generic[R]):
     """A primitive's run, handed back as soon as everything is submitted.
 
     Shaped like a qiskit job. Each input circuit is one experiment with a
@@ -27,7 +30,7 @@ class QCutPrimitiveJob:
 
     def __init__(self, jobs: list[QCutJob]) -> None:
         self._jobs = list(jobs)
-        self._result = None
+        self._result: R | None = None
         self._lock = threading.Lock()
 
     @property
@@ -144,7 +147,7 @@ class QCutPrimitiveJob:
             raws.append(job.result(remaining))
         return raws
 
-    def result(self, timeout: float | None = None):
+    def result(self, timeout: float | None = None) -> R:
         """Wait for every circuit and return the primitive's result, built once.
 
         Args:
@@ -164,7 +167,7 @@ class QCutPrimitiveJob:
                 self._result = self._build(raws)
         return self._result
 
-    def _build(self, raws: list[RawResult]):
+    def _build(self, raws: list[RawResult]) -> R:
         """Turn every circuit's raw counts into the primitive's result."""
         raise NotImplementedError
 

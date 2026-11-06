@@ -3,11 +3,11 @@ experiments, and working out what a run will cost."""
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from QCut.errors.qcuterror import QCutError
 from QCut.execution.estimate import RunEstimate, _named, estimate_run
-from QCut.execution.experiments import get_experiment_circuits
 from QCut.execution.submit import submit_experiments
 from QCut.job.handle import QCutJob
 from QCut.model.cutcircuit import CutCircuit, CutExperiment
@@ -32,6 +32,21 @@ class CutRunEstimate(RunEstimate):
     def __len__(self) -> int:
         """How many circuits the run takes."""
         return len(self.inputs)
+
+
+class _CutResult(Sequence):
+    """What a primitive's run gives back: one entry per input circuit."""
+
+    def __init__(self, entries: list) -> None:
+        self._entries = list(entries)
+
+    def __getitem__(self, index):
+        """The entry of one input circuit."""
+        return self._entries[index]
+
+    def __len__(self) -> int:
+        """How many circuits the run took."""
+        return len(self._entries)
 
 
 def _as_list(circuits: CutCircuit | list[CutCircuit]) -> list[CutCircuit]:
@@ -146,14 +161,21 @@ class _CutPrimitive:
             )
         return cut_circuit
 
-    def _experiment(
-        self,
-        cut_circuit: CutCircuit,
-        observables=None,
-        qubits: list[int] | None = None,
-    ) -> CutExperiment:
-        """Build one cut circuit's experiment, with the options it carries."""
-        return get_experiment_circuits(cut_circuit, observables, qubits)
+    def _bound(self, circuits, parameter_values) -> list[CutCircuit]:
+        """Check every input circuit, then bind its parameter values.
+
+        Raises:
+            QCutError: a circuit is not ready for this backend, or has a parameter
+                left unbound.
+            ValueError: there is not one entry of ``parameter_values`` per circuit.
+        """
+        listed = _as_list(circuits)
+        values = _pair(circuits, parameter_values, len(listed), "parameter_values")
+        bound = []
+        for index, (cut_circuit, entry) in enumerate(zip(listed, values)):
+            self._check(cut_circuit, index)
+            bound.append(self._bind(cut_circuit, entry, index))
+        return bound
 
     def _submit(
         self,
