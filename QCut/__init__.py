@@ -12,6 +12,7 @@ from QCut.job.handle import PartialBatch, QCutJob
 from QCut.options import DEFAULT_OPTIONS, CutOptions
 from QCut.post_process.postprocess import (
     estimate_expectation_values,
+    estimate_standard_errors,
 )
 from QCut.post_process.probabilities import (
     QuasiProbabilities,
@@ -50,6 +51,7 @@ __all__ = [
     "transpile_experiments",
     "transpile_subcircuits",
     "estimate_expectation_values",
+    "estimate_standard_errors",
     "estimate_run",
     "get_experiment_circuits",
     "get_locations_and_subcircuits",
