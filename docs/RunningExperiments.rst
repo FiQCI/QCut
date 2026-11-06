@@ -182,6 +182,13 @@ Additionally you can get probabilities of a single bitstring or a marginal distr
    probs.probability_of('01')   # one bitstring, without the others
    probs.marginal([0])          # a coarser distribution, summed over the rest
 
+:code:`probs.standard_error` is an upper bound on the shot noise of each
+quasi-probability, the same for every bitstring. Each probability is a sum of the
+:math:`2^k - 1` Z strings over the :math:`k` qubits, weighted :math:`2^{-k}`, so it is
+:math:`1 - 2^{-k}` times the bound :func:`~QCut.estimate_standard_errors` gives one Z
+string. A marginal carries its own. The bound is loose for unlikely bitstrings, and does
+not apply to :code:`nearest_probabilities()` or :code:`counts()`.
+
 Against the same circuit run whole:
 
 .. code:: python

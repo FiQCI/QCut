@@ -86,6 +86,10 @@ expands the whole distribution unless asked. :code:`quasi_dist()` gives a Qiskit
 
 ``{16: 0.2252, 0: 0.1881, 8: 0.1184}``
 
+:code:`result[i].standard_error` bounds the shot noise of each quasi-probability, see
+:ref:`probability distributions <probability-distributions>`, and
+:code:`job.standard_errors(i)` is a shortcut for it.
+
 Running on a device
 -------------------
 
