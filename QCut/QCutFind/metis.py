@@ -24,19 +24,13 @@ def build_csr(graph: rx.PyGraph, weight_fn):
         nbr_map[u].append((v, w))
         nbr_map[v].append((u, w))
 
-    xadj = [0] * (n + 1)
-    adjncy = []
-    eweights = []
-
-    offset = 0
+    # Neighbour order is kept as the edges came: METIS partitions differently otherwise.
+    xadj, adjncy, eweights = [0], [], []
     for i in range(n):
-        neighs = nbr_map.get(i, [])
-        xadj[i] = offset
-        for v, w in neighs:
+        for v, w in nbr_map.get(i, ()):
             adjncy.append(v)
             eweights.append(w)
-            offset += 1
-    xadj[n] = offset
+        xadj.append(len(adjncy))
 
     return xadj, adjncy, eweights
 
@@ -107,8 +101,6 @@ def k_way_metis_partition(
     afterwards by moving whole qubits across -- which is far more expensive than asking
     for the right thing in the first place.
     """
-    n = graph.num_nodes()
-
     xadj, adjncy, eweights = build_csr(graph, weight_fn)
 
     options = pymetis.Options(
@@ -139,4 +131,4 @@ def k_way_metis_partition(
         options=options,
     )
 
-    return {i: parts[i] for i in range(n)}
+    return dict(enumerate(parts))
