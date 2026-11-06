@@ -5,6 +5,7 @@ the appropriate locations.
 
 from __future__ import annotations
 
+import itertools
 import logging
 from collections import Counter
 from itertools import product
@@ -138,15 +139,13 @@ def bundle_gamma(bundle: Bundle, cut_locations: list) -> float:
         return gamma_joint(thetas)
 
     cut = cut_locations[bundle.anchor]
-    if isinstance(cut, SingleQubitCutLocation):
-        return gamma(identity_qpd)
-    if cut.gate_name in QPD_REGISTRY:
-        return gamma(QPD_REGISTRY[cut.gate_name])
-    if cut.gate is not None:
-        return gamma_for_gate(cut.gate)
-    raise NotImplementedError(
-        f"No QPD available for gate '{cut.gate_name}', so its cost is unknown."
-    )
+    if (
+        isinstance(cut, CutLocation)
+        and cut.gate_name not in QPD_REGISTRY
+        and cut.gate is not None
+    ):
+        return gamma_for_gate(cut.gate)  # the one case whose table is not prebuilt
+    return gamma(qpd_for_location(cut))
 
 
 def plan_cost(cut_circuit, options, respect_backend: bool = True) -> float:
@@ -381,7 +380,7 @@ def sample_qpd_combinations(
     """
     bundles = default_bundles(cut_locations) if bundles is None else bundles
     qpd_lists = [qpd_for_bundle(bundle, cut_locations) for bundle in bundles]
-    gammas = [sum(abs(term["c"]) for term in qpd) for qpd in qpd_lists]
+    gammas = [gamma(qpd) for qpd in qpd_lists]
     gamma_total = float(np.prod(gammas))
 
     rng = np.random.default_rng(seed)
@@ -485,9 +484,7 @@ def _block_pairs(block, wires) -> Iterable[frozenset[int]]:
         if instruction.operation.name == "barrier" or len(instruction.qubits) < 2:
             continue
         touched = [wires[block.find_bit(qubit).index] for qubit in instruction.qubits]
-        for first in range(len(touched)):
-            for second in range(first + 1, len(touched)):
-                yield frozenset((touched[first], touched[second]))
+        yield from map(frozenset, itertools.combinations(touched, 2))
 
 
 def _uncoupled_pair(
