@@ -6,6 +6,7 @@ import functools
 import importlib
 import importlib.abc
 import importlib.machinery
+import re
 import sys
 import warnings
 from collections.abc import Callable
@@ -42,6 +43,21 @@ def deprecated(
         return wrapper
 
     return decorate
+
+
+def warn_if_old_qiskit() -> None:
+    """Warn when the installed qiskit is older than QCut 3.0 will support."""
+    import qiskit
+
+    match = re.match(r"(\d+)\.(\d+)", qiskit.__version__)
+    if match is None or (int(match[1]), int(match[2])) >= (2, 1):
+        return
+    warnings.warn(
+        f"qiskit {qiskit.__version__} is planned to stop being supported in QCut 3.0, "
+        "which will need qiskit 2.1 or newer.",
+        FutureWarning,
+        stacklevel=2,
+    )
 
 
 #: Modules that moved when the source was reorganised, old path to new. Importing an

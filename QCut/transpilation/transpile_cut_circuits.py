@@ -31,6 +31,8 @@ from QCut.utils.circuit import (
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+# TODO(3.0): import directly once the qiskit floor is 1.4 or newer, and drop the
+# manual fallback in _drop_identities.
 try:
     from qiskit.transpiler.passes import RemoveIdentityEquivalent
 

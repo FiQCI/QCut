@@ -30,11 +30,12 @@ from QCut.transpilation.transpile_cut_circuits import (
     transpile_experiments,
     transpile_subcircuits,
 )
-from QCut.utils.deprecation import install_moved_module_finder
+from QCut.utils.deprecation import install_moved_module_finder, warn_if_old_qiskit
 from QCut.utils.observables import ObservablesLike
 
 install_moved_module_finder()
-del install_moved_module_finder
+warn_if_old_qiskit()
+del install_moved_module_finder, warn_if_old_qiskit
 
 try:
     __version__ = version("QCut")

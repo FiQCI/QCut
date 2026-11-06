@@ -16,6 +16,7 @@ import numpy as np
 from qiskit.primitives.containers.observables_array import ObservablesArray
 from qiskit.quantum_info import SparsePauliOp
 
+# TODO(3.0): drop the fallback if qiskit 1.1 has the alias too; 1.2 does.
 try:  # qiskit's own name for "anything an estimator takes as observables"
     from qiskit.primitives.containers.observables_array import (
         ObservablesArrayLike as ObservablesLike,
@@ -23,12 +24,15 @@ try:  # qiskit's own name for "anything an estimator takes as observables"
 except ImportError:  # pragma: no cover, older qiskit does not export the alias
     ObservablesLike = Any
 
+# TODO(3.0): import directly once the qiskit floor is 1.4 or newer.
 try:
     from qiskit.quantum_info import SparseObservable
 except ImportError:  # pragma: no cover, qiskit below 1.4 has no such class
     SparseObservable = None
 
 
+# TODO(3.0): always True from qiskit 2.1. Remove with _check_sparse_observables and
+# the skipifs in tests/test_observables.py.
 def _coerces_sparse_observables() -> bool:
     """Whether this qiskit turns a ``SparseObservable`` into observables of its own."""
     if SparseObservable is None:
@@ -197,6 +201,7 @@ def per_term_observables(op: SparsePauliOp) -> ObservableSpec:
     )
 
 
+# TODO(3.0): not needed from qiskit 2.1, see _coerces_sparse_observables.
 def _check_sparse_observables(observables) -> None:
     """Refuse a ``SparseObservable`` on a qiskit that will not take one.
 

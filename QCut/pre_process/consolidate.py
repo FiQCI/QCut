@@ -37,6 +37,7 @@ from QCut.qpd.qpd_gates import CutTwoQubitGate
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+# TODO(3.0): drop the fallback if qiskit 1.1 has the checker too; 1.2 does.
 try:  # pragma: no cover - depends on the qiskit version
     from qiskit.circuit.commutation_library import SessionCommutationChecker as _CHECKER
 except ImportError:  # pragma: no cover

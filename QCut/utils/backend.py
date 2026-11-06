@@ -29,6 +29,7 @@ def _backend_gate_names(backend) -> list[str]:
     Raises:
         QCutError: the backend names its gates in none of the three ways.
     """
+    # TODO(3.0): BackendV1 is gone from qiskit 2.0, so this branch can go.
     configuration = getattr(backend, "configuration", None)
     if configuration is not None:
         try:

@@ -21,6 +21,7 @@ from QCut.utils.observables import (
 )
 
 
+# TODO(3.0): use assign_parameters(strict=False) directly once the floor is qiskit 2.1.
 def _assign_present(circuit: QuantumCircuit, parameters: dict) -> QuantumCircuit:
     """Bind the parameters ``circuit`` has and ignore the rest.
 
