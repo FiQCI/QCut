@@ -14,7 +14,7 @@ def group_circuits(subcircuits, max_qubits):
 
     groups = []
 
-    for ind, mq in enumerate(max_qubits):
+    for mq in max_qubits:
         current_group = []
         tot = 0
 
@@ -71,15 +71,10 @@ def combine_subcircuits(subcircuits):
         used_qpd = 0
         used_meas = 0
         for c in sc.clbits:
-            rname = c._register.name if c._register else ""
-            if rname == "meas":
-                cmap.append(meas[meas_cur + used_meas])
-                used_meas += 1
-            elif is_qpd_reg(rname):
+            if is_qpd_reg(c._register.name if c._register else ""):
                 cmap.append(qpd[qpd_cur + used_qpd])
                 used_qpd += 1
-            else:
-                # Fallback: route unknown registers to meas
+            else:  # "meas", and any other register with it
                 cmap.append(meas[meas_cur + used_meas])
                 used_meas += 1
 
@@ -95,13 +90,7 @@ def construct_final_subcircuits(subcircuits, max_qubits):
         # If the number of subcircuits matches the number of max_qubits, return
         # them as is
         return subcircuits
-    groups = group_circuits(subcircuits, max_qubits)
-    final_subcircuits = []
-    for group in groups:
-        if len(group) == 1:
-            final_subcircuits.append(group[0])
-            continue
-        # If we have multiple subcircuits, we need to combine them
-        combined = combine_subcircuits(group)
-        final_subcircuits.append(combined)
-    return final_subcircuits
+    return [
+        group[0] if len(group) == 1 else combine_subcircuits(group)
+        for group in group_circuits(subcircuits, max_qubits)
+    ]
