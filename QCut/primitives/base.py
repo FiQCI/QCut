@@ -166,6 +166,11 @@ class _CutPrimitive:
 
         Every experiment is built before this is called, so a circuit that cannot be
         run fails the run before any job has been queued.
+
+        TODO: batch circuits across experiments. Each one goes out in batches of its
+        own, so many small cut circuits submit many part-filled jobs where shared
+        batches would fill them. :meth:`_estimate` sums per-experiment costs and would
+        have to follow.
         """
         return [
             submit_experiments(

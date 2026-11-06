@@ -1,6 +1,6 @@
 """User-facing configuration for the cutting workflow.
 
-Options are collected once and carried on :class:`QCut.model. cutcircuit.CutCircuit`,
+Options are collected once and carried on :class:`QCut.model.cutcircuit.CutCircuit`,
 which passes them to :class:`QCut.model.cutcircuit.CutExperiment`. Everything downstream
 reads them from there, so adding a knob does not mean widening five signatures.
 
@@ -11,6 +11,10 @@ changes only how an experiment is submitted, so it can be flipped on a built
 :class:`QCut.model.cutcircuit.CutExperiment`. It lives here anyway, so that
 :func:`QCut.estimate_run` and :func:`QCut.submit_experiments` read one setting and
 cannot disagree about what a run costs.
+
+TODO: add a separate ``JobOptions`` for how a run is submitted, starting with whether
+the primitives batch circuits across experiments. ``deduplicate`` and the
+``max_batch_size`` and ``run_options`` arguments may belong there too.
 """
 
 from __future__ import annotations

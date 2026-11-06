@@ -228,6 +228,11 @@ def _submit_communicating(job: QCutJob) -> None:
     the same change as the plain path's, because each group carries its own shot
     allocation by then, so the shared job would have to run at their sum and be scaled
     back per group.
+
+    TODO: send every wave through a single central batcher. The waves are batched by
+    :func:`_dispatch` and the plain path by :func:`submit_experiments`, each with its
+    own rules for batch size and shot spread. One batcher, which the primitives could
+    then share, would keep those rules in one place.
     """
     cut_experiment = job.experiment
     shots = job.shots
