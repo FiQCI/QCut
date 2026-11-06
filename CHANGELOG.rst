@@ -78,6 +78,10 @@ Fixes
   gates act only on high-index qubits. The graph it partitions is now built without
   state shared between calls, which also stops two parts of one wire from sharing a
   node.
+- :code:`find_cuts()` and :code:`get_locations_and_subcircuits()` add qubits that no
+  cut separates from anything to an existing subcircuit, rather than returning each as
+  a one-qubit subcircuit of its own. A cut that separates nothing is refused even when
+  the circuit has such qubits.
 
 Deprecations
 ------------
