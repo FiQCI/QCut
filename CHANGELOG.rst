@@ -37,11 +37,18 @@ Parallel backends
   same backend. :code:`submitted_shots` reports the shots each backend was given, and
   the backend is safe to call from several threads at once.
 
+Standard errors
+---------------
+
+- New :code:`estimate_standard_errors()` gives an upper bound on the shot noise of each
+  estimated expectation value, shaped like the values.
+
 Fixes
 -----
 
 - :code:`CutCircuit.assign_parameters()` and :code:`CutExperiment.assign_parameters()`
   bind parameters spread across several subcircuits.
+
 **Version 2.4.0**
 =================
 
