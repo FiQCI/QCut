@@ -178,10 +178,6 @@ def swap_qubits(  # noqa: C901
     def is_gate_edge(e):
         return len(e[2]) > 2
 
-    def edge_in_cuts(e):
-        u, v, d = e
-        return (u, v, d) in cut_data or (v, u, d) in cut_data
-
     def edge_in_cuts_test(e):
         u, v, d = e
         return d in cut_data_test
@@ -191,15 +187,6 @@ def swap_qubits(  # noqa: C901
         if not edge_in_cuts_test(e):
             cut_data.append((u, v, d))
             cut_data_test.append(d)
-
-    def remove_cut(e):
-        u, v, d = e
-
-        zipped = list(zip(cut_data, cut_data_test))
-        ind_var = (u, v, d) if (u, v, d) in cut_data else (v, u, d)
-        ind = zipped.index((ind_var, d))
-        cut_data.pop(ind)
-        cut_data_test.pop(ind)
 
     # Build mutable counters for givers/receivers
     recv = {list(d.keys())[0]: list(d.values())[0] for d in receivers}

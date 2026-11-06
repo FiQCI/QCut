@@ -284,9 +284,6 @@ def get_qubit_map(subcircuits: list[QuantumCircuit]):
     def filter_obs_i(qc_data):
         return [i for i in qc_data if "obs" in i.operation.name]
 
-    def sort_func(obs):
-        return int(obs.operation.name.split("_")[1])
-
     map_qubit = {}
     count = 0
     for ind, i in enumerate(reversed(subcircuits)):

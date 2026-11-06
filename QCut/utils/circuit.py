@@ -12,24 +12,6 @@ from qiskit.circuit import Barrier, ControlFlowOp, Instruction, Qubit
 from qiskit.circuit.library import get_standard_gate_name_mapping
 
 
-def _count_gates(circuit: QuantumCircuit) -> dict[Qubit, int]:
-    """Count the number of gates acting on each qubit in a QuantumCircuit.
-
-    Args:
-        circuit (QuantumCircuit): The input quantum circuit.
-
-    Returns:
-        dict[Qubit, int]: A dictionary mapping each qubit to the number of gates
-        acting on it.
-    """
-    gate_count = dict.fromkeys(circuit.qubits, 0)
-    for instruction in circuit.data:
-        for qubit in instruction.qubits:
-            gate_count[qubit] += 1
-
-    return gate_count
-
-
 def _fence_markers(circuit: QuantumCircuit, names: set[str]) -> QuantumCircuit:
     """Put a barrier either side of every placeholder, so transpiling cannot move it.
 
