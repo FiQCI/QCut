@@ -332,6 +332,14 @@ class CutExperiment:
         return self._num_draws is not None
 
     @property
+    def seed(self) -> int | None:
+        """The seed the decomposition was sampled with, ``None`` if it was enumerated.
+
+        Pass it as ``CutOptions(seed=...)`` to build the same experiment again.
+        """
+        return self.options.seed if self.sampled else None
+
+    @property
     def num_obs_groups(self):
         return len(self.experiments[0])
 

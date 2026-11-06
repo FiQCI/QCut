@@ -400,6 +400,9 @@ def get_experiment_circuits(  # noqa: C901
         exact_groups *= len(qpd_for_bundle(bundle, cut_circuit.cut_locations))
 
     if options.should_sample(exact_groups):
+        if options.seed is None:
+            # Drawn here and kept on the experiment, so it can be rebuilt exactly.
+            options = options.replace(seed=int(np.random.default_rng().integers(2**32)))
         qpd_combinations, coefficients, num_draws = sample_qpd_combinations(
             cut_circuit.cut_locations, options.sample_count, options.seed, bundles
         )

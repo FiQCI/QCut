@@ -70,7 +70,8 @@ class CutOptions:
     :data:`ExpansionStrategy`. Under ``"auto"``, ``max_exact_groups`` is the largest
     exact group count still enumerated rather than sampled. When sampling,
     ``num_samples`` draws are taken, defaulting to ``max_exact_groups``, and ``seed``
-    fixes the sampler for a reproducible experiment set.
+    fixes the sampler for a reproducible experiment set. Without one, a seed is drawn
+    and kept as ``CutExperiment.seed``.
 
     ``deduplicate`` submits each distinct experiment circuit once and shares its result
     between every slot it fills, rather than running the same circuit once per group.
