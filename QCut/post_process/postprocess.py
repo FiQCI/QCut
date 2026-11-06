@@ -446,3 +446,49 @@ def estimate_expectation_values(results: RawResult) -> np.ndarray:
         )
 
     return spec.combine(expectation_values)
+
+
+def estimate_standard_errors(results: RawResult) -> np.ndarray:
+    r"""An upper bound on the shot noise in :func:`estimate_expectation_values`.
+
+    Each Pauli term is the sum :math:`\sum_g c_g E_g` over the groups, each group
+    estimated from :math:`n` shots of outcomes in :math:`[-1, 1]`, so its standard
+    error is at most
+
+    .. math::
+
+        \sqrt{\sum_g c_g^2 / n \; + \; \gamma^2 / D}
+
+    with :math:`\gamma = \sum_g |c_g|`. The second term is there only when the
+    decomposition was sampled, :math:`D` being the number of draws. This is the
+    stratified-sampling variance with each group's variance taken at its largest, see
+    arXiv:2602.11245. An observable :math:`\sum_j a_j P_j` gets
+    :math:`\sum_j |a_j|` times that.
+
+    It covers sampling error only, not device noise or bias.
+
+    Args:
+        results (RawResult): raw results from experiment circuits, carrying the
+            experiment they came from.
+
+    Returns:
+        np.ndarray: one standard error per observable, shaped like the expectation
+        values.
+    """
+    experiment = results.experiment
+    if experiment is None:
+        raise ValueError(
+            "These results carry no experiment, so there is nothing to interpret them "
+            "with. Results from a QCutJob or QCut.run_experiments carry it already; a "
+            "hand-built RawResult has to be given the experiment it came from."
+        )
+    coefficients = np.asarray(experiment.coefficients, dtype=float)
+    variance = np.sum(coefficients**2) / results._shots
+    if experiment.sampled:
+        variance += np.sum(np.abs(coefficients)) ** 2 / experiment.num_draws
+    per_term = np.sqrt(variance)
+
+    spec = experiment.observable_spec
+    if spec.weights is None:
+        return np.full(spec.shape, per_term)
+    return (np.abs(spec.weights).sum(axis=1) * per_term).reshape(spec.shape)
