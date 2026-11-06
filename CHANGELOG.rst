@@ -42,6 +42,8 @@ Standard errors
 
 - New :code:`estimate_standard_errors()` gives an upper bound on the shot noise of each
   estimated expectation value, shaped like the values.
+- A reconstructed distribution carries the same bound for its quasi-probabilities as
+  :code:`QuasiProbabilities.standard_error`.
 
 Sampling
 --------
