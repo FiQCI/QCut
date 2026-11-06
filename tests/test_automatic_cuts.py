@@ -329,3 +329,27 @@ def test_graph_builds_when_only_high_qubits_interact():
     circuit.cx(8, 9)
     circuit.cx(8, 9)
     _segments_are_distinct(circuit)
+
+
+def _chain_with_idle_qubits() -> QuantumCircuit:
+    """A chain on qubits 0-3, with 4 and 5 left out of it."""
+    circuit = QuantumCircuit(6)
+    circuit.h(0)
+    for qubit in range(3):
+        circuit.cx(qubit, qubit + 1)
+    circuit.x(5)
+    return circuit
+
+
+def test_qubits_no_cut_separates_join_a_cut_part():
+    """They used to come back as one-qubit subcircuits of their own."""
+    cut_circuit = find_cuts(_chain_with_idle_qubits(), options=CutOptions(seed=1))
+    assert sorted(cut_circuit.num_qubits) == [3, 3]
+
+
+def test_idle_qubits_do_not_make_a_cut_that_separates_nothing_valid():
+    """The idle qubits used to count as the parts the cut produced."""
+    circuit = _chain_with_idle_qubits()
+    circuit.append(ck.cutCZ(), [0, 1])  # the cx before it still joins 0 and 1
+    with pytest.raises(QCutError, match="Invalid cuts"):
+        ck.get_locations_and_subcircuits(circuit)
