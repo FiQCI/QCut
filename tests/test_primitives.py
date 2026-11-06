@@ -18,6 +18,7 @@ from QCut import (
     CutQuasiSampler,
     ParallelBackend,
     cut,
+    estimate_standard_errors,
     find_cuts,
     get_locations_and_subcircuits,
     transpile_subcircuits,
@@ -126,6 +127,8 @@ def test_estimator_entries_carry_their_raw_results():
     assert len(result) == 1
     assert result[0].raw.experiment is job.experiments[0]
     assert np.array_equal(job.expectation_values(0), result[0].expectation_values)
+    assert job.standard_errors(0) == estimate_standard_errors(result[0].raw)
+    assert result.standard_errors() == [result[0].standard_errors]
     assert job.result() is result
 
 
