@@ -3,7 +3,7 @@ Running on several backends
 
 A cut experiment is a collection of many independent circuits, so it does not have to run on one
 machine. :class:`~QCut.ParallelBackend` takes several backends and
-hands them the batches in turn.
+gives each batch to the one with the fewest shots so far.
 
 .. code:: python
 
@@ -40,7 +40,8 @@ wave are independent and are shared like any others.
 
 The experiment is not transpiled beforehand. Each batch is transpiled for the backend
 about to run it, so only one batch is ever held in its transpiled form and the
-experiment itself stays as it was built.
+experiment itself stays as it was built. Pass untranspiled cut circuits; each batch is
+transpiled for the device it lands on.
 
 Machines of different sizes
 ---------------------------
