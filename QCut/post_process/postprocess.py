@@ -448,6 +448,16 @@ def estimate_expectation_values(results: RawResult) -> np.ndarray:
     return spec.combine(expectation_values)
 
 
+def _term_standard_error(results: RawResult) -> float:
+    """The bound :func:`estimate_standard_errors` gives one Pauli term."""
+    experiment = results.experiment
+    coefficients = np.asarray(experiment.coefficients, dtype=float)
+    variance = np.sum(coefficients**2) / results._shots
+    if experiment.sampled:
+        variance += np.sum(np.abs(coefficients)) ** 2 / experiment.num_draws
+    return float(np.sqrt(variance))
+
+
 def estimate_standard_errors(results: RawResult) -> np.ndarray:
     r"""An upper bound on the shot noise in :func:`estimate_expectation_values`.
 
@@ -482,11 +492,7 @@ def estimate_standard_errors(results: RawResult) -> np.ndarray:
             "with. Results from a QCutJob or QCut.run_experiments carry it already; a "
             "hand-built RawResult has to be given the experiment it came from."
         )
-    coefficients = np.asarray(experiment.coefficients, dtype=float)
-    variance = np.sum(coefficients**2) / results._shots
-    if experiment.sampled:
-        variance += np.sum(np.abs(coefficients)) ** 2 / experiment.num_draws
-    per_term = np.sqrt(variance)
+    per_term = _term_standard_error(results)
 
     spec = experiment.observable_spec
     if spec.weights is None:

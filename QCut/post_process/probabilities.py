@@ -14,6 +14,7 @@ from QCut.post_process.postprocess import (
     _bit_layout,
     _outcome_rows,
     _process_results,
+    _term_standard_error,
 )
 
 #: How many bitstrings are shown without being asked for: the default of the dict views
@@ -64,6 +65,9 @@ class QuasiProbabilities(Mapping):
             are read back. The first is the last character of a key.
     """
 
+    #: The :func:`QCut.estimate_standard_errors` bound of one Z string, None if unknown.
+    _term_error: float | None = None
+
     def __init__(self, data, shots: int | None = None):
         """Init from a mapping of bitstring to value, which must cover every bitstring.
 
@@ -88,6 +92,7 @@ class QuasiProbabilities(Mapping):
         distribution: SeparableDistribution,
         shots: int | None = None,
         qubits: list[int] | None = None,
+        term_error: float | None = None,
     ) -> QuasiProbabilities:
         """Wrap a separable distribution without expanding it.
 
@@ -97,6 +102,8 @@ class QuasiProbabilities(Mapping):
             shots (int): what the experiment ran at, if it is known.
             qubits (list[int]): the qubits it spans, in the order their bits are read
                 back. Defaults to naming the bits themselves.
+            term_error (float): the standard-error bound of one Z string's estimate,
+                which :attr:`standard_error` is worked out from.
 
         Returns:
             QuasiProbabilities: the distribution, nothing materialised.
@@ -107,6 +114,7 @@ class QuasiProbabilities(Mapping):
         self._width = distribution.width
         self.shots = shots
         self.qubits = list(range(distribution.width) if qubits is None else qubits)
+        self._term_error = term_error
         return self
 
     @classmethod
@@ -115,6 +123,7 @@ class QuasiProbabilities(Mapping):
         values: np.ndarray,
         shots: int | None = None,
         qubits: list[int] | None = None,
+        term_error: float | None = None,
     ) -> QuasiProbabilities:
         """Wrap values already worked out, indexed by outcome.
 
@@ -124,6 +133,7 @@ class QuasiProbabilities(Mapping):
             shots (int): what the experiment ran at, if it is known.
             qubits (list[int]): the qubits it spans, in the order their bits are read
                 back. Defaults to naming the bits themselves.
+            term_error (float): as in :meth:`from_distribution`.
 
         Returns:
             QuasiProbabilities: the distribution.
@@ -134,12 +144,29 @@ class QuasiProbabilities(Mapping):
         self._width = int(self._values.size).bit_length() - 1
         self.shots = shots
         self.qubits = list(range(self._width) if qubits is None else qubits)
+        self._term_error = term_error
         return self
 
     @property
     def width(self) -> int:
         """How many qubits the distribution spans."""
         return self._width
+
+    @property
+    def standard_error(self) -> float | None:
+        r"""An upper bound on the shot noise of each quasi-probability.
+
+        One bitstring's probability is the sum of the :math:`2^k - 1` Z strings over
+        the :math:`k` qubits, each weighted :math:`2^{-k}`, plus a constant. So it gets
+        :math:`1 - 2^{-k}` times the bound :func:`QCut.estimate_standard_errors` gives
+        one Z string, the same for every bitstring. It is loose for unlikely bitstrings.
+
+        It does not apply to :meth:`nearest_probabilities` or :meth:`counts`. None if
+        the distribution was not reconstructed from an experiment.
+        """
+        if self._term_error is None:
+            return None
+        return (1.0 - 2.0**-self._width) * self._term_error
 
     def probabilities(self) -> np.ndarray:
         """Every value at once.
@@ -263,7 +290,10 @@ class QuasiProbabilities(Mapping):
         bits = [self.qubits.index(qubit) for qubit in qubits]
         if self._distribution is not None:
             return QuasiProbabilities.from_distribution(
-                self._distribution.marginal(bits), shots=self.shots, qubits=qubits
+                self._distribution.marginal(bits),
+                shots=self.shots,
+                qubits=qubits,
+                term_error=self._term_error,
             )
 
         values = self.probabilities()
@@ -273,12 +303,9 @@ class QuasiProbabilities(Mapping):
             for position, bit in enumerate(bits):
                 index |= ((outcome >> bit) & 1) << position
             reduced[index] += values[outcome]
-        marginal = QuasiProbabilities(
-            {format(o, f"0{len(bits)}b"): float(v) for o, v in enumerate(reduced)},
-            shots=self.shots,
+        return QuasiProbabilities.from_array(
+            reduced, shots=self.shots, qubits=qubits, term_error=self._term_error
         )
-        marginal.qubits = list(qubits)
-        return marginal
 
     def quasi_probabilities(self, top: int | None = DEFAULT_TOP) -> dict[str, float]:
         """The values as reconstructed, negative ones included.
@@ -528,11 +555,15 @@ def estimate_probabilities(result: RawResult) -> QuasiProbabilities:
         )
 
     qubits = list(result.experiment.qubits)
+    term_error = _term_standard_error(result)
     distribution = _separable_form(result)
     if distribution is None:
         return QuasiProbabilities.from_array(
-            _dense_values(result), shots=result.shots, qubits=qubits
+            _dense_values(result),
+            shots=result.shots,
+            qubits=qubits,
+            term_error=term_error,
         )
     return QuasiProbabilities.from_distribution(
-        distribution, shots=result.shots, qubits=qubits
+        distribution, shots=result.shots, qubits=qubits, term_error=term_error
     )

@@ -25,6 +25,14 @@ class CutQuasiSamplerEntry:
     #: The raw counts it was reconstructed from.
     raw: RawResult
 
+    @property
+    def standard_error(self) -> float:
+        """An upper bound on each quasi-probability's shot noise, the same for all.
+
+        See :attr:`QCut.QuasiProbabilities.standard_error`.
+        """
+        return self.quasi_probabilities.standard_error
+
     def quasi_dist(self, top: int | None = None) -> QuasiDistribution:
         """The distribution as a qiskit :class:`~qiskit.result.QuasiDistribution`.
 
@@ -65,6 +73,10 @@ class CutQuasiSamplerResult(Sequence):
         """
         return [entry.quasi_dist(top) for entry in self._entries]
 
+    def standard_errors(self) -> list[float]:
+        """Every circuit's standard error, in the order the circuits were given."""
+        return [entry.standard_error for entry in self._entries]
+
     def __repr__(self) -> str:
         """Represent without expanding any distribution."""
         return f"CutQuasiSamplerResult({self.quasi_probabilities()})"
@@ -96,6 +108,18 @@ class CutQuasiSamplerJob(QCutPrimitiveJob):
         if index is None:
             return result.quasi_probabilities()
         return result[index].quasi_probabilities
+
+    def standard_errors(self, index: int | None = None) -> list[float] | float:
+        """Wait for the run and return the standard errors.
+
+        Args:
+            index (int): the input circuit to return it for, or ``None`` for every
+                circuit's, in the order the circuits were given.
+        """
+        result = self.result()
+        if index is None:
+            return result.standard_errors()
+        return result[index].standard_error
 
     def _build(self, raws: list[RawResult]) -> CutQuasiSamplerResult:
         return CutQuasiSamplerResult(
