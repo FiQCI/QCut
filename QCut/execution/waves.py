@@ -9,7 +9,7 @@ from dataclasses import dataclass, replace
 
 from QCut.errors.qcuterror import QCutError
 from QCut.execution.dispatch import _dispatch, _seeded
-from QCut.job.cutresult import CircuitResult
+from QCut.job.cutresult import CircuitResult, _select_label
 from QCut.job.handle import QCutJob
 from QCut.utils.backend import _backend_shot_cap
 
@@ -104,15 +104,7 @@ def _label_fraction(counts: dict, clbits, label) -> float:
     total = sum(counts.values())
     if total <= 0:
         return 0.0
-    kept = sum(
-        value
-        for key, value in counts.items()
-        if all(
-            key.split(" ")[-1][len(key.split(" ")[-1]) - 1 - clbit] == str(wanted)
-            for clbit, wanted in zip(clbits, label)
-        )
-    )
-    return kept / total
+    return sum(_select_label(counts, clbits, label, 1.0).values()) / total
 
 
 def _label_weights(cut_experiment, results, wave: int) -> list[float]:
