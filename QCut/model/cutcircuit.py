@@ -21,6 +21,20 @@ from QCut.utils.observables import (
 )
 
 
+def _assign_present(circuit: QuantumCircuit, parameters: dict) -> QuantumCircuit:
+    """Bind the parameters ``circuit`` has and ignore the rest.
+
+    Some qiskit releases (1.2, 2.0) still raise for an unknown name even with
+    ``strict=False``.
+    """
+    present = {
+        key: value
+        for key, value in parameters.items()
+        if not isinstance(key, str) or circuit.has_parameter(key)
+    }
+    return circuit.assign_parameters(present, strict=False)
+
+
 class CutCircuit:
     """Class for representing a cut circuit. Contains the subcircuits, cut locations,
     and mapping of qubits. Also contains some of the same functionality as the qiskit
@@ -111,16 +125,13 @@ class CutCircuit:
 
         if inplace:
             for ind, circuit in enumerate(self.subcircuits):
-                self.subcircuits[ind] = circuit.assign_parameters(
-                    parameters, strict=False
-                )
+                self.subcircuits[ind] = _assign_present(circuit, parameters)
             self.cut_locations = bound_locations
             return
 
         else:
             new_circuits = [
-                circuit.assign_parameters(parameters, strict=False)
-                for circuit in self.subcircuits
+                _assign_present(circuit, parameters) for circuit in self.subcircuits
             ]
             return CutCircuit(
                 subcircuits=new_circuits,
@@ -269,8 +280,8 @@ class CutExperiment:
             for exp_ind, subcircuits in enumerate(self.experiments):
                 for circ_ind, value in enumerate(subcircuits):
                     for ind, circuit in value.items():
-                        self.experiments[exp_ind][circ_ind][ind] = (
-                            circuit.assign_parameters(parameters, strict=False)
+                        self.experiments[exp_ind][circ_ind][ind] = _assign_present(
+                            circuit, parameters
                         )
             return
         else:
@@ -279,7 +290,7 @@ class CutExperiment:
                 new_subcircuits = []
                 for circ_ind, value in enumerate(subcircuits):
                     new_circuits = {
-                        ind: circuit.assign_parameters(parameters, strict=False)
+                        ind: _assign_present(circuit, parameters)
                         for ind, circuit in value.items()
                     }
                     new_subcircuits.append(new_circuits)
