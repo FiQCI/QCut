@@ -133,50 +133,12 @@ def _lagrangians(width: int) -> list[list[tuple[int, int]]]:
         [encode(element, _gf_multiply(alpha, element, width)) for element in basis]
         for alpha in range(1 << width)
     ]
+    # That these form a symplectic spread is checked for every width up to MAX_BLOCK
+    # in tests/test_locc_wire_cuts.py. A subspace that is not isotropic still
+    # diagonalises to something, and would only show up as a decomposition that does
+    # not sum to the identity channel.
     subspaces.append([encode(0, element) for element in basis])
-    _check_spread(subspaces, width)
     return subspaces
-
-
-def _span(generators: list[tuple[int, int]]) -> set[tuple[int, int]]:
-    """Return every element of the subspace the generators span."""
-    elements = {(0, 0)}
-    for a, b in generators:
-        elements |= {(x ^ a, y ^ b) for x, y in elements}
-    return elements
-
-
-def _symplectic(left: tuple[int, int], right: tuple[int, int]) -> int:
-    """Return the symplectic form of two Pauli strings, zero when they commute."""
-    return (bin(left[0] & right[1]).count("1") + bin(right[0] & left[1]).count("1")) % 2
-
-
-def _check_spread(subspaces: list[list[tuple[int, int]]], width: int) -> None:
-    """Verify the subspaces really are a symplectic spread.
-
-    Cheap at these widths and worth doing eagerly, because a subspace that is not
-    isotropic still diagonalises to *something* and the error would only surface much
-    later as a decomposition that does not sum to the identity channel.
-    """
-    if len(subspaces) != (1 << width) + 1:  # pragma: no cover - defensive
-        raise QCutError(f"expected {(1 << width) + 1} bases, got {len(subspaces)}")
-
-    spans = [_span(generators) for generators in subspaces]
-    for index, span in enumerate(spans):
-        if len(span) != 1 << width:  # pragma: no cover - defensive
-            raise QCutError(f"basis {index} has dependent generators")
-        if any(_symplectic(a, b) for a in span for b in span):  # pragma: no cover
-            raise QCutError(
-                f"basis {index} is not a commuting set, so it is not a maximal "
-                "isotropic subspace"
-            )
-
-    for first, second in itertools.combinations(range(len(spans)), 2):
-        if spans[first] & spans[second] != {(0, 0)}:  # pragma: no cover - defensive
-            raise QCutError(
-                f"bases {first} and {second} share a Pauli string, so they are not "
-                "mutually unbiased"
-            )
 
 
 def _pauli_matrix(a: int, b: int, width: int) -> np.ndarray:

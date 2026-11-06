@@ -19,8 +19,6 @@ from QCut.qpd.qpd_locc import (
     MAX_BLOCK,
     _lagrangians,
     _sign,
-    _span,
-    _symplectic,
     gamma_local,
     gamma_locc,
     locc_wire_qpd,
@@ -62,7 +60,20 @@ def test_bases_are_mutually_unbiased(width):
         assert np.abs(overlap - 1 / dimension).max() < 1e-10
 
 
-@pytest.mark.parametrize("width", WIDTHS, ids=[f"n{w}" for w in WIDTHS])
+def _span(generators: list[tuple[int, int]]) -> set[tuple[int, int]]:
+    """Return every element of the subspace the generators span."""
+    elements = {(0, 0)}
+    for a, b in generators:
+        elements |= {(x ^ a, y ^ b) for x, y in elements}
+    return elements
+
+
+def _symplectic(left: tuple[int, int], right: tuple[int, int]) -> int:
+    """Return the symplectic form of two Pauli strings, zero when they commute."""
+    return (bin(left[0] & right[1]).count("1") + bin(right[0] & left[1]).count("1")) % 2
+
+
+@pytest.mark.parametrize("width", range(1, MAX_BLOCK + 1))
 def test_the_pauli_partition_is_a_symplectic_spread(width):
     """The commuting sets must partition the non-identity Paulis exactly once each.
 
