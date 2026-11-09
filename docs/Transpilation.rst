@@ -27,7 +27,7 @@ Or every experiment circuit, afterwards:
 
 Given a cut circuit it is much the faster of the two, but the subcircuits still carry the
 cut and observable placeholders, so the transpiler is working on a circuit it cannot see
-all of. It therefore disallows :code:`remove_final_rzs` and
+all of. It therefore disallows :code:`remove_final_rzs` (:code:`False` by default on :code:`iqm_client>=36.0.0`) and
 :code:`optimize_single_qubits` and raises if you pass them. Given an experiment there are
 no placeholders left, so it optimises further.
 
