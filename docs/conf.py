@@ -101,6 +101,7 @@ html_logo = "_static/images/logos/qcut-logo-1024.png"
 html_title = "QCut"
 html_favicon = "_static/images/logos/qcut-logo.svg"
 html_static_path = ["_static"]
+html_theme_options = {"navbar_persistent": []}
 
 
 def _public_bases(app, name, obj, options, bases):
