@@ -48,6 +48,7 @@ docs = [
     "sphinx==9.0.4",
     "myst-nb",
     "sphinx-book-theme",
+    "sphinx-copybutton",
     "sphinx_lesson",
 ]
 # Comparing QCut against IBM's circuit-knitting addon: uv run --group benchmark ...

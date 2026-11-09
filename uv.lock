@@ -2376,6 +2376,7 @@ docs = [
     { name = "myst-nb" },
     { name = "sphinx" },
     { name = "sphinx-book-theme" },
+    { name = "sphinx-copybutton" },
     { name = "sphinx-lesson" },
 ]
 
@@ -2418,6 +2419,7 @@ docs = [
     { name = "myst-nb" },
     { name = "sphinx", specifier = "==9.0.4" },
     { name = "sphinx-book-theme" },
+    { name = "sphinx-copybutton" },
     { name = "sphinx-lesson" },
 ]
 

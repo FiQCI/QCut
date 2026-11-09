@@ -42,6 +42,7 @@ extensions = [
     "myst_nb",
     "sphinx.ext.mathjax",
     "sphinx.ext.githubpages",
+    "sphinx_copybutton",
 ]
 
 autodoc_default_options = {
