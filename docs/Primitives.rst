@@ -52,6 +52,7 @@ Each entry of the result belongs to one input circuit, in the order given.
 Reconstructing distributions
 ----------------------------
 
+Continuing the example from :doc:`CuttingCircuits`, here with the same :code:`marked_circuit`.
 The sampler reconstructs the distribution over the qubits the circuit measured at its
 end. Measure before cutting: splitting strips the final measurements, and the cut circuit
 remembers where they were.
