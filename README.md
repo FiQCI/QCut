@@ -11,7 +11,7 @@ QCut is a quantum circuit knitting package built on top of qiskit for performing
 
 QCut has been built at CSC - IT Center for Science (Finnish IT Center for Science).
 
-See the [documentation](https://jooniv.github.io/QCut/) for the full usage guide, every option, examples and the theory behind the decompositions.
+See the [documentation](https://fiqci.fi/QCut/) for the full usage guide, every option, examples and the theory behind the decompositions.
 
 # Installation
 
@@ -31,7 +31,7 @@ For IQM hardware and fake backends, install the extra, which holds Qiskit below 
 uv pip install "QCut[iqm]"
 ```
 
-See [Getting started](https://jooniv.github.io/QCut/GettingStarted.html) for installing from source and other details.
+See [Getting started](https://fiqci.fi/QCut/GettingStarted.html) for installing from source and other details.
 
 # Quick start
 
@@ -69,7 +69,7 @@ print(ck.estimate_expectation_values(job.result()))
 
 `find_cuts()` finds and places cuts automatically instead, and `ck.estimate_run(experiment)` calculates
 what running an experiment will cost before submission. The
-[usage guide](https://jooniv.github.io/QCut/Usage.html) goes through each step.
+[usage guide](https://fiqci.fi/QCut/Usage.html) goes through each step.
 
 ## Several circuits at once
 
@@ -93,7 +93,7 @@ print(job.result().expectation_values())
 `[array([0.9160, 0.3853, -0.0328]), array(0.9999)]`
 
 `CutQuasiSampler` reconstructs the distribution over the qubits a circuit measured instead.
-See [Primitives](https://jooniv.github.io/QCut/Primitives.html).
+See [Primitives](https://fiqci.fi/QCut/Primitives.html).
 
 # Why QCut
 
@@ -111,7 +111,7 @@ has the comparison, run with `uv sync --group benchmark`.
 
 # Documentation
 
-[jooniv.github.io/QCut](https://jooniv.github.io/QCut/). To build it locally:
+[fiqci.fi/QCut](https://fiqci.fi/QCut/). To build it locally:
 
 ```bash
 uv sync --group docs

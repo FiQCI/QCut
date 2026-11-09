@@ -12,7 +12,7 @@ Primitives
   `FiQCI-EMS <https://github.com/FiQCI/fiqci-ems>`__'s estimator and sampler.
   They run a list of cut circuits in one call and return a job, which gives
   each circuit's expectation values or quasi-probability distribution together with
-  its standard error. See `Primitives <https://jooniv.github.io/QCut/Primitives.html>`__.
+  its standard error. See `Primitives <https://fiqci.fi/QCut/Primitives.html>`__.
 - They take :code:`parameter_values`, bound into each circuit before its experiment is
   built. A sweep is the same circuit listed once per set of values. A circuit with a
   parameter left unbound is refused before anything is submitted.
@@ -176,7 +176,7 @@ Reconstructing a distribution no longer costs :code:`2**k`
 
 - Reconstructing a distribution over :code:`k` qubits is now flat in :code:`k` rather
   than exponential in it with a proper reconstruction method. See `the 
-  derivation <https://jooniv.github.io/QCut/theory/Probability_reconstruction.html>`__.
+  derivation <https://fiqci.fi/QCut/theory/Probability_reconstruction.html>`__.
 - The distribution is held in that product form, so three new queries never expand it:
   :code:`top(count)` gives the most likely bitstrings, exactly, by branch and bound
   (measured at 17 ms and 0.2 MB for the top 100 of 2\ :sup:`24`, against 270 ms and
@@ -218,7 +218,7 @@ Observables as qiskit's estimator takes them
 - :code:`run()` and :code:`run_cut_circuit()` take :code:`run_options` as well.
 - Added :code:`ParallelBackend`, which runs an experiment on several backends at once,
   each batch transpiled for the one about to run it.
-  See `Running on several backends <https://jooniv.github.io/QCut/Hardware.html#running-on-several-backends>`__.
+  See `Running on several backends <https://fiqci.fi/QCut/Hardware.html#running-on-several-backends>`__.
 - Added :code:`transpile_circuits()`, which takes a :code:`CutCircuit`, a
   :code:`CutExperiment` or plain circuits.
 - :code:`transpile_experiments()` defaults to :code:`optimization_level=3` rather than
@@ -256,7 +256,7 @@ Reconstructing a probability distribution
   distribution over those qubits by an inverse Walsh-Hadamard transform. Costs
   :code:`2**k` observables but no extra circuits, since they share one measurement
   setting.
-  See `the derivation <https://jooniv.github.io/QCut/theory/Probability_reconstruction.html>`__.
+  See `the derivation <https://fiqci.fi/QCut/theory/Probability_reconstruction.html>`__.
 - The result is a :code:`dict` of quasi-probabilities, which can be negative.
   :code:`nearest_probabilities()` gives the closest true distribution and
   :code:`counts()` scales it by the shots the experiment ran at, or by one of your own.
@@ -283,9 +283,9 @@ Breaking changes
 - :code:`find_cuts()` is now deterministic and costs several candidate partitions before
   choosing, so it returns different, cheaper plans than 1.3.2 did for the same circuit.
 - :code:`find_cuts()` now reads its configuration from a :code:`CutOptions` object rather than from keyword arguments. See
-  `Options <https://jooniv.github.io/QCut/Options.html>`__ and `Automatic cuts <https://jooniv.github.io/QCut/examples/AutomaticCuts.html>`__ for details.
+  `Options <https://fiqci.fi/QCut/Options.html>`__ and `Automatic cuts <https://fiqci.fi/QCut/examples/AutomaticCuts.html>`__ for details.
 - Cut edge weights are :code:`log gamma` rather than :code:`gamma`, which also changes
-  which cuts are chosen. See `Automatic cuts <https://jooniv.github.io/QCut/examples/AutomaticCuts.html>`__.
+  which cuts are chosen. See `Automatic cuts <https://fiqci.fi/QCut/examples/AutomaticCuts.html>`__.
 - Subcircuits are no longer given empty classical registers, and an unused
   :code:`qpd_meas` register is dropped. Code reading registers by position rather than by
   name has to be updated.
@@ -293,7 +293,7 @@ Breaking changes
   takes only the results, which now carry the experiment they came from. Replace
   :code:`estimate_expectation_values(results, experiment.expv_data())` with
   :code:`estimate_expectation_values(results)`.
-  See `Usage <https://jooniv.github.io/QCut/Usage.html>`__.
+  See `Usage <https://fiqci.fi/QCut/Usage.html>`__.
 - :code:`get_experiment_circuits()` no longer modifies the :code:`CutCircuit` it is
   given, so one can be reused for several observable sets.
 - :code:`transpile_subcircuits()` raises rather than quietly overriding when
@@ -307,8 +307,8 @@ Cutting arbitrary two-qubit gates
 ---------------------------------
 
 - Any two-qubit gate can be cut, with the decomposition derived from its KAK
-  coordinates. See `Gate cuts <https://jooniv.github.io/QCut/examples/GateCuts.html>`__ and
-  `Theory <https://jooniv.github.io/QCut/Theory.html>`__.
+  coordinates. See `Gate cuts <https://fiqci.fi/QCut/examples/GateCuts.html>`__ and
+  `Theory <https://fiqci.fi/QCut/Theory.html>`__.
 
 Joint cutting of parallel rotation gates
 ----------------------------------------
@@ -316,7 +316,7 @@ Joint cutting of parallel rotation gates
 - Single-axis rotation gates running in parallel between the same two partitions share
   one decomposition: two parallel :code:`rzz` cost 30 subexperiments instead of 36, three
   cost 132 instead of 216. On by default.
-  See `the derivation <https://jooniv.github.io/QCut/theory/Joint_rotation_derivation.html>`__.
+  See `the derivation <https://fiqci.fi/QCut/theory/Joint_rotation_derivation.html>`__.
 
 Wire cuts with classical communication
 --------------------------------------
@@ -324,7 +324,7 @@ Wire cuts with classical communication
 - A block of parallel wire cuts can exchange the measured outcome, taking the overhead
   from :code:`4**n` to :code:`2**(n+1) - 1` and two wires from 64 subexperiments to 28.
   These run in waves. Used by default for blocks of two or more.
-  See `the derivation <https://jooniv.github.io/QCut/theory/LOCC_wire_derivation.html>`__.
+  See `the derivation <https://fiqci.fi/QCut/theory/LOCC_wire_derivation.html>`__.
 
 Gate consolidation
 ------------------
@@ -332,21 +332,21 @@ Gate consolidation
 - Runs of gates on the same qubit pair are merged before cutting, so the pair costs one
   cut. Runs need not be contiguous, gates that commute with the run are moved out of the
   way. On by default, and compared against not merging.
-  See `Options <https://jooniv.github.io/QCut/Options.html>`__.
+  See `Options <https://fiqci.fi/QCut/Options.html>`__.
 
 Sampling instead of enumerating
 -------------------------------
 
 - The experiment can be sampled from the quasiprobability distribution rather than
   enumerated, which bounds the number of circuits when the exact count is out of reach.
-  Automatic above 1000 groups. See `Options <https://jooniv.github.io/QCut/Options.html>`__.
+  Automatic above 1000 groups. See `Options <https://fiqci.fi/QCut/Options.html>`__.
 
 Configuration
 -------------
 
 - Added :code:`CutOptions`, collected once and carried through the run. Covers
   consolidation, joint cuts, wire cut communication, expansion strategy, sampling and the
-  cut finder. See `Options <https://jooniv.github.io/QCut/Options.html>`__.
+  cut finder. See `Options <https://fiqci.fi/QCut/Options.html>`__.
 
 Knowing what a cut costs
 ------------------------
@@ -363,7 +363,7 @@ Running on real hardware
 - Better IQM support: :code:`pip install "QCut[iqm]"`, and both transpile helpers use IQM's own
   transpiler for IQM backends, resonator machines included. Pass
   :code:`use_iqm_transpiler=False` to opt out.
-  See `Usage <https://jooniv.github.io/QCut/Usage.html>`__.
+  See `Usage <https://fiqci.fi/QCut/Usage.html>`__.
 - Resonator devices are supported by both transpile helpers. Their MOVE gates are routed
   while the subcircuits still carry cut placeholders, which the routing pass used to
   drop along with the classical registers and the layout.
