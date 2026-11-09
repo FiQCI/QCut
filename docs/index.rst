@@ -38,8 +38,6 @@ QCut has been built at CSC - IT Center for Science (Finnish IT Center for Scienc
    Acknowledgement
    License
 
-:doc:`GettingStarted` covers installation and a first run.
-
 Why QCut
 --------
 

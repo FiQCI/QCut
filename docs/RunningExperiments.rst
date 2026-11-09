@@ -124,7 +124,7 @@ Several circuits at once
 :doc:`Primitives` run a list of cut circuits in one call and hand back the expectation
 values, or the distributions, of all of them. :code:`run()` and :code:`run_cut_circuit()`
 still do the whole sequence for a single circuit, from a marked circuit or an already
-split one, and are listed in the :doc:`API reference <QCut>`.
+split one, and are listed in the :doc:`API reference <api/experiments>`.
 
 .. _probability-distributions:
 
