@@ -227,7 +227,7 @@ def _check_sparse_observables(observables) -> None:
 
 
 def coerce_observables(
-    observables: ObservablesLike | ObservableSpec, # type: ignore
+    observables: ObservablesLike | ObservableSpec,  # type: ignore
     num_qubits: int | None = None,  # type: ignore
 ) -> ObservableSpec:
     """Take observables the way qiskit's estimator does, and find the terms behind them.
