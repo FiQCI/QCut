@@ -163,8 +163,8 @@ _IQM_ENFORCED: dict[str, tuple[bool, str]] = {
     "remove_final_rzs": (
         False,
         "drops the trailing Z rotations, which are unobservable before a Z measurement "
-        "but not before the X and Y basis changes QCut adds afterwards.",
-        "On iqm_client >=36.0.0 remove_final_rzs is now `False` by default."
+        "but not before the X and Y basis changes QCut adds afterwards."
+        "On iqm_client >=36.0.0 remove_final_rzs is now `False` by default.",
     ),
     "optimize_single_qubits": (
         False,
