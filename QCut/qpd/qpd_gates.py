@@ -9,28 +9,23 @@ from qiskit.transpiler import PassManager
 from qiskit.transpiler.basepasses import TransformationPass
 from qiskit.transpiler.passes import BasisTranslator, UnrollCustomDefinitions
 
-# define the cut location marker
-cut_op = QuantumCircuit(1, name="Cut")
-cut_op = cut_op.to_instruction(label="Cut")
-cut_op.definition = None
+
+def _marker(name: str, num_qubits: int) -> Instruction:
+    """An opaque instruction marking where a cut goes."""
+    marker = QuantumCircuit(num_qubits, name=name).to_instruction(label=name)
+    marker.definition = None
+    return marker
+
+
+cut_op = _marker("Cut", 1)
+cutCZ_op = _marker("CutCZ", 2)
+cutSWAP_op = _marker("CutSWAP", 2)
+cutISWAP_op = _marker("CutISWAP", 2)
 
 
 def cut() -> QuantumCircuit | Instruction:
     """Return a single qubit wire cut instruction."""
     return cut_op
-
-
-cutCZ_op = QuantumCircuit(2, name="CutCZ")
-cutCZ_op = cutCZ_op.to_instruction(label="CutCZ")
-cutCZ_op.definition = None
-
-cutSWAP_op = QuantumCircuit(2, name="CutSWAP")
-cutSWAP_op = cutSWAP_op.to_instruction(label="CutSWAP")
-cutSWAP_op.definition = None
-
-cutISWAP_op = QuantumCircuit(2, name="CutISWAP")
-cutISWAP_op = cutISWAP_op.to_instruction(label="CutISWAP")
-cutISWAP_op.definition = None
 
 
 def cutCZ() -> QuantumCircuit | Instruction:
@@ -185,119 +180,52 @@ def cutGate(
     }
 
 
-# define measurements for different bases
-xmeas = QuantumCircuit(1, 1, name="x-meas")
-xmeas.h(0)
-xmeas.measure(0, 0)
-xmeas.h(0)
+def _seq(name: str, *gates: str) -> QuantumCircuit:
+    """A one-qubit circuit applying ``gates`` in order, measuring into its one bit."""
+    circuit = QuantumCircuit(1, int("measure" in gates), name=name)
+    for gate in gates:
+        if gate == "measure":
+            circuit.measure(0, 0)
+        else:
+            getattr(circuit, gate)(0)
+    return circuit
 
-ymeas = QuantumCircuit(1, 1, name="y-meas")
-ymeas.sdg(0)
-ymeas.h(0)
-ymeas.measure(0, 0)
-ymeas.h(0)
-ymeas.s(0)
 
-idmeas = QuantumCircuit(1, name="id-meas")
-idmeas.id(0)
+# measurements in different bases
+xmeas = _seq("x-meas", "h", "measure", "h")
+ymeas = _seq("y-meas", "sdg", "h", "measure", "h", "s")
+idmeas = _seq("id-meas", "id")
+zmeas = _seq("z-meas", "measure")
 
-zmeas = QuantumCircuit(1, 1, name="z-meas")
-zmeas.measure(0, 0)
+# initialisations
+zero_init = _seq("0-init", "id")
+one_init = _seq("1-init", "x")
+plus_init = _seq("'+'-init", "h")
+minus_init = _seq("'-'-init", "h", "z")
+i_plus_init = _seq("'i+'-init", "h", "s")
+i_minus_init = _seq("'i-'-init", "h", "z", "s")
 
-# define initialization operations
-zero_init = QuantumCircuit(1, name="0-init")
-zero_init.id(0)
-
-one_init = QuantumCircuit(1, name="1-init")
-one_init.x(0)
-
-plus_init = QuantumCircuit(1, name="'+'-init")
-plus_init.h(0)
-
-minus_init = QuantumCircuit(1, name="'-'-init")
-minus_init.h(0)
-minus_init.z(0)
-
-i_plus_init = QuantumCircuit(1, name="'i+'-init")
-i_plus_init.h(0)
-i_plus_init.s(0)
-
-i_minus_init = QuantumCircuit(1, name="'i-'-init")
-i_minus_init.h(0)
-i_minus_init.z(0)
-i_minus_init.s(0)
-
-sdg_meas = QuantumCircuit(1, 1, name="sdg_meas")
-sdg_meas.sdg(0)
-sdg_meas.measure(0, 0)
-
-i_gate = QuantumCircuit(1, name="I")
-i_gate.id(0)
-
-x_gate = QuantumCircuit(1, name="X")
-x_gate.x(0)
-
-y_gate = QuantumCircuit(1, name="Y")
-y_gate.y(0)
-
-z_gate = QuantumCircuit(1, name="Z")
-z_gate.z(0)
-
-axyp = QuantumCircuit(1, name="Axyp")
-axyp.y(0)
-axyp.s(0)
-
-axym = QuantumCircuit(1, name="Axym")
-axym.y(0)
-axym.s(0)
-axym.z(0)
-
-ayzp = QuantumCircuit(1, name="Ayzp")
-ayzp.z(0)
-ayzp.sx(0)
-
-ayzm = QuantumCircuit(1, name="Ayzm")
-ayzm.z(0)
-ayzm.sx(0)
-ayzm.x(0)
-
-azxp = QuantumCircuit(1, name="Azxp")
-azxp.h(0)
-
-azxm = QuantumCircuit(1, name="Azxm")
-azxm.h(0)
-azxm.y(0)
-
-sx_gate = QuantumCircuit(1, name="SX")
-sx_gate.sx(0)
-
-sxdg_gate = QuantumCircuit(1, name="SXdg")
-sxdg_gate.sxdg(0)
+# local operations of the generated decompositions
+i_gate = _seq("I", "id")
+x_gate = _seq("X", "x")
+y_gate = _seq("Y", "y")
+z_gate = _seq("Z", "z")
+axyp = _seq("Axyp", "y", "s")
+axym = _seq("Axym", "y", "s", "z")
+ayzp = _seq("Ayzp", "z", "sx")
+ayzm = _seq("Ayzm", "z", "sx", "x")
+azxp = _seq("Azxp", "h")
+azxm = _seq("Azxm", "h", "y")
+sx_gate = _seq("SX", "sx")
+sxdg_gate = _seq("SXdg", "sxdg")
+s_gate = _seq("S", "s")
+sdg_gate = _seq("Sdg", "sdg")
+bxy = _seq("Bxy", "measure", "x")
+byz = _seq("Byz", "h", "measure", "h", "y")
+bzx = _seq("Bzx", "sx", "measure", "sxdg", "z")
 
 ry_p = QuantumCircuit(1, name="RY+")
 ry_p.ry(np.pi / 2, 0)
 
 ry_m = QuantumCircuit(1, name="RY-")
 ry_m.ry(-np.pi / 2, 0)
-
-s_gate = QuantumCircuit(1, name="S")
-s_gate.s(0)
-
-sdg_gate = QuantumCircuit(1, name="Sdg")
-sdg_gate.sdg(0)
-
-bxy = QuantumCircuit(1, 1, name="Bxy")
-bxy.measure(0, 0)
-bxy.x(0)
-
-byz = QuantumCircuit(1, 1, name="Byz")
-byz.h(0)
-byz.measure(0, 0)
-byz.h(0)
-byz.y(0)
-
-bzx = QuantumCircuit(1, 1, name="Bzx")
-bzx.sx(0)
-bzx.measure(0, 0)
-bzx.sxdg(0)
-bzx.z(0)

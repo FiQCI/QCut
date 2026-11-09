@@ -2,39 +2,40 @@
 
 from importlib.metadata import PackageNotFoundError, version
 
-from QCut.cutting.circuit_preparation import (
+from QCut.execution.estimate import JobEstimate, RunEstimate, estimate_run
+from QCut.execution.experiments import get_experiment_circuits
+from QCut.execution.parallel import ParallelBackend
+from QCut.execution.run import run, run_cut_circuit, run_experiments
+from QCut.execution.submit import submit_experiments
+from QCut.job.cutresult import CircuitResult, RawResult
+from QCut.job.handle import PartialBatch, QCutJob
+from QCut.options import DEFAULT_OPTIONS, CutOptions
+from QCut.post_process.postprocess import (
+    estimate_expectation_values,
+    estimate_standard_errors,
+)
+from QCut.post_process.probabilities import (
+    QuasiProbabilities,
+    estimate_probabilities,
+)
+from QCut.pre_process.circuit_preparation import (
     get_locations_and_subcircuits,
 )
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks
-from QCut.execution.backend_utility import (
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks
+from QCut.primitives import CutEstimator, CutQuasiSampler
+from QCut.QCutFind import find_cuts
+from QCut.qpd.qpd_gates import cut, cutCZ, cutGate, cutISWAP, cutSWAP
+from QCut.transpilation.transpile_cut_circuits import (
     transpile_circuits,
     transpile_experiments,
     transpile_subcircuits,
 )
-from QCut.execution.circuit_knitting import (
-    JobEstimate,
-    RunEstimate,
-    estimate_run,
-    get_experiment_circuits,
-    run,
-    run_cut_circuit,
-    run_experiments,
-    submit_experiments,
-)
-from QCut.execution.job import PartialBatch, QCutJob
-from QCut.execution.observables import ObservablesLike
-from QCut.execution.parallel import ParallelBackend
-from QCut.execution.postprocess import (
-    estimate_expectation_values,
-)
-from QCut.execution.probabilities import (
-    QuasiProbabilities,
-    estimate_probabilities,
-)
-from QCut.execution.qcutresult import CircuitResult, RawResult
-from QCut.options import DEFAULT_OPTIONS, CutOptions
-from QCut.QCutFind import find_cuts
-from QCut.qpd.qpd_gates import cut, cutCZ, cutGate, cutISWAP, cutSWAP
+from QCut.utils.deprecation import install_moved_module_finder, warn_if_old_qiskit
+from QCut.utils.observables import ObservablesLike
+
+install_moved_module_finder()
+warn_if_old_qiskit()
+del install_moved_module_finder, warn_if_old_qiskit
 
 try:
     __version__ = version("QCut")
@@ -44,11 +45,14 @@ finally:
     del version, PackageNotFoundError
 
 __all__ = [
+    "CutEstimator",
+    "CutQuasiSampler",
     "ParallelBackend",
     "transpile_circuits",
     "transpile_experiments",
     "transpile_subcircuits",
     "estimate_expectation_values",
+    "estimate_standard_errors",
     "estimate_run",
     "get_experiment_circuits",
     "get_locations_and_subcircuits",

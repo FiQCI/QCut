@@ -51,11 +51,6 @@ def gamma_separate(thetas: list[float]) -> float:
     return float(np.prod([1 + 2 * abs(np.sin(theta)) for theta in thetas]))
 
 
-def _bit_value(bits: tuple[int, ...]) -> int:
-    """Read a bit tuple as an integer, first element most significant."""
-    return int("".join(str(bit) for bit in bits), 2)
-
-
 def _z_gates(circuit: QuantumCircuit, bits: tuple[int, ...]) -> None:
     """Apply ``Z`` to every qubit whose bit is set."""
     for qubit, bit in enumerate(bits):
@@ -109,12 +104,9 @@ def _diagonal_terms(
     """Return the ``i == j`` terms, one per bit pattern, with no measurements."""
     terms = []
     for bits, coefficient in coefficients.items():
-        ops = []
-        for _ in range(2):
-            circuit = QuantumCircuit(width, name="Z_" + "".join(map(str, bits)))
-            _z_gates(circuit, bits)
-            ops.append(circuit)
-        terms.append({"op_0": ops[0], "op_1": ops[1], "c": coefficient**2})
+        circuit = QuantumCircuit(width, name="Z_" + "".join(map(str, bits)))
+        _z_gates(circuit, bits)
+        terms.append({"op_0": circuit, "op_1": circuit.copy(), "c": coefficient**2})
     return terms
 
 
@@ -199,7 +191,7 @@ def joint_rotation_qpd(thetas: list[float], tol: float = DEFAULT_TOL) -> list[di
 
     terms = _diagonal_terms(width, coefficients)
     for i, j in itertools.combinations(patterns, 2):
-        if _bit_value(i) < _bit_value(j):
+        if i < j:  # equal-length bit tuples order as the integers they spell
             i, j = j, i
         prefactor = 2 * coefficients[i] * coefficients[j]
         if abs(prefactor) <= tol:
@@ -275,20 +267,6 @@ def single_axis_theta(gate: Gate) -> float:
     return frame[0]
 
 
-def _with_side_locals(
-    op: QuantumCircuit, locals_: list[tuple[Gate | None, Gate | None]]
-) -> QuantumCircuit:
-    """Wrap one side's joint operation in the per-gate local unitaries.
-
-    Gate ``s`` owns qubit ``s`` of the side, and its locals do not commute with the
-    joint operation, so the order is fixed: the pre-locals, then the joint operation,
-    then the post-locals.
-    """
-    if all(pre is None and post is None for pre, post in locals_):
-        return op
-    return merge_locals(op, locals_)
-
-
 def joint_rotation_qpd_from_gates(
     gates: list[Gate], flipped: list[bool] | None = None, tol: float = DEFAULT_TOL
 ) -> list[dict] | None:
@@ -320,11 +298,13 @@ def joint_rotation_qpd_from_gates(
         per_side[0].append(locals_[0])
         per_side[1].append(locals_[1])
 
+    # Gate s owns qubit s of each side. Its locals do not commute with the joint
+    # operation, so merge_locals keeps them around it: pre-locals, joint, post-locals.
     terms = joint_rotation_qpd(thetas, tol)
     return [
         {
-            "op_0": _with_side_locals(term["op_0"], per_side[0]),
-            "op_1": _with_side_locals(term["op_1"], per_side[1]),
+            "op_0": merge_locals(term["op_0"], per_side[0]),
+            "op_1": merge_locals(term["op_1"], per_side[1]),
             "c": term["c"],
         }
         for term in terms

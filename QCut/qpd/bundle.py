@@ -17,13 +17,14 @@ rotation gates.
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass
 from typing import Callable
 
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import CZGate
 
-from QCut.cutlocation import CutLocation, SingleQubitCutLocation
+from QCut.model.cutlocation import CutLocation, SingleQubitCutLocation
 from QCut.options import CutOptions
 from QCut.qpd.qpd_joint import (
     gamma_joint,
@@ -171,26 +172,26 @@ def _clear_between(
 
 
 def _candidate_groups(
-    cut_locations: list, placeholders: dict[tuple[int, int], Placeholder]
+    cut_locations: list,
+    placeholders: dict[tuple[int, int], Placeholder],
+    kind: type,
+    ordered: bool,
 ) -> dict[tuple[int, int], list[int]]:
-    """Group gate cuts by which two subcircuits they join, ignoring which way round."""
+    """Group the cuts of one ``kind`` by the pair of subcircuits they join.
+
+    Wire cuts keep the pair ``ordered``, since a communicating cut sends its outcome one
+    way only. A single-axis gate is symmetric, so gate cuts do not.
+    """
     groups: dict[tuple[int, int], list[int]] = {}
     for index, location in enumerate(cut_locations):
-        if not isinstance(location, CutLocation):
+        if not isinstance(location, kind):
             continue
         side_0 = placeholders.get((index, SIDE_0))
         side_1 = placeholders.get((index, SIDE_1))
-        if side_0 is None or side_1 is None:
+        if side_0 is None or side_1 is None or side_0.subcircuit == side_1.subcircuit:
             continue
-        if side_0.subcircuit == side_1.subcircuit:  # pragma: no cover - defensive
-            continue
-        # A single-axis gate is symmetric about its interaction axis, so a cut whose
-        # sides are the other way round joins the same bundle with its locals swapped.
-        key = (
-            (side_0.subcircuit, side_1.subcircuit)
-            if side_0.subcircuit < side_1.subcircuit
-            else (side_1.subcircuit, side_0.subcircuit)
-        )
+        first, second = side_0.subcircuit, side_1.subcircuit
+        key = (first, second) if ordered or first < second else (second, first)
         groups.setdefault(key, []).append(index)
     return groups
 
@@ -215,29 +216,6 @@ def joint_gate(location: CutLocation):
     if location.gate_name == "cz":
         return CZGate()
     return None
-
-
-def _wire_candidate_groups(
-    cut_locations: list, placeholders: dict[tuple[int, int], Placeholder]
-) -> dict[tuple[int, int], list[int]]:
-    """Group wire cuts by the ordered pair of subcircuits they run between.
-
-    Ordered, unlike the gate cut version, because a communicating wire cut sends its
-    measured outcome one way only. Cuts pointing the other way between the same two
-    subcircuits form their own bundle.
-    """
-    groups: dict[tuple[int, int], list[int]] = {}
-    for index, location in enumerate(cut_locations):
-        if not isinstance(location, SingleQubitCutLocation):
-            continue
-        measure = placeholders.get((index, SIDE_0))
-        prepare = placeholders.get((index, SIDE_1))
-        if measure is None or prepare is None:
-            continue
-        if measure.subcircuit == prepare.subcircuit:
-            continue
-        groups.setdefault((measure.subcircuit, prepare.subcircuit), []).append(index)
-    return groups
 
 
 def _would_cycle(edges: set[tuple[int, int]], new: tuple[int, int]) -> bool:
@@ -408,7 +386,9 @@ def plan_bundles(
     bundled: dict[int, Bundle] = {}
 
     if options.joint_rotation_cuts:
-        for pair, members in _candidate_groups(cut_locations, placeholders).items():
+        for pair, members in _candidate_groups(
+            cut_locations, placeholders, CutLocation, ordered=False
+        ).items():
             eligible = [
                 index for index in members if is_joint_eligible(cut_locations[index])
             ]
@@ -428,14 +408,12 @@ def plan_bundles(
             cut_locations, subcircuits, placeholders, bundled, minimum, fits
         )
 
-    bundles: list[Bundle] = []
-    seen: set[Bundle] = set()
-    for index in range(len(cut_locations)):
-        bundle = bundled.get(index, Bundle((index,), "single"))
-        if bundle in seen:
-            continue
-        seen.add(bundle)
-        bundles.append(bundle)
+    bundles = list(
+        dict.fromkeys(
+            bundled.get(index, Bundle((index,), "single"))
+            for index in range(len(cut_locations))
+        )
+    )
 
     if announce:
         _log_savings(bundles, cut_locations)
@@ -476,7 +454,9 @@ def _plan_wire_bundles(
     it.
     """
     edges: set[tuple[int, int]] = set()
-    candidates = _wire_candidate_groups(cut_locations, placeholders)
+    candidates = _candidate_groups(
+        cut_locations, placeholders, SingleQubitCutLocation, ordered=True
+    )
     for pair in sorted(candidates):
         if _would_cycle(edges, pair):
             logger.info(
@@ -509,39 +489,37 @@ def _log_savings(bundles: list[Bundle], cut_locations: list) -> None:
     """Report what bundling bought, since it changes both gamma and the group count."""
     from QCut.qpd.qpd_locc import gamma_local, gamma_locc
 
-    joint = [bundle for bundle in bundles if bundle.kind == "joint_rotation"]
-    if joint:
-        together, apart = 1.0, 1.0
-        for bundle in joint:
-            thetas = [
-                single_axis_theta(joint_gate(cut_locations[index]))
-                for index in bundle.cuts
-            ]
-            together *= gamma_joint(thetas)
-            apart *= gamma_separate(thetas)
-        logger.info(
-            "Bundled %d cut(s) into %d joint decomposition(s), gamma %.4f against %.4f "
-            "cut separately.",
-            sum(bundle.size for bundle in joint),
-            len(joint),
-            together,
-            apart,
-        )
+    def joint_costs(bundle: Bundle) -> tuple[float, float]:
+        thetas = [single_axis_theta(joint_gate(cut_locations[i])) for i in bundle.cuts]
+        return gamma_joint(thetas), gamma_separate(thetas)
 
-    wire = [bundle for bundle in bundles if bundle.kind == "cc_wire"]
-    if wire:
-        together, apart = 1.0, 1.0
-        for bundle in wire:
-            together *= gamma_locc(bundle.size)
-            apart *= gamma_local(bundle.size)
-        logger.info(
-            "Bundled %d wire cut(s) into %d communicating decomposition(s), gamma %.4f "
-            "against %.4f without communication. These run in waves.",
-            sum(bundle.size for bundle in wire),
-            len(wire),
-            together,
-            apart,
-        )
+    def wire_costs(bundle: Bundle) -> tuple[float, float]:
+        return gamma_locc(bundle.size), gamma_local(bundle.size)
+
+    for kind, costs, message in (
+        (
+            "joint_rotation",
+            joint_costs,
+            "Bundled %d cut(s) into %d joint decomposition(s), gamma %.4f against "
+            "%.4f cut separately.",
+        ),
+        (
+            "cc_wire",
+            wire_costs,
+            "Bundled %d wire cut(s) into %d communicating decomposition(s), gamma "
+            "%.4f against %.4f without communication. These run in waves.",
+        ),
+    ):
+        group = [bundle for bundle in bundles if bundle.kind == kind]
+        if group:
+            together, apart = zip(*(costs(bundle) for bundle in group))
+            logger.info(
+                message,
+                sum(bundle.size for bundle in group),
+                len(group),
+                math.prod(together),
+                math.prod(apart),
+            )
 
 
 def communication_waves(

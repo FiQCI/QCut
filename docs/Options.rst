@@ -164,7 +164,7 @@ outcome is what decides what C prepares.
 The waves do not get equal shares of the budget. A measuring shot buys precision for
 every group answering its shared circuit at once, while a preparing shot buys it for one
 group, so an even split over the subcircuits over-funds the measuring wave. It takes
-:data:`~QCut.circuit_knitting.MEASURE_SHARE` of the run instead, a sixth, and the later
+:data:`~QCut.execution.waves.MEASURE_SHARE` of the run instead, a sixth, and the later
 waves divide the rest evenly. The total is the same either way, so ``shots`` means what
 it always did.
 
@@ -197,7 +197,8 @@ samples.
 When sampling, terms are drawn per cut with probability proportional to :math:`|c|`, and
 ``num_samples`` draws are taken (defaulting to ``max_exact_groups``). Repeated draws are
 collapsed, so drawing 500 times from a six term decomposition still builds six circuits.
-Set ``seed`` for a reproducible experiment set.
+Set ``seed`` for a reproducible experiment set. Without one, a seed is drawn and kept as
+``CutExperiment.seed``, so the same experiment can be built again.
 
 Sampling is not only a way to make large cases tractable. Enumerating gives every group the
 same number of shots and corrects with a weight afterwards, which is higher variance than
@@ -236,7 +237,7 @@ Configuring cut finding options
 -------------------------------
 
 ``CutOptions`` also carries the options that ``find_cuts`` uses to steer the partitioner.
-These are documented on the :doc:`automatic cut finding <examples/AutomaticCuts>` page, and the defaults are
+These are documented on the :doc:`automatic cut finding <AutomaticCuts>` page, and the defaults are
 ``CutOptions.finder_num_partitions = 2``, ``CutOptions.finder_cut_mode = "wire"``,
 ``CutOptions.finder_candidates = 5``, ``CutOptions.finder_max_qubits = None``, and
 ``CutOptions.finder_seed = 0``.

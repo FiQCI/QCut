@@ -101,3 +101,39 @@ html_logo = "_static/images/logos/qcut-logo-1024.png"
 html_title = "QCut"
 html_favicon = "_static/images/logos/qcut-logo.svg"
 html_static_path = ["_static"]
+
+
+def _public_bases(app, name, obj, options, bases):
+    """List a private base's own bases in its place, since it is not documented."""
+    public = []
+    for base in bases:
+        if getattr(base, "__name__", "").startswith("_"):
+            _public_bases(app, name, obj, options, base_bases := list(base.__bases__))
+            public.extend(base_bases)
+        else:
+            public.append(base)
+    bases[:] = public
+
+
+def _check_api_documented(app, env):
+    """Warn about anything QCut exports that no API reference page documents."""
+    import QCut
+    import QCut.primitives
+    from sphinx.util import logging
+
+    documented = set(env.get_domain("py").objects)
+    exported = [f"QCut.{name}" for name in QCut.__all__] + [
+        f"QCut.primitives.{name}"
+        for name in QCut.primitives.__all__
+        if name not in QCut.__all__
+    ]
+    for name in exported:
+        if name not in documented:
+            logging.getLogger(__name__).warning(
+                f"{name} is exported but not documented on any page under docs/api/"
+            )
+
+
+def setup(app):
+    app.connect("autodoc-process-bases", _public_bases)
+    app.connect("env-check-consistency", _check_api_documented)

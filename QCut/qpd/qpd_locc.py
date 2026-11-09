@@ -44,6 +44,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import UnitaryGate
+from qiskit.quantum_info import Pauli
 
 from QCut.errors.qcuterror import QCutError
 
@@ -63,11 +64,6 @@ _POLYNOMIALS: dict[int, int] = {
     5: 0b100101,
     6: 0b1000011,
 }
-
-_I = np.eye(2, dtype=complex)
-_X = np.array([[0, 1], [1, 0]], dtype=complex)
-_Y = np.array([[0, -1j], [1j, 0]])
-_Z = np.array([[1, 0], [0, -1]], dtype=complex)
 
 
 def gamma_locc(width: int) -> float:
@@ -137,60 +133,18 @@ def _lagrangians(width: int) -> list[list[tuple[int, int]]]:
         [encode(element, _gf_multiply(alpha, element, width)) for element in basis]
         for alpha in range(1 << width)
     ]
+    # That these form a symplectic spread is checked for every width up to MAX_BLOCK
+    # in tests/test_locc_wire_cuts.py. A subspace that is not isotropic still
+    # diagonalises to something, and would only show up as a decomposition that does
+    # not sum to the identity channel.
     subspaces.append([encode(0, element) for element in basis])
-    _check_spread(subspaces, width)
     return subspaces
-
-
-def _span(generators: list[tuple[int, int]]) -> set[tuple[int, int]]:
-    """Return every element of the subspace the generators span."""
-    elements = {(0, 0)}
-    for a, b in generators:
-        elements |= {(x ^ a, y ^ b) for x, y in elements}
-    return elements
-
-
-def _symplectic(left: tuple[int, int], right: tuple[int, int]) -> int:
-    """Return the symplectic form of two Pauli strings, zero when they commute."""
-    return (bin(left[0] & right[1]).count("1") + bin(right[0] & left[1]).count("1")) % 2
-
-
-def _check_spread(subspaces: list[list[tuple[int, int]]], width: int) -> None:
-    """Verify the subspaces really are a symplectic spread.
-
-    Cheap at these widths and worth doing eagerly, because a subspace that is not
-    isotropic still diagonalises to *something* and the error would only surface much
-    later as a decomposition that does not sum to the identity channel.
-    """
-    if len(subspaces) != (1 << width) + 1:  # pragma: no cover - defensive
-        raise QCutError(f"expected {(1 << width) + 1} bases, got {len(subspaces)}")
-
-    spans = [_span(generators) for generators in subspaces]
-    for index, span in enumerate(spans):
-        if len(span) != 1 << width:  # pragma: no cover - defensive
-            raise QCutError(f"basis {index} has dependent generators")
-        if any(_symplectic(a, b) for a in span for b in span):  # pragma: no cover
-            raise QCutError(
-                f"basis {index} is not a commuting set, so it is not a maximal "
-                "isotropic subspace"
-            )
-
-    for first, second in itertools.combinations(range(len(spans)), 2):
-        if spans[first] & spans[second] != {(0, 0)}:  # pragma: no cover - defensive
-            raise QCutError(
-                f"bases {first} and {second} share a Pauli string, so they are not "
-                "mutually unbiased"
-            )
 
 
 def _pauli_matrix(a: int, b: int, width: int) -> np.ndarray:
     """Return the Pauli string for ``(a|b)``, qubit ``k`` taking bits ``k`` of each."""
-    out = np.eye(1, dtype=complex)
-    for qubit in range(width - 1, -1, -1):  # little-endian, matching qiskit
-        x_bit, z_bit = a >> qubit & 1, b >> qubit & 1
-        single = (_I, _X, _Z, _Y)[x_bit + 2 * z_bit]
-        out = np.kron(out, single)
-    return out
+    bits = range(width)
+    return Pauli(([b >> k & 1 for k in bits], [a >> k & 1 for k in bits])).to_matrix()
 
 
 def mub_unitaries(width: int) -> list[np.ndarray]:
@@ -254,29 +208,21 @@ def _prepare_op(
     return circuit
 
 
-def _parity(width: int) -> int:
-    """Return the factor cancelling this block's share of the wire cut sign convention.
-
-    ``QCut.postprocess`` multiplies every group by ``(-1)**(wire_cuts + 1)``, a
-    convention the non-communicating table was written against. A communicating block
-    of ``width`` wires adds ``width`` to that exponent without wanting to, so it carries
-    the inverse and leaves the convention as the other cuts found it.
-    """
-    return (-1) ** width
-
-
-def _label_sign(index: tuple[int, ...]) -> int:
-    """Return the sign the measured label would otherwise contribute.
+def _sign(label: tuple[int, ...]) -> int:
+    """Return the sign a term carries to cancel two of QCut's sign conventions.
 
     QCut folds every qpd measurement bit into the estimator's sign as ``0 -> -1`` and
     ``1 -> +1``, which is what makes a Pauli measurement carry its own eigenvalue. Here
-    the bits are a label saying which state to prepare, not a sign, so the coefficient
-    carries the inverse and the two cancel.
+    the bits are a label saying which state to prepare, not a sign, so the term carries
+    the inverse: ``-1`` per zero in the label.
+
+    ``QCut.postprocess`` also multiplies every group by ``(-1)**(wire_cuts + 1)``, a
+    convention the non-communicating table was written against. A block of
+    ``len(label)`` wires adds that many to the exponent, which the term cancels too.
+
+    Together that is ``(-1)**(zeros + len(label))``, or ``(-1)**sum(label)``.
     """
-    sign = 1
-    for bit in index:
-        sign *= 1 if bit else -1
-    return sign
+    return (-1) ** sum(label)
 
 
 def locc_wire_qpd(width: int) -> list[dict]:
@@ -325,7 +271,7 @@ def locc_wire_qpd(width: int) -> list[dict]:
                             index,
                             f"locc-prep-{channel}-{''.join(map(str, index))}",
                         ),
-                        "c": base * share * _label_sign(label) * _parity(width),
+                        "c": base * share * _sign(label),
                         "channel": channel,
                         "label": label,
                     }

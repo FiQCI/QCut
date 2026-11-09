@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import logging
+import threading
 
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import transpile_circuits
+from QCut.transpilation.transpile_cut_circuits import transpile_circuits
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
 class ParallelBackend:
-    """Spread an experiment's jobs over several backends, one batch each in turn.
+    """Spread an experiment's jobs over several backends, giving each batch to the least
+    loaded.
 
     QCut submits every batch of a wave before collecting any of it, so handing
     successive batches to different backends leaves them all queued at once. Each batch
@@ -26,15 +28,18 @@ class ParallelBackend:
 
     A batch goes only to a backend wide enough for it, so a fleet of different sizes
     works. The pieces that fit anywhere are shared, and the widest go to the backends
-    that can hold them. The batches are dealt out in turn among those that fit.
+    that can hold them. Among those that fit, a batch goes to the one given the fewest
+    shots so far, the first listed on a tie.
 
-    The experiment does not have to be transpiled beforehand. Each batch is transpiled
-    for the backend.
+    Pass untranspiled cut circuits and experiments: each batch is transpiled for the
+    device it lands on.
 
     Attributes:
-        backends (list): the backends, in the order the batches are dealt out.
+        backends (list): the backends, in the order given.
         submitted (list[int]): how many circuits each has been given, which is what to
             read to see how the work was shared.
+        submitted_shots (list[int]): how many shots each has been given, which is what
+            the work is shared by.
     """
 
     def __init__(
@@ -64,8 +69,9 @@ class ParallelBackend:
         self._optimization_level = optimization_level
         self._transpile_options = transpile_options
         self._use_iqm_transpiler = use_iqm_transpiler
-        self._turns: dict[tuple[int, ...], int] = {}
+        self._lock = threading.Lock()
         self.submitted = [0] * len(self.backends)
+        self.submitted_shots = [0] * len(self.backends)
 
     @property
     def max_shots(self) -> int | None:
@@ -88,7 +94,7 @@ class ParallelBackend:
         )
 
     def run(self, circuits, shots: int = 1024, **options):
-        """Transpile this batch for the backend whose turn it is, and submit it there.
+        """Transpile this batch for the least loaded backend that fits, and submit it.
 
         Args:
             circuits: the batch, as QCut sized it.
@@ -113,23 +119,33 @@ class ParallelBackend:
                 "give a backend that fits."
             )
 
-        # Counted per set of backends that fit, so the wide circuits having fewer
-        # places to go does not stop the narrow ones from being shared evenly.
-        turn = self._turns.get(fitting, 0)
-        self._turns[fitting] = turn + 1
-        index = fitting[turn % len(fitting)]
+        # Reserved before the batch is transpiled, so a call running alongside sees
+        # this one's work already. Transpiling and submitting stay outside the lock,
+        # so one slow submission does not hold the others up.
+        work = len(circuits) * shots
+        with self._lock:
+            # min() keeps the first of equals, and fitting is in the order given.
+            index = min(fitting, key=lambda fit: self.submitted_shots[fit])
+            self.submitted[index] += len(circuits)
+            self.submitted_shots[index] += work
         backend = self.backends[index]
 
-        transpiled = transpile_circuits(
-            circuits,
-            backend,
-            self._optimization_level,
-            self._transpile_options,
-            self._use_iqm_transpiler,
-        )
-        self.submitted[index] += len(transpiled)
-        logger.info(
-            f"Batch of {len(transpiled)} circuits, {width} qubits wide, to backend "
-            f"{index + 1} of {len(self.backends)}, {backend}"
-        )
-        return backend.run(transpiled, shots=shots, **options)
+        try:
+            transpiled = transpile_circuits(
+                circuits,
+                backend,
+                self._optimization_level,
+                self._transpile_options,
+                self._use_iqm_transpiler,
+            )
+            logger.info(
+                f"Batch of {len(transpiled)} circuits, {width} qubits wide, to backend "
+                f"{index + 1} of {len(self.backends)}, {backend}"
+            )
+            return backend.run(transpiled, shots=shots, **options)
+        except Exception:
+            # Never handed over, so it is not counted as given.
+            with self._lock:
+                self.submitted[index] -= len(circuits)
+                self.submitted_shots[index] -= work
+            raise

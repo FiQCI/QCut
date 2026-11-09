@@ -9,7 +9,7 @@ from qiskit_aer import AerSimulator
 
 import QCut as ck
 from QCut import CutOptions, cut, cutCZ, cutGate
-from QCut.cutting.consolidate import consolidate_two_qubit_blocks, marker_gate
+from QCut.pre_process.consolidate import consolidate_two_qubit_blocks, marker_gate
 from QCut.qpd.qpd_generate import gamma
 from QCut.qpd.qpd_operations import qpd_for_location
 

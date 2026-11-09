@@ -7,15 +7,15 @@ from qiskit_aer import AerSimulator
 
 import QCut as ck
 import tests.solutions_1q as sq
+from QCut.execution.run import run
+from QCut.job.cutresult import SubResult, TotalResult
+from QCut.post_process.postprocess import _process_results
 
 # import QCut as ck
-from QCut.cutting.circuit_preparation import (
+from QCut.pre_process.circuit_preparation import (
     _get_cut_locations,
     get_locations_and_subcircuits,
 )
-from QCut.execution.circuit_knitting import run
-from QCut.execution.postprocess import _process_results
-from QCut.execution.qcutresult import SubResult, TotalResult
 
 
 def _remove_obsm(subcircuits: list[QuantumCircuit]):

@@ -7,7 +7,7 @@ The point is that the cheap queries agree with the dense table they avoid buildi
 import numpy as np
 import pytest
 
-from QCut.execution.distribution import Mode, SeparableDistribution
+from QCut.post_process.distribution import Mode, SeparableDistribution
 
 #: Exact-arithmetic comparisons. The queries and the table are the same sum in a
 #: different order, so they agree to rounding; measured worst case over the cases below

@@ -50,69 +50,29 @@ def weight_fn(edge_data):
     return edge_data[1]
 
 
-max_added: int | None = None
+def _node_ids(qubit_pairs: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Two new node ids per two-qubit gate, one for each of its qubits in order.
 
-
-def update_added(added_set, added, op):
+    Ids reuse a qubit index while it is still free, and otherwise count up from the
+    highest id handed out. Only the order of the ids matters, since METIS reads the
+    nodes in that order, so the scheme is kept as it was.
     """
-    Append the two new node indices for a 2-qubit op,
-    using a global next-available counter instead of
-    scanning `added`.
-    """
-    global max_added
-
-    q0, q1 = op[1][2]  # the two qubit indices
-
-    # lazy initialize on first call
-    if max_added is None and added:
-        max_added = max(added)
-
-    # both qubits have been seen before → allocate two brand-new nodes
-    if q0 in added_set and q1 in added_set:
-        assert max_added is not None
-        a = max_added + 1
-        b = max_added + 2
-        added.extend([a, b])
-        added_set.add(a)
-        added_set.add(b)
-        max_added += 2
-
-    # only q0 seen → reuse q1 and allocate one fresh node
-    elif q0 in added_set:
-        a = q1
-        assert max_added is not None
-        max_added = max(max_added, a)
-        b = max_added + 1
-        added.extend([a, b])
-        added_set.add(b)
-        added_set.add(a)
-        max_added += 1
-
-    # only q1 seen → reuse q0 and allocate one fresh node
-    elif q1 in added_set:
-        a = q0
-        assert max_added is not None
-        max_added = max(max_added, a)
-        b = max_added + 1
-        added.extend([a, b])
-        added_set.add(b)
-        added_set.add(a)
-        max_added += 1
-
-    # neither seen → just append those original qubit-IDs
-    else:
-        added.extend([q0, q1])
-        added_set.add(q0)
-        added_set.add(q1)
-        # now that they’re in, prime max_added for future
-        max_added = max(q0, q1)
-
-
-def update_nodes_on_qubit(nodes_on_qubit, qubit, node):
-    if qubit not in nodes_on_qubit:
-        nodes_on_qubit[qubit] = [node]
-    else:
-        nodes_on_qubit[qubit].append(node)
+    used: set[int] = set()
+    top = -1
+    ids = []
+    for q0, q1 in qubit_pairs:
+        if q0 in used and q1 in used:
+            a, b = top + 1, top + 2
+        elif q0 in used:
+            a, b = q1, max(top, q1) + 1
+        elif q1 in used:
+            a, b = q0, max(top, q0) + 1
+        else:
+            a, b = q0, q1
+        used.update((a, b))
+        top = max(top, a, b)
+        ids.append((a, b))
+    return ids
 
 
 def get_gate_weight(gate_name, mode="gate", gate=None):
@@ -156,9 +116,12 @@ def get_wire_weight(mode="wire"):
     return cut_weight(WIRE_GAMMA)
 
 
-def circ_to_graph(circuit, mode="both"):  # noqa: C901
+def circ_to_graph(circuit, mode="both"):
     """
     Convert a quantum circuit to a graph representation.
+
+    Each two-qubit gate is an edge between two new nodes, one per qubit, and each
+    qubit's consecutive nodes are joined by a wire edge.
 
     Args:
         circuit: A quantum circuit object.
@@ -166,154 +129,27 @@ def circ_to_graph(circuit, mode="both"):  # noqa: C901
     Returns:
         A graph representation of the circuit.
     """
-
-    nodes_on_qubit = {}
-
-    # The operation is carried along as a fourth element so get_gate_weight can compute
-    # gamma for gates with no hand-written QPD.
-    ops_2qb = [
-        (
-            idx,
-            (
-                x.operation.name,
-                x.operation.num_qubits,
-                [circuit.find_bit(i).index for i in x.qubits],
-                x.operation,
-            ),
-        )
-        for idx, x in enumerate(circuit.data)
-        if x.operation.num_qubits == 2
+    gates = [
+        (index, inst.operation, [circuit.find_bit(q).index for q in inst.qubits])
+        for index, inst in enumerate(circuit.data)
+        if inst.operation.num_qubits == 2
     ]
+    ids = _node_ids([tuple(qubits) for _, _, qubits in gates])
 
     G = rx.PyGraph()
-    indxs = list(
-        range(
-            max(
-                max([x[0] for x in ops_2qb]),
-                len(ops_2qb) * 2,
-            )
-            + 1
-        )
-    )
-    for i in indxs:
-        G.add_node(i)
+    G.add_nodes_from(range(max(node for pair in ids for node in pair) + 1))
 
-    track_nodes = {}
-    added = []
-    added_set = set()
-
-    for ind, op in enumerate(ops_2qb):
-        if (
-            op[1][2][0] not in track_nodes.keys()
-            and op[1][2][1] not in track_nodes.keys()
-        ):
-            update_added(added_set, added, op)
-            if op[1][2][0] in added_set:
-                track_nodes[op[1][2][0]] = [(added[-2])]
-            else:
-                track_nodes[op[1][2][0]] = []
-            if op[1][2][1] in added_set:
-                track_nodes[op[1][2][1]] = [added[-1]]
-            else:
-                track_nodes[op[1][2][1]] = []
-
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][0], added[-2])
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][1], added[-1])
-
-            G.add_edge(
-                added[-2],
-                added[-1],
-                (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
-            )
-        elif op[1][2][1] not in track_nodes.keys():
-            update_added(added_set, added, op)
-
-            if op[1][2][1] in added_set:
-                track_nodes[op[1][2][1]] = [(added[-1])]
-            else:
-                track_nodes[op[1][2][1]] = []
-
-            track_nodes[op[1][2][0]].append(added[-2])
-            ind = track_nodes[op[1][2][0]]
-
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][0], added[-2])
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][1], added[-1])
-
-            G.add_edge(
-                added[-2],
-                added[-1],
-                (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
-            )
-            if ind == []:
-                G.add_edge(op[1][2][0], added[-1], (op[1][2][0], get_wire_weight(mode)))
-            else:
-                if len(ind) == 1:
-                    G.add_edge(
-                        ind[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind[-1], ind[-2], (op[1][2][0], get_wire_weight(mode)))
-        elif op[1][2][0] not in track_nodes.keys():
-            update_added(added_set, added, op)
-
-            if op[1][2][0] in added_set:
-                track_nodes[op[1][2][0]] = [(added[-2])]
-            else:
-                track_nodes[op[1][2][0]] = []
-
-            track_nodes[op[1][2][1]].append(added[-1])
-            ind = track_nodes[op[1][2][1]]
-
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][0], added[-2])
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][1], added[-1])
-
-            G.add_edge(
-                added[-2],
-                added[-1],
-                (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
-            )
-            if ind == []:
-                G.add_edge(op[1][2][1], added[-1], (op[1][2][1], get_wire_weight(mode)))
-            else:
-                if len(ind) == 1:
-                    G.add_edge(
-                        ind[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind[-1], ind[-2], (op[1][2][1], get_wire_weight(mode)))
-        else:
-            update_added(added_set, added, op)
-            track_nodes[op[1][2][0]].append(added[-2])
-            track_nodes[op[1][2][1]].append(added[-1])
-            ind0 = track_nodes[op[1][2][0]]
-            ind1 = track_nodes[op[1][2][1]]
-
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][0], added[-2])
-            update_nodes_on_qubit(nodes_on_qubit, op[1][2][1], added[-1])
-
-            G.add_edge(
-                added[-2],
-                added[-1],
-                (op[0], op[1][0], op[1][2], get_gate_weight(op[1][0], mode, op[1][3])),
-            )
-            if ind0 == []:
-                G.add_edge(op[1][2][0], added[-1], (op[1][2][0], get_wire_weight(mode)))
-            else:
-                if len(ind0) == 1:
-                    G.add_edge(
-                        ind0[-1], op[1][2][0], (op[1][2][0], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind0[-1], ind0[-2], (op[1][2][0], get_wire_weight(mode)))
-            if ind1 == []:
-                G.add_edge(op[1][2][1], added[-2], (op[1][2][1], get_wire_weight(mode)))
-            else:
-                if len(ind1) == 1:
-                    G.add_edge(
-                        ind1[-1], op[1][2][1], (op[1][2][1], get_wire_weight(mode))
-                    )
-                else:
-                    G.add_edge(ind1[-1], ind1[-2], (op[1][2][1], get_wire_weight(mode)))
+    nodes_on_qubit: dict[int, list[int]] = {}
+    for (index, operation, qubits), new in zip(gates, ids):
+        # The operation is carried so get_gate_weight can work out gamma for gates
+        # with no hand-written QPD.
+        weight = get_gate_weight(operation.name, mode, operation)
+        G.add_edge(*new, (index, operation.name, qubits, weight))
+        for qubit, node in zip(qubits, new):
+            previous = nodes_on_qubit.setdefault(qubit, [])
+            if previous:
+                G.add_edge(node, previous[-1], (qubit, get_wire_weight(mode)))
+            previous.append(node)
 
     # Remove nodes with degree 0 (not connected to anything)
     isolated_nodes = [node for node in G.node_indices() if G.degree(node) == 0]

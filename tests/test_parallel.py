@@ -146,3 +146,51 @@ def test_the_shot_cap_is_the_one_every_backend_can_meet():
     assert ParallelBackend([Capped(4096), Capped(1024)]).max_shots == 1024
     # None when nothing declares one, which is what leaves the shots uncapped
     assert ParallelBackend([AerSimulator(), AerSimulator()]).max_shots is None
+
+
+def _batch(size):
+    circuit = QuantumCircuit(1, 1)
+    circuit.h(0)
+    circuit.measure(0, 0)
+    return [circuit] * size
+
+
+def test_large_batches_do_not_pile_onto_one_backend():
+    """Batches alternating large and small used to land large on one, small on the
+    other, which is the pattern experiments submitted one after another produce."""
+    backend = ParallelBackend([AerSimulator(), AerSimulator()])
+    for size in (10, 1, 10, 1):
+        backend.run(_batch(size), shots=100)
+
+    assert backend.submitted == [11, 11]
+    assert backend.submitted_shots == [1100, 1100]
+
+
+def test_the_work_is_shared_by_shots():
+    """A batch at many shots is as much work as several at few."""
+    backend = ParallelBackend([AerSimulator(), AerSimulator()])
+    backend.run(_batch(1), shots=1000)
+    for _ in range(4):
+        backend.run(_batch(1), shots=100)
+
+    assert backend.submitted == [1, 4]
+    assert backend.submitted_shots == [1000, 400]
+
+
+def test_a_tie_goes_to_the_first_backend():
+    backend = ParallelBackend([AerSimulator(), AerSimulator()])
+    backend.run(_batch(3), shots=10)
+    assert backend.submitted == [3, 0]
+
+
+def test_a_refused_batch_is_not_counted():
+    class Refusing(AerSimulator):
+        def run(self, *args, **kwargs):
+            raise RuntimeError("refused")
+
+    backend = ParallelBackend([Refusing(), AerSimulator()])
+    with pytest.raises(RuntimeError, match="refused"):
+        backend.run(_batch(2), shots=10)
+
+    assert backend.submitted == [0, 0]
+    assert backend.submitted_shots == [0, 0]

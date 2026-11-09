@@ -1,1 +1,1 @@
-"""Running subcircuit experiments and post-processing their results."""
+"""Building the experiment circuits and submitting them to a backend."""

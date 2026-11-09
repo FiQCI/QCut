@@ -25,14 +25,14 @@ from qiskit_aer import AerSimulator
 import QCut as ck
 from QCut import CutOptions, cut, cutGate
 from QCut.errors.qcuterror import QCutError
-from QCut.execution.backend_utility import (
+from QCut.qpd.bundle import plan_bundles
+from QCut.qpd.qpd_operations import coupling_filter
+from QCut.transpilation.transpile_cut_circuits import (
     _IQM_ENFORCED,
     _markers_in,
     _placeholder_gates,
 )
-from QCut.execution.move_routing import is_resonator_backend
-from QCut.qpd.bundle import plan_bundles
-from QCut.qpd.qpd_operations import coupling_filter
+from QCut.utils.backend import is_resonator_backend
 
 iqm = pytest.importorskip(
     "iqm.qiskit_iqm", reason='needs the IQM adapter: pip install "QCut[iqm]"'
