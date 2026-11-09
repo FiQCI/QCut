@@ -1,0 +1,956 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QCut.execution.experiments &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/QCut/execution/experiments';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for QCut.execution.experiments</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Building the experiment circuits: inserting a QPD term at every cut placeholder.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Qubit</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.converters</span><span class="w"> </span><span class="kn">import</span> <span class="n">circuit_to_dag</span><span class="p">,</span> <span class="n">dag_to_circuit</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.errors.qcuterror</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCutError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.model.cutcircuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutCircuit</span><span class="p">,</span> <span class="n">CutExperiment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.qpd.bundle</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SIDE_1</span><span class="p">,</span>
+    <span class="n">communication_waves</span><span class="p">,</span>
+    <span class="n">locate_placeholders</span><span class="p">,</span>
+    <span class="n">parse_placeholder</span><span class="p">,</span>
+    <span class="n">plan_bundles</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.qpd.qpd_locc</span><span class="w"> </span><span class="kn">import</span> <span class="n">CommunicationPlan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.qpd.qpd_operations</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_insert_2qubit_gate_cut_qpd</span><span class="p">,</span>
+    <span class="n">_insert_bundle_qpd</span><span class="p">,</span>
+    <span class="n">_insert_wire_cut_qpd</span><span class="p">,</span>
+    <span class="n">coupling_filter</span><span class="p">,</span>
+    <span class="n">get_qpd_combinations</span><span class="p">,</span>
+    <span class="n">qpd_for_bundle</span><span class="p">,</span>
+    <span class="n">sample_qpd_combinations</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.transpilation.basis_transform</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_get_obs_subcircuits</span><span class="p">,</span>
+    <span class="n">_measurement_basis_ops</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">_device_basis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.circuit</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_remove_obsm</span><span class="p">,</span>
+    <span class="n">_remove_obsm_2</span><span class="p">,</span>
+    <span class="n">compact_qpd_register</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.observables</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ObservablesLike</span><span class="p">,</span>
+    <span class="n">_combine_pauli_ops</span><span class="p">,</span>
+    <span class="n">_validate_qubits</span><span class="p">,</span>
+    <span class="n">coerce_observables</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finalize_subcircuit</span><span class="p">(</span>
+    <span class="n">subcircuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">qpd_qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finalize the subcircuit by measuring remaining qubits and decomposing.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Transpiling puts a subcircuit&#39;s qubits on physical wires of the backend&#39;s</span>
+    <span class="c1"># choosing, and _record_layout notes which wire holds which. Measuring through that</span>
+    <span class="c1"># map, in the subcircuit&#39;s own qubit order, puts the bits where everything</span>
+    <span class="c1"># downstream expects them without moving a single gate -- which matters, because the</span>
+    <span class="c1"># placement is what makes the two-qubit gates land on pairs the device couples.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Wires the layout never used, and wires routing borrowed, are absent from the map,</span>
+    <span class="c1"># so nothing measures them.</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="p">(</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;qcut_layout&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">layout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">))</span>
+
+    <span class="c1"># ``qcut_spent`` names the subcircuit&#39;s own qubits, which is what the observable</span>
+    <span class="c1"># register was sized against. ``qpd_qubits`` names the wires the placeholders sat</span>
+    <span class="c1"># on, and routing may have put two of them on one wire, so it cannot be counted.</span>
+    <span class="n">spent</span> <span class="o">=</span> <span class="p">(</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;qcut_spent&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">meas_qubits</span> <span class="o">=</span> <span class="p">[</span><span class="n">wire</span> <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">layout</span> <span class="k">if</span> <span class="n">wire</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qpd_qubits</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">meas_qubits</span> <span class="o">=</span> <span class="p">[</span><span class="n">wire</span> <span class="k">for</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">wire</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span> <span class="k">if</span> <span class="n">qubit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spent</span><span class="p">]</span>
+
+    <span class="n">dag</span> <span class="o">=</span> <span class="n">circuit_to_dag</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">)</span>
+    <span class="n">idle</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dag</span><span class="o">.</span><span class="n">idle_wires</span><span class="p">())</span>
+
+    <span class="c1"># The observable register by name. Positions are not fixed, because a register of</span>
+    <span class="c1"># no bits is not created, so &quot;the second one&quot; is not reliably the right one.</span>
+    <span class="n">creg_to_use</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">register</span> <span class="k">for</span> <span class="n">register</span> <span class="ow">in</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">cregs</span> <span class="k">if</span> <span class="n">register</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;meas&quot;</span><span class="p">),</span>
+        <span class="n">subcircuit</span><span class="o">.</span><span class="n">cregs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">cregs</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">creg_to_use</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subcircuit</span>
+
+    <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">idle</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="n">Qubit</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">find_bit</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">meas_qubits</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">meas_qubits</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">creg_to_use</span><span class="p">):</span>
+            <span class="n">meas_qubits</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meas_qubits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subcircuit</span>
+
+    <span class="n">subcircuit</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">meas_qubits</span><span class="p">,</span> <span class="n">creg_to_use</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">subcircuit</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_placeholder_locations</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">QuantumCircuit</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identify the placeholder operations in a list of quantum subcircuits: the</span>
+<span class="sd">    measurement (&quot;Meas&quot;) and initialization (&quot;Init&quot;) sides of wire cuts, and the halves</span>
+<span class="sd">    of gate cuts. Only the instructions are kept, not their indices, because the</span>
+<span class="sd">    experiment circuits are built from copies whose placeholders transpilation may have</span>
+<span class="sd">    moved, and :func:`_build_experiment_circuit` finds them again by name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        subcircuits (list[QuantumCircuit]):</span>
+<span class="sd">            A list of QuantumCircuit objects to be analyzed.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            A list of lists, where each sublist holds the placeholder instructions of</span>
+<span class="sd">            the corresponding subcircuit, in circuit order.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">[</span>
+            <span class="n">op</span>
+            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">circ</span><span class="o">.</span><span class="n">data</span>
+            <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;Meas&quot;</span><span class="p">,</span> <span class="s2">&quot;Init&quot;</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cut&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;_&quot;</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">subcircuits</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_transpiled</span><span class="p">(</span><span class="n">circuit</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">cache</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantumCircuit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transpile a QPD operation once and reuse it across experiment groups.</span>
+
+<span class="sd">    A bundle&#39;s operations are shared between groups, so without a cache each group would</span>
+<span class="sd">    transpile them again. Caching also leaves the hand-written tables untouched, which</span>
+<span class="sd">    transpiling in place did not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+    <span class="n">hit</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="n">circuit</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">transpiled</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">basis_gates</span><span class="o">=</span><span class="n">basis</span><span class="p">)</span>
+    <span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">transpiled</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transpiled</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_experiment_circuit</span><span class="p">(</span>
+    <span class="n">circ</span><span class="p">:</span> <span class="n">QuantumCircuit</span><span class="p">,</span>
+    <span class="n">placeholder_ops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">qpd</span><span class="p">,</span>
+    <span class="n">bundle_of_cut</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">placeholders</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">QuantumCircuit</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert one group&#39;s QPD terms into one observable subcircuit.</span>
+
+<span class="sd">    Every placeholder is replaced by the operation ``qpd`` chooses for its cut, the</span>
+<span class="sd">    qubits left over are measured into the observable register, and the qpd bits the</span>
+<span class="sd">    terms never write to are dropped.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        circ (QuantumCircuit): the subcircuit with its observable basis change in place.</span>
+<span class="sd">            It is left untouched, and the experiment circuit is built on a copy.</span>
+<span class="sd">        placeholder_ops (list): its placeholder instructions, as</span>
+<span class="sd">            :func:`_get_placeholder_locations` found them.</span>
+<span class="sd">        qpd: the group&#39;s choice of term for every cut.</span>
+<span class="sd">        bundle_of_cut (dict): the bundle each cut belongs to.</span>
+<span class="sd">        placeholders (dict): where each placeholder sits, from</span>
+<span class="sd">            :func:`QCut.qpd.bundle.locate_placeholders`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The experiment circuit, its ``(qpd bits written, qpd bits dropped)``, and a</span>
+<span class="sd">        ``(bundle, clbits)`` pair for each communicating wire cut it measures.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        QCutError: a placeholder is missing from the subcircuit.</span>
+<span class="sd">        ValueError: a placeholder is of no kind the builder knows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">subcircuit</span> <span class="o">=</span> <span class="n">circ</span><span class="o">.</span><span class="n">copy_empty_like</span><span class="p">()</span>
+    <span class="n">subcircuit</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">circ</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">copy_instructions</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">classical_bit_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">qpd_qubits</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># store the qubit indices of qubits used for qpd</span>
+    <span class="c1"># measurements</span>
+    <span class="n">labels_here</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># (bundle, clbits) per communicating wire cut</span>
+    <span class="c1"># Placeholders are found by name in the subcircuit as it stands, not by</span>
+    <span class="c1"># the index they had when it was built. Transpiling against a backend</span>
+    <span class="c1"># commutes them past each other, since each looks like an ordinary</span>
+    <span class="c1"># single-qubit gate, and the walk below both reads them and accumulates</span>
+    <span class="c1"># ``offset`` on the assumption that it meets them front to back. Every</span>
+    <span class="c1"># placeholder name is unique within its subcircuit, so the lookup is</span>
+    <span class="c1"># exact, and sorting by it restores the order the walk needs.</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">instruction</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">index</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">placeholders_here</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">placeholder_ops</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">position</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Placeholder &#39;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; is missing from its &quot;</span>
+                <span class="s2">&quot;subcircuit. Transpilation is not allowed to remove or &quot;</span>
+                <span class="s2">&quot;rename it, so the experiment cannot be built.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">placeholders_here</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">position</span><span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">op</span><span class="p">))</span>
+    <span class="n">placeholders_here</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">placeholders_here</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_placeholder</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">bundle</span> <span class="o">=</span> <span class="n">bundle_of_cut</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parsed</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">parsed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">bundle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bundle</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+            <span class="n">offset</span><span class="p">,</span> <span class="n">classical_bit_index</span> <span class="o">=</span> <span class="n">_insert_bundle_qpd</span><span class="p">(</span>
+                <span class="n">ind</span><span class="p">,</span>
+                <span class="n">op</span><span class="p">,</span>
+                <span class="n">subcircuit</span><span class="p">,</span>
+                <span class="n">offset</span><span class="p">,</span>
+                <span class="n">qpd_qubits</span><span class="p">,</span>
+                <span class="n">qpd</span><span class="p">,</span>
+                <span class="n">bundle</span><span class="p">,</span>
+                <span class="n">placeholders</span><span class="p">,</span>
+                <span class="n">classical_bit_index</span><span class="p">,</span>
+                <span class="n">labels_here</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="s2">&quot;cut&quot;</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">offset</span><span class="p">,</span> <span class="n">classical_bit_index</span> <span class="o">=</span> <span class="n">_insert_2qubit_gate_cut_qpd</span><span class="p">(</span>
+                <span class="n">ind</span><span class="p">,</span>
+                <span class="n">op</span><span class="p">,</span>
+                <span class="n">subcircuit</span><span class="p">,</span>
+                <span class="n">offset</span><span class="p">,</span>
+                <span class="n">qpd_qubits</span><span class="p">,</span>
+                <span class="n">qpd</span><span class="p">,</span>
+                <span class="n">classical_bit_index</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="s2">&quot;Meas&quot;</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;Init&quot;</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">offset</span><span class="p">,</span> <span class="n">classical_bit_index</span> <span class="o">=</span> <span class="n">_insert_wire_cut_qpd</span><span class="p">(</span>
+                <span class="n">ind</span><span class="p">,</span>
+                <span class="n">op</span><span class="p">,</span>
+                <span class="n">subcircuit</span><span class="p">,</span>
+                <span class="n">offset</span><span class="p">,</span>
+                <span class="n">qpd_qubits</span><span class="p">,</span>
+                <span class="n">qpd</span><span class="p">,</span>
+                <span class="n">classical_bit_index</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Unknown placeholder operation: </span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">                Actual operation: </span><span class="si">{</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+    <span class="n">subcircuit</span> <span class="o">=</span> <span class="n">_finalize_subcircuit</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">,</span> <span class="n">qpd_qubits</span><span class="p">)</span>
+    <span class="c1"># Drop the qpd bits this term never writes to, so no circuit carries an</span>
+    <span class="c1"># unused classical register, and remember how many went so the sign they</span>
+    <span class="c1"># stood for can be put back during post-processing.</span>
+    <span class="n">subcircuit</span><span class="p">,</span> <span class="n">dropped</span> <span class="o">=</span> <span class="n">compact_qpd_register</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">)</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">cregs</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;qpd_meas&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">subcircuit</span><span class="p">,</span> <span class="p">(</span><span class="n">remaining</span><span class="p">,</span> <span class="n">dropped</span><span class="p">),</span> <span class="n">labels_here</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_measurement_spec</span><span class="p">(</span>
+    <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that exactly one of observables or qubits was given.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        observables: the observables to estimate, if given.</span>
+<span class="sd">        qubits (list[int]): the qubits to reconstruct a distribution over, if given.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: neither was given, or both were.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">observables</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only one of observables or qubits can be provided.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">observables</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either observables or qubits must be provided.&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_experiment_circuits">
+<a class="viewcode-back" href="../../../api/experiments.html#QCut.get_experiment_circuits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_experiment_circuits</span><span class="p">(</span>  <span class="c1"># noqa: C901</span>
+    <span class="n">cut_circuit</span><span class="p">:</span> <span class="n">CutCircuit</span><span class="p">,</span>
+    <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CutExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate experiment circuits by inserting QPD operations on</span>
+<span class="sd">    measure/initialize/cutCZ nodes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cut_circuit (CutCircuit): The cut circuit to generate experiment circuits for.</span>
+<span class="sd">        observables: the observables to estimate, taken the way qiskit&#39;s estimator</span>
+<span class="sd">            takes them -- a label, a ``Pauli``, a ``SparsePauliOp``, a</span>
+<span class="sd">            ``SparseObservable``, a ``{label: coefficient}`` mapping, or any nested</span>
+<span class="sd">            sequence of those. The expectation values come back shaped like what is</span>
+<span class="sd">            given here.</span>
+<span class="sd">        qubits (list[int]): The qubits to measure.</span>
+
+<span class="sd">        One of observables or qubits must be provided.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        CutExperiment: An object containing the generated experiment circuits and</span>
+<span class="sd">        related information.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_check_measurement_spec</span><span class="p">(</span><span class="n">observables</span><span class="p">,</span> <span class="n">qubits</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_validate_qubits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">uncut_num_qubits</span><span class="p">,</span> <span class="n">qubits</span><span class="p">)</span>
+
+    <span class="n">num_qubits</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">cr</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">for</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span>
+        <span class="k">for</span> <span class="n">cr</span> <span class="ow">in</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">cregs</span>
+        <span class="k">if</span> <span class="n">cr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;meas&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The circuits are built for the Pauli terms behind the observables, not for the</span>
+    <span class="c1"># observables themselves: an observable is a weighted sum of terms, and separate</span>
+    <span class="c1"># observables share terms, so measuring the distinct terms once covers all of them.</span>
+    <span class="c1"># The weights that put the observables back together are kept on the spec, and</span>
+    <span class="c1"># applied by the estimator. A ``qubits`` experiment builds no spec at all: its terms</span>
+    <span class="c1"># are every Z string over those qubits, and there are ``2**k`` of them, which</span>
+    <span class="c1"># nothing below needs. The experiment builds them on demand if it is ever asked.</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">coerce_observables</span><span class="p">(</span><span class="n">observables</span><span class="p">,</span> <span class="n">num_qubits</span><span class="p">)</span>
+
+    <span class="c1"># Planning a bundle and building the experiment circuits both read where the</span>
+    <span class="c1"># placeholders sit, and they have to read the same positions. Building the</span>
+    <span class="c1"># observable subcircuits goes through a DAG, which re-serialises the instructions in</span>
+    <span class="c1"># topological order, so a placeholder with nothing left on its own qubit can move</span>
+    <span class="c1"># ahead of a gate that was written before it. Planning against the order as written</span>
+    <span class="c1"># would then put a block where the builder cannot: it would sit before a gate that</span>
+    <span class="c1"># one of the block&#39;s other wires still has to go through, and that wire would be</span>
+    <span class="c1"># measured too early. Normalising first makes the two orders the same.</span>
+    <span class="c1"># Everything below works on this copy, so the caller&#39;s cut circuit comes back</span>
+    <span class="c1"># exactly as it went in.</span>
+    <span class="n">subcircuits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">:</span>
+        <span class="n">normalised</span> <span class="o">=</span> <span class="n">dag_to_circuit</span><span class="p">(</span><span class="n">circuit_to_dag</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">))</span>
+
+        <span class="n">normalised</span><span class="o">.</span><span class="n">_layout</span> <span class="o">=</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">layout</span>
+        <span class="n">subcircuits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalised</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Z strings all commute, so every one of them is covered by this single</span>
+        <span class="c1"># setting so we can just use that directly.</span>
+        <span class="n">measurement_settings</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">qubits</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># _check_measurement_spec has already refused the case where neither the</span>
+        <span class="c1"># observables nor the qubits were given, so there is a spec here.</span>
+        <span class="k">assert</span> <span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">measurement_settings</span> <span class="o">=</span> <span class="n">_combine_pauli_ops</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">terms</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">measurement_settings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">measurement_settings</span><span class="p">)</span><span class="si">}</span><span class="s2"> conflicting observables. Extra&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; circuits will be generated to evaluate all expectation values.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># With a backend, the subcircuits were transpiled for it, so what goes into them</span>
+    <span class="c1"># here has to be written in the device&#39;s gates too.</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">backend</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_device_basis</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+    <span class="n">ops</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">basis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_measurement_basis_ops</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span>
+    <span class="n">obs_subcircuits</span> <span class="o">=</span> <span class="n">_get_obs_subcircuits</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">,</span> <span class="n">measurement_settings</span><span class="p">,</span> <span class="n">ops</span><span class="p">)</span>
+
+    <span class="n">_remove_obsm</span><span class="p">(</span><span class="n">obs_subcircuits</span><span class="p">)</span>
+
+    <span class="n">_remove_obsm_2</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">)</span>
+
+    <span class="c1"># Enumerating every combination costs the product of the per-bundle term counts, so</span>
+    <span class="c1"># past a threshold the decomposition is sampled instead. Both paths must agree with</span>
+    <span class="c1"># qpd_for_bundle on the term counts, or the coefficients and the combinations would</span>
+    <span class="c1"># not line up.</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">options</span>
+    <span class="c1"># A bundle wider than one cut has two-qubit gates in its terms, and those go in</span>
+    <span class="c1"># after transpilation, so they are only runnable where the device couples the wires</span>
+    <span class="c1"># the cuts landed on. Vetoing during planning lets a block too wide to route fall</span>
+    <span class="c1"># back to narrower blocks instead of to no bundling at all.</span>
+    <span class="n">bundles</span> <span class="o">=</span> <span class="n">plan_bundles</span><span class="p">(</span>
+        <span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">,</span>
+        <span class="n">subcircuits</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">,</span>
+        <span class="n">fits</span><span class="o">=</span><span class="n">coupling_filter</span><span class="p">(</span>
+            <span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">,</span> <span class="n">subcircuits</span><span class="p">,</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">backend</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">bundle_of_cut</span> <span class="o">=</span> <span class="p">{</span><span class="n">cut</span><span class="p">:</span> <span class="n">bundle</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">bundles</span> <span class="k">for</span> <span class="n">cut</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">cuts</span><span class="p">}</span>
+    <span class="n">placeholders</span> <span class="o">=</span> <span class="n">locate_placeholders</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">)</span>
+    <span class="n">exact_groups</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">bundles</span><span class="p">:</span>
+        <span class="n">exact_groups</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qpd_for_bundle</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">should_sample</span><span class="p">(</span><span class="n">exact_groups</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Drawn here and kept on the experiment, so it can be rebuilt exactly.</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">)))</span>
+        <span class="n">qpd_combinations</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">num_draws</span> <span class="o">=</span> <span class="n">sample_qpd_combinations</span><span class="p">(</span>
+            <span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">sample_count</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="n">bundles</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Sampling </span><span class="si">{</span><span class="n">num_draws</span><span class="si">}</span><span class="s2"> draws over </span><span class="si">{</span><span class="n">exact_groups</span><span class="si">}</span><span class="s2"> possible groups, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;giving </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">qpd_combinations</span><span class="p">)</span><span class="si">}</span><span class="s2"> distinct circuit groups.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">qpd_combinations</span> <span class="o">=</span> <span class="n">get_qpd_combinations</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">,</span> <span class="n">bundles</span><span class="p">)</span>
+        <span class="n">coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">exact_groups</span><span class="p">)</span>
+        <span class="n">num_draws</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;expanding </span><span class="si">%d</span><span class="s2"> bundle(s) over </span><span class="si">%d</span><span class="s2"> cut(s) into </span><span class="si">%d</span><span class="s2"> experiment group(s)&quot;</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">bundles</span><span class="p">),</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">),</span>
+            <span class="n">exact_groups</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">experiment_circuits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">transpile_cache</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Which classical bits carry a communicating wire cut&#39;s measured outcome, keyed by</span>
+    <span class="c1"># (group, observable setting, subcircuit). Execution reads the label back from it.</span>
+    <span class="n">label_clbits</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># (group, observable set, subcircuit) -&gt; (qpd bits written, qpd bits dropped)</span>
+    <span class="n">qpd_bits</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">communicating</span> <span class="o">=</span> <span class="p">[</span><span class="n">bundle</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">bundles</span> <span class="k">if</span> <span class="n">bundle</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;cc_wire&quot;</span><span class="p">]</span>
+    <span class="n">group_labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">group_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">placeholder_locations</span> <span class="o">=</span> <span class="n">_get_placeholder_locations</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">id_meas_experiment_index</span><span class="p">,</span> <span class="n">qpd</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+        <span class="n">qpd_combinations</span>
+    <span class="p">):</span>  <span class="c1"># loop through all</span>
+        <span class="c1"># QPD combinations</span>
+        <span class="k">if</span> <span class="n">num_draws</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">coefficients</span><span class="p">[</span><span class="n">id_meas_experiment_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">op</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">qpd</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">communicating</span><span class="p">:</span>
+            <span class="n">group_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">bundle</span><span class="p">:</span> <span class="n">qpd</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">anchor</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">communicating</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="c1"># A communicating bundle contributes only its channel, so groups differing</span>
+            <span class="c1"># only in the label they answer share a key. Every other bundle contributes</span>
+            <span class="c1"># its whole choice, or a group would be handed operations meant for another.</span>
+            <span class="n">group_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span>
+                    <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">bundle</span><span class="p">),</span> <span class="n">qpd</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">anchor</span><span class="p">][</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">bundle</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;cc_wire&quot;</span>
+                    <span class="k">else</span> <span class="p">(</span>
+                        <span class="nb">id</span><span class="p">(</span><span class="n">bundle</span><span class="p">),</span>
+                        <span class="nb">id</span><span class="p">(</span><span class="n">qpd</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">anchor</span><span class="p">][</span><span class="s2">&quot;op_0&quot;</span><span class="p">]),</span>
+                        <span class="nb">id</span><span class="p">(</span><span class="n">qpd</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">anchor</span><span class="p">][</span><span class="s2">&quot;op_1&quot;</span><span class="p">]),</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">bundles</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">basis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">qpd</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">sub</span>
+                <span class="k">if</span> <span class="n">sub</span><span class="p">[</span><span class="s2">&quot;op_0&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="o">**</span><span class="n">sub</span><span class="p">,</span>
+                    <span class="s2">&quot;op_0&quot;</span><span class="p">:</span> <span class="n">_transpiled</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s2">&quot;op_0&quot;</span><span class="p">],</span> <span class="n">basis</span><span class="p">,</span> <span class="n">transpile_cache</span><span class="p">),</span>
+                    <span class="s2">&quot;op_1&quot;</span><span class="p">:</span> <span class="n">_transpiled</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s2">&quot;op_1&quot;</span><span class="p">],</span> <span class="n">basis</span><span class="p">,</span> <span class="n">transpile_cache</span><span class="p">),</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">qpd</span>
+            <span class="p">)</span>
+
+        <span class="c1"># circuits</span>
+        <span class="n">obs_set_circuits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">obs_index</span><span class="p">,</span> <span class="n">obs_set</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obs_subcircuits</span><span class="p">):</span>
+            <span class="n">cur_set_circuits</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">id_meas_subcircuit_index</span><span class="p">,</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">obs_set</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">subcircuit</span><span class="p">,</span> <span class="n">bits</span><span class="p">,</span> <span class="n">labels_here</span> <span class="o">=</span> <span class="n">_build_experiment_circuit</span><span class="p">(</span>
+                    <span class="n">circ</span><span class="p">,</span>
+                    <span class="n">placeholder_locations</span><span class="p">[</span><span class="n">id_meas_subcircuit_index</span><span class="p">],</span>
+                    <span class="n">qpd</span><span class="p">,</span>
+                    <span class="n">bundle_of_cut</span><span class="p">,</span>
+                    <span class="n">placeholders</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">id_meas_experiment_index</span><span class="p">,</span> <span class="n">obs_index</span><span class="p">,</span> <span class="n">id_meas_subcircuit_index</span><span class="p">)</span>
+                <span class="n">qpd_bits</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bits</span>
+                <span class="n">cur_set_circuits</span><span class="p">[</span><span class="n">id_meas_subcircuit_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">subcircuit</span>
+                <span class="k">if</span> <span class="n">labels_here</span><span class="p">:</span>
+                    <span class="n">label_clbits</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels_here</span>
+            <span class="n">obs_set_circuits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_set_circuits</span><span class="p">)</span>
+        <span class="n">experiment_circuits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs_set_circuits</span><span class="p">)</span>
+
+    <span class="n">plan</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">communicating</span><span class="p">:</span>
+        <span class="n">waves</span><span class="p">,</span> <span class="n">bundle_waves</span> <span class="o">=</span> <span class="n">communication_waves</span><span class="p">(</span>
+            <span class="n">bundles</span><span class="p">,</span> <span class="n">placeholders</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">plan</span> <span class="o">=</span> <span class="n">CommunicationPlan</span><span class="p">(</span>
+            <span class="n">label_clbits</span><span class="p">,</span>
+            <span class="n">group_labels</span><span class="p">,</span>
+            <span class="n">group_keys</span><span class="p">,</span>
+            <span class="nb">frozenset</span><span class="p">(</span>
+                <span class="n">placeholders</span><span class="p">[(</span><span class="n">cut</span><span class="p">,</span> <span class="n">SIDE_1</span><span class="p">)]</span><span class="o">.</span><span class="n">subcircuit</span>
+                <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">communicating</span>
+                <span class="k">for</span> <span class="n">cut</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">cuts</span>
+            <span class="p">),</span>
+            <span class="n">waves</span><span class="p">,</span>
+            <span class="n">bundle_waves</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">CutExperiment</span><span class="p">(</span>
+        <span class="n">experiment_circuits</span><span class="o">=</span><span class="n">experiment_circuits</span><span class="p">,</span>
+        <span class="n">cut_locations</span><span class="o">=</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">,</span>
+        <span class="n">map_qubit</span><span class="o">=</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">map_qubit</span><span class="p">,</span>
+        <span class="n">coefficients</span><span class="o">=</span><span class="n">coefficients</span><span class="p">,</span>
+        <span class="n">observables</span><span class="o">=</span><span class="n">spec</span><span class="p">,</span>
+        <span class="n">qubits</span><span class="o">=</span><span class="n">qubits</span><span class="p">,</span>
+        <span class="n">can_reconstruct_probabilities</span><span class="o">=</span><span class="n">qubits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+        <span class="n">num_draws</span><span class="o">=</span><span class="n">num_draws</span><span class="p">,</span>
+        <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
+        <span class="n">qpd_bits</span><span class="o">=</span><span class="n">qpd_bits</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+        <span class="n">optimal_gamma</span><span class="o">=</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">optimal_gamma</span><span class="p">,</span>
+        <span class="n">uncut_num_qubits</span><span class="o">=</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">uncut_num_qubits</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated </span><span class="si">{</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">num_circuits</span><span class="si">}</span><span class="s2"> circuits for the experiment.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cut_experiment</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

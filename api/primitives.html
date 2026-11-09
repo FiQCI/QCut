@@ -1,0 +1,1230 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Primitives &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/primitives';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Experiments and execution" href="experiments.html" />
+    <link rel="prev" title="Transpilation" href="transpilation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../QCut.html">QCut API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transpilation.html">Transpilation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/primitives.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Primitives</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimator">Estimator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator"><code class="docutils literal notranslate"><span class="pre">CutEstimator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator.run"><code class="docutils literal notranslate"><span class="pre">CutEstimator.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator.estimate"><code class="docutils literal notranslate"><span class="pre">CutEstimator.estimate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob.expectation_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult.expectation_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.expectation_values</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.standard_errors</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.raw"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.__init__"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampler">Sampler</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler.run"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler.estimate"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler.estimate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.quasi_dists"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.quasi_dists()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.quasi_probabilities</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.raw"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.standard_error"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.standard_error</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_dist"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.quasi_dist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.__init__"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared">Shared</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.__init__"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.jobs"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.jobs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.experiments"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.experiments</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.num_circuits"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.num_circuits</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.total_shots"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.total_shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.job_id"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.job_id()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.job_ids"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.job_ids()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.statuses"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.statuses()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.status"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.status()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.done"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.done()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.running"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.running()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.cancelled"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.cancelled()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.in_final_state"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.in_final_state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.wait_for_final_state"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.wait_for_final_state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.cancel"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.cancel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.partial_results"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.partial_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.raw_results"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.raw_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.result"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate.inputs"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate.inputs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate.__init__"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="primitives">
+<h1>Primitives<a class="headerlink" href="#primitives" title="Link to this heading">#</a></h1>
+<p>See <a class="reference internal" href="../Primitives.html"><span class="doc">Primitives</span></a> for how they are used. Each primitive’s <code class="code docutils literal notranslate"><span class="pre">run()</span></code> hands
+back a job, the job’s <code class="code docutils literal notranslate"><span class="pre">result()</span></code> a result with one entry per input circuit.</p>
+<section id="estimator">
+<h2>Estimator<a class="headerlink" href="#estimator" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.CutEstimator">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">CutEstimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutEstimator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Expectation values of cut circuits, run on any backend or sampler.</p>
+<p>Shaped like FiQCI-EMS’s estimator: made once for a backend, then <a class="reference internal" href="experiments.html#QCut.run" title="QCut.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> with
+the cut circuits and the observables to estimate on them. A cut circuit comes from
+<a class="reference internal" href="cutting.html#QCut.get_locations_and_subcircuits" title="QCut.get_locations_and_subcircuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.get_locations_and_subcircuits()</span></code></a> or <a class="reference internal" href="cutting.html#QCut.find_cuts" title="QCut.find_cuts"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.find_cuts()</span></code></a>, and is run
+with the options it was made with.</p>
+<p>The estimator does not transpile, much as qiskit’s primitives take circuits already
+written for their target. For a backend with a coupling map, transpile each cut
+circuit for that same backend with <a class="reference internal" href="transpilation.html#QCut.transpile_subcircuits" title="QCut.transpile_subcircuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.transpile_subcircuits()</span></code></a> first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>backend</strong> – the backend or V2 sampler to run on. A sampler, like a backend
+without a coupling map, takes the circuits as they are.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CutEstimator.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutCircuit</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CutCircuit</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparsePauliOp</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparseObservable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparsePauliOp</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparseObservable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">run_options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.primitives.CutEstimatorJob" title="QCut.primitives.estimator.CutEstimatorJob"><span class="pre">CutEstimatorJob</span></a></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutEstimator.run" title="Link to this definition">#</a></dt>
+<dd><p>Submit the circuits and return without waiting for their results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>circuits</strong> – a cut circuit or a list of them.</p></li>
+<li><p><strong>observables</strong> – what to estimate, taken as qiskit’s estimator takes them –
+a label, a <code class="docutils literal notranslate"><span class="pre">Pauli</span></code>, a <code class="docutils literal notranslate"><span class="pre">SparsePauliOp</span></code>, a <code class="docutils literal notranslate"><span class="pre">SparseObservable</span></code>, a
+<code class="docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">coefficient}</span></code> mapping, or a nested sequence of those. One
+circuit takes them as given. With a list of circuits, give a list with
+one entry per circuit, or one observable for every circuit.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – shots per experiment circuit, as in
+<a class="reference internal" href="experiments.html#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.submit_experiments()</span></code></a>.</p></li>
+<li><p><strong>max_batch_size</strong> (<em>int</em>) – the most circuits submitted in one <code class="docutils literal notranslate"><span class="pre">run</span></code> call. Each
+input circuit is submitted in batches of its own.</p></li>
+<li><p><strong>parameter_values</strong> – <code class="docutils literal notranslate"><span class="pre">{parameter</span> <span class="pre">or</span> <span class="pre">name:</span> <span class="pre">value}</span></code> to bind into the circuit,
+paired with the circuits the way <code class="docutils literal notranslate"><span class="pre">observables</span></code> is. For a sweep, list
+the same circuit once per set of values.</p></li>
+<li><p><strong>**run_options</strong> – passed on to every <code class="docutils literal notranslate"><span class="pre">run</span></code> call on the backend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a handle on every circuit’s experiment, whose
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code> gives the expectation values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.primitives.CutEstimatorJob" title="QCut.primitives.CutEstimatorJob">CutEstimatorJob</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>QCutError</strong> – something other than a cut circuit was given, one is not
+    transpiled for this backend although it has a coupling map, or one
+    has parameters left unbound.</p></li>
+<li><p><strong>ValueError</strong> – the observables or parameter values do not have one entry per
+    circuit, or the observables do not fit their circuit.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CutEstimator.estimate">
+<span class="sig-name descname"><span class="pre">estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutCircuit</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CutCircuit</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparsePauliOp</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparseObservable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparsePauliOp</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SparseObservable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pauli</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.primitives.CutRunEstimate" title="QCut.primitives.base.CutRunEstimate"><span class="pre">CutRunEstimate</span></a></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimator.estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutEstimator.estimate" title="Link to this definition">#</a></dt>
+<dd><p>Work out what <a class="reference internal" href="experiments.html#QCut.run" title="QCut.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> will cost with the same arguments, submitting
+nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the jobs, circuits and shots of the whole run, and indexed
+by circuit, each circuit’s own share.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#QCut.primitives.CutRunEstimate" title="QCut.primitives.CutRunEstimate">CutRunEstimate</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorJob">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutEstimatorJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.job.handle.QCutJob"><span class="pre">QCutJob</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob" title="QCut.primitives.job.QCutPrimitiveJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCutPrimitiveJob</span></code></a>[<a class="reference internal" href="#QCut.primitives.CutEstimatorResult" title="QCut.primitives.estimator.CutEstimatorResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutEstimatorResult</span></code></a>]</p>
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">CutEstimator</span></code> run, whose <code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code> is a
+<a class="reference internal" href="#QCut.primitives.CutEstimatorResult" title="QCut.primitives.CutEstimatorResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutEstimatorResult</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorJob.expectation_values">
+<span class="sig-name descname"><span class="pre">expectation_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorJob.expectation_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorJob.expectation_values" title="Link to this definition">#</a></dt>
+<dd><p>Wait for the run and return the expectation values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – the input circuit to return them for, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for every
+circuit’s, in the order the circuits were given.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorJob.standard_errors">
+<span class="sig-name descname"><span class="pre">standard_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorJob.standard_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorJob.standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>Wait for the run and return the standard errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – the input circuit to return them for, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for every
+circuit’s, in the order the circuits were given.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutEstimatorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></p>
+<p>What a <code class="xref py py-class docutils literal notranslate"><span class="pre">CutEstimator</span></code> run gives back: one entry per input circuit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorResult.expectation_values">
+<span class="sig-name descname"><span class="pre">expectation_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorResult.expectation_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorResult.expectation_values" title="Link to this definition">#</a></dt>
+<dd><p>Every circuit’s expectation values, in the order the circuits were given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorResult.standard_errors">
+<span class="sig-name descname"><span class="pre">standard_errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorResult.standard_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorResult.standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>Every circuit’s standard errors, in the order the circuits were given.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorEntry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutEstimatorEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expectation_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/estimator.html#CutEstimatorEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutEstimatorEntry" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The expectation values of one input circuit.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorEntry.expectation_values">
+<span class="sig-name descname"><span class="pre">expectation_values</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#QCut.primitives.CutEstimatorEntry.expectation_values" title="Link to this definition">#</a></dt>
+<dd><p>One value per observable, shaped like the observables given for the circuit.
+A single observable gives a zero-dimensional array.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorEntry.standard_errors">
+<span class="sig-name descname"><span class="pre">standard_errors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#QCut.primitives.CutEstimatorEntry.standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>An upper bound on each value’s shot noise, shaped the same. See
+<a class="reference internal" href="results.html#QCut.estimate_standard_errors" title="QCut.estimate_standard_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_standard_errors()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorEntry.raw">
+<span class="sig-name descname"><span class="pre">raw</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span><a class="headerlink" href="#QCut.primitives.CutEstimatorEntry.raw" title="Link to this definition">#</a></dt>
+<dd><p>The raw counts the values were estimated from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutEstimatorEntry.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expectation_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#QCut.primitives.CutEstimatorEntry.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sampler">
+<h2>Sampler<a class="headerlink" href="#sampler" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.CutQuasiSampler">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">CutQuasiSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutQuasiSampler" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Quasi-probability distributions of cut circuits, run on any backend or sampler.</p>
+<p>Shaped like FiQCI-EMS’s sampler, but what comes back is reconstructed rather than
+counted: a quasi-probability distribution over the measured bits, which can dip
+below zero by the estimate’s noise. The qubits are the ones the circuit measured at
+its end before it was cut, and the bitstrings follow qiskit’s convention, classical
+bit zero rightmost.</p>
+<p>A cut circuit comes from <a class="reference internal" href="cutting.html#QCut.get_locations_and_subcircuits" title="QCut.get_locations_and_subcircuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.get_locations_and_subcircuits()</span></code></a> or
+<a class="reference internal" href="cutting.html#QCut.find_cuts" title="QCut.find_cuts"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.find_cuts()</span></code></a>, and is run with the options it was made with. The sampler
+does not transpile: for a backend with a coupling map, transpile each cut circuit
+for that same backend with <a class="reference internal" href="transpilation.html#QCut.transpile_subcircuits" title="QCut.transpile_subcircuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.transpile_subcircuits()</span></code></a> first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>backend</strong> – the backend or V2 sampler to run on. A sampler, like a backend
+without a coupling map, takes the circuits as they are.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CutQuasiSampler.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutCircuit</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CutCircuit</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">run_options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.primitives.CutQuasiSamplerJob" title="QCut.primitives.sampler.CutQuasiSamplerJob"><span class="pre">CutQuasiSamplerJob</span></a></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSampler.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutQuasiSampler.run" title="Link to this definition">#</a></dt>
+<dd><p>Submit the circuits and return without waiting for their results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>circuits</strong> – a cut circuit or a list of them, each split from a circuit that
+ended in the measurements whose distribution is wanted, measuring into
+every classical bit exactly once.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – shots per experiment circuit, as in
+<a class="reference internal" href="experiments.html#QCut.submit_experiments" title="QCut.submit_experiments"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.submit_experiments()</span></code></a>.</p></li>
+<li><p><strong>max_batch_size</strong> (<em>int</em>) – the most circuits submitted in one <code class="docutils literal notranslate"><span class="pre">run</span></code> call. Each
+input circuit is submitted in batches of its own.</p></li>
+<li><p><strong>parameter_values</strong> – <code class="docutils literal notranslate"><span class="pre">{parameter</span> <span class="pre">or</span> <span class="pre">name:</span> <span class="pre">value}</span></code> to bind into the circuit.
+With a list of circuits, a list with one entry per circuit, or one
+for every circuit. For a sweep, list the same circuit once per set of
+values.</p></li>
+<li><p><strong>**run_options</strong> – passed on to every <code class="docutils literal notranslate"><span class="pre">run</span></code> call on the backend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a handle on every circuit’s experiment, whose
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code> gives the distributions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.primitives.CutQuasiSamplerJob" title="QCut.primitives.CutQuasiSamplerJob">CutQuasiSamplerJob</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>QCutError</strong> – something other than a cut circuit was given, one is not
+    transpiled for this backend although it has a coupling map, has
+    parameters left unbound, or its final measurements do not fill its
+    classical bits once each.</p></li>
+<li><p><strong>ValueError</strong> – the parameter values do not have one entry per circuit.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CutQuasiSampler.estimate">
+<span class="sig-name descname"><span class="pre">estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circuits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CutCircuit</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CutCircuit</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.primitives.CutRunEstimate" title="QCut.primitives.base.CutRunEstimate"><span class="pre">CutRunEstimate</span></a></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSampler.estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CutQuasiSampler.estimate" title="Link to this definition">#</a></dt>
+<dd><p>Work out what <a class="reference internal" href="experiments.html#QCut.run" title="QCut.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> will cost with the same arguments, submitting
+nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the jobs, circuits and shots of the whole run, and indexed
+by circuit, each circuit’s own share.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#QCut.primitives.CutRunEstimate" title="QCut.primitives.CutRunEstimate">CutRunEstimate</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerJob">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutQuasiSamplerJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.job.handle.QCutJob"><span class="pre">QCutJob</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob" title="QCut.primitives.job.QCutPrimitiveJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCutPrimitiveJob</span></code></a>[<a class="reference internal" href="#QCut.primitives.CutQuasiSamplerResult" title="QCut.primitives.sampler.CutQuasiSamplerResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutQuasiSamplerResult</span></code></a>]</p>
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code> run. <code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code> gives a
+<a class="reference internal" href="#QCut.primitives.CutQuasiSamplerResult" title="QCut.primitives.CutQuasiSamplerResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutQuasiSamplerResult</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerJob.quasi_probabilities">
+<span class="sig-name descname"><span class="pre">quasi_probabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerJob.quasi_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerJob.quasi_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>Wait for the run and return the distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – the input circuit to return it for, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for every
+circuit’s, in the order the circuits were given.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerJob.standard_errors">
+<span class="sig-name descname"><span class="pre">standard_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerJob.standard_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerJob.standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>Wait for the run and return the standard errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – the input circuit to return it for, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for every
+circuit’s, in the order the circuits were given.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutQuasiSamplerResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></p>
+<p>What a <code class="xref py py-class docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code> run gives back: one entry per input circuit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerResult.quasi_probabilities">
+<span class="sig-name descname"><span class="pre">quasi_probabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerResult.quasi_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerResult.quasi_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>Every circuit’s distribution, in the order the circuits were given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerResult.quasi_dists">
+<span class="sig-name descname"><span class="pre">quasi_dists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">QuasiDistribution</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerResult.quasi_dists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerResult.quasi_dists" title="Link to this definition">#</a></dt>
+<dd><p>Every circuit’s distribution as a qiskit <code class="docutils literal notranslate"><span class="pre">QuasiDistribution</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top</strong> (<em>int</em>) – as in <a class="reference internal" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_dist" title="QCut.primitives.CutQuasiSamplerEntry.quasi_dist"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.quasi_dist()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerResult.standard_errors">
+<span class="sig-name descname"><span class="pre">standard_errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerResult.standard_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerResult.standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>Every circuit’s standard error, in the order the circuits were given.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutQuasiSamplerEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quasi_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The reconstructed distribution of one input circuit.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities">
+<span class="sig-name descname"><span class="pre">quasi_probabilities</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>The distribution over the measured bits, built lazily.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry.raw">
+<span class="sig-name descname"><span class="pre">raw</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry.raw" title="Link to this definition">#</a></dt>
+<dd><p>The raw counts it was reconstructed from.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry.standard_error">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">standard_error</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry.standard_error" title="Link to this definition">#</a></dt>
+<dd><p>An upper bound on each quasi-probability’s shot noise, the same for all.</p>
+<p>See <a class="reference internal" href="results.html#QCut.QuasiProbabilities.standard_error" title="QCut.QuasiProbabilities.standard_error"><code class="xref py py-attr docutils literal notranslate"><span class="pre">QCut.QuasiProbabilities.standard_error</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry.quasi_dist">
+<span class="sig-name descname"><span class="pre">quasi_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QuasiDistribution</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/sampler.html#CutQuasiSamplerEntry.quasi_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_dist" title="Link to this definition">#</a></dt>
+<dd><p>The distribution as a qiskit <code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiDistribution</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top</strong> (<em>int</em>) – keep only this many of the most likely outcomes. <code class="docutils literal notranslate"><span class="pre">None</span></code>, the
+default, keeps all <code class="docutils literal notranslate"><span class="pre">2**n</span></code> of them, which for many measured bits is
+expensive; <a class="reference internal" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities" title="QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities"><code class="xref py py-attr docutils literal notranslate"><span class="pre">quasi_probabilities</span></code></a> answers without expanding.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutQuasiSamplerEntry.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quasi_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#QCut.primitives.CutQuasiSamplerEntry.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="shared">
+<h2>Shared<a class="headerlink" href="#shared" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">QCutPrimitiveJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.job.handle.QCutJob"><span class="pre">QCutJob</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">R</span></code>]</p>
+<p>A primitive’s run, handed back as soon as everything is submitted.</p>
+<p>Shaped like a qiskit job. Each input circuit is one experiment with a
+<a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.QCutJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCutJob</span></code></a> of its own, in <a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob.jobs" title="QCut.primitives.QCutPrimitiveJob.jobs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">jobs</span></code></a>, and this answers for all of
+them together: the ids and statuses cover every circuit, and <a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob.cancel" title="QCut.primitives.QCutPrimitiveJob.cancel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cancel()</span></code></a>
+cancels every circuit.</p>
+<p><a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob.result" title="QCut.primitives.QCutPrimitiveJob.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code></a> waits for every circuit and builds the primitive’s own result, which
+is what the estimator and the sampler differ in. <a class="reference internal" href="#QCut.primitives.QCutPrimitiveJob.raw_results" title="QCut.primitives.QCutPrimitiveJob.raw_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">raw_results()</span></code></a> gives the raw
+counts behind it.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.job.handle.QCutJob"><span class="pre">QCutJob</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.jobs">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">jobs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.QCutJob" title="QCut.job.handle.QCutJob"><span class="pre">QCutJob</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.jobs" title="Link to this definition">#</a></dt>
+<dd><p>The job of each input circuit, in the order the circuits were given.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.experiments">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">experiments</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></span><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.experiments" title="Link to this definition">#</a></dt>
+<dd><p>The experiment each input circuit was cut into.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.num_circuits">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_circuits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.num_circuits" title="Link to this definition">#</a></dt>
+<dd><p>How many experiment circuits have been submitted so far, over every input.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.total_shots">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">total_shots</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.total_shots" title="Link to this definition">#</a></dt>
+<dd><p>How many shots have been submitted so far, over every input.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.job_id">
+<span class="sig-name descname"><span class="pre">job_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.job_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.job_id" title="Link to this definition">#</a></dt>
+<dd><p>The first backend job’s id, <code class="docutils literal notranslate"><span class="pre">None</span></code> if nothing was submitted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.job_ids">
+<span class="sig-name descname"><span class="pre">job_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.job_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.job_ids" title="Link to this definition">#</a></dt>
+<dd><p>Every backend job’s id, circuit by circuit, in submission order.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.statuses">
+<span class="sig-name descname"><span class="pre">statuses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">JobStatus</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.statuses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.statuses" title="Link to this definition">#</a></dt>
+<dd><p>Each input circuit’s status, in the order the circuits were given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JobStatus</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.status" title="Link to this definition">#</a></dt>
+<dd><p>One status for the whole run.</p>
+<p>A circuit failing makes it <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, then one being cancelled <code class="docutils literal notranslate"><span class="pre">CANCELLED</span></code>.
+Otherwise it is <code class="docutils literal notranslate"><span class="pre">DONE</span></code> only once every circuit is.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.done">
+<span class="sig-name descname"><span class="pre">done</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.done" title="Link to this definition">#</a></dt>
+<dd><p>Whether every circuit finished successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.running">
+<span class="sig-name descname"><span class="pre">running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.running" title="Link to this definition">#</a></dt>
+<dd><p>Whether any circuit is running, or has waves left to submit.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.cancelled">
+<span class="sig-name descname"><span class="pre">cancelled</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.cancelled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.cancelled" title="Link to this definition">#</a></dt>
+<dd><p>Whether the run was cancelled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.in_final_state">
+<span class="sig-name descname"><span class="pre">in_final_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.in_final_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.in_final_state" title="Link to this definition">#</a></dt>
+<dd><p>Whether the run is done, failed or cancelled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.wait_for_final_state">
+<span class="sig-name descname"><span class="pre">wait_for_final_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.wait_for_final_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.wait_for_final_state" title="Link to this definition">#</a></dt>
+<dd><p>Poll until the run reaches a final state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<em>float</em>) – seconds to wait before giving up, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to wait as
+long as it takes.</p></li>
+<li><p><strong>wait</strong> (<em>float</em>) – seconds between polls.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>JobTimeoutError</strong> – the run was not finished within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.cancel" title="Link to this definition">#</a></dt>
+<dd><p>Cancel every circuit’s backend jobs, and submit no further waves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.partial_results">
+<span class="sig-name descname"><span class="pre">partial_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.PartialBatch" title="QCut.job.handle.PartialBatch"><span class="pre">PartialBatch</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.partial_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.partial_results" title="Link to this definition">#</a></dt>
+<dd><p>Each input circuit’s batches as they stand, with results once they are in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.raw_results">
+<span class="sig-name descname"><span class="pre">raw_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="results.html#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.raw_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.raw_results" title="Link to this definition">#</a></dt>
+<dd><p>Wait for every circuit and return its raw counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>float</em>) – seconds to wait for the whole run before giving up, or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> to wait as long as it takes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>one per input circuit, in the order they were given.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="results.html#QCut.RawResult" title="QCut.RawResult">RawResult</a>]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>JobTimeoutError</strong> – the run was not finished within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p></li>
+<li><p><strong>QCutError</strong> – the run was cancelled.</p></li>
+<li><p><strong>Exception</strong> – whatever a refused batch, a failed job or a failed wave raised.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.QCutPrimitiveJob.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">R</span></span></span><a class="reference internal" href="../_modules/QCut/primitives/job.html#QCutPrimitiveJob.result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.QCutPrimitiveJob.result" title="Link to this definition">#</a></dt>
+<dd><p>Wait for every circuit and return the primitive’s result, built once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>float</em>) – seconds to wait for the whole run before giving up, or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> to wait as long as it takes.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>JobTimeoutError</strong> – the run was not finished within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p></li>
+<li><p><strong>QCutError</strong> – the run was cancelled.</p></li>
+<li><p><strong>Exception</strong> – whatever a refused batch, a failed job or a failed wave raised.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.primitives.CutRunEstimate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.primitives.</span></span><span class="sig-name descname"><span class="pre">CutRunEstimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">breakdown</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JobEstimate]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[RunEstimate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/primitives/base.html#CutRunEstimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.primitives.CutRunEstimate" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="experiments.html#QCut.RunEstimate" title="QCut.execution.estimate.RunEstimate"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunEstimate</span></code></a></p>
+<p>What a primitive’s run will cost, over every circuit and for each one.</p>
+<p>The totals and <code class="xref py py-attr docutils literal notranslate"><span class="pre">breakdown</span></code> cover the whole run, numbered in submission order.
+Indexing gives the <a class="reference internal" href="experiments.html#QCut.RunEstimate" title="QCut.RunEstimate"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunEstimate</span></code></a> of one input circuit, in the order
+the circuits were given, and <code class="docutils literal notranslate"><span class="pre">len</span></code> counts the circuits.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.primitives.CutRunEstimate.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="experiments.html#QCut.RunEstimate" title="QCut.execution.estimate.RunEstimate"><span class="pre">RunEstimate</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></span><a class="headerlink" href="#QCut.primitives.CutRunEstimate.inputs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.primitives.CutRunEstimate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">breakdown</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JobEstimate]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[RunEstimate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#QCut.primitives.CutRunEstimate.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="transpilation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transpilation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="experiments.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Experiments and execution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimator">Estimator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator"><code class="docutils literal notranslate"><span class="pre">CutEstimator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator.run"><code class="docutils literal notranslate"><span class="pre">CutEstimator.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutEstimator.estimate"><code class="docutils literal notranslate"><span class="pre">CutEstimator.estimate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob.expectation_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorJob.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorJob.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult.expectation_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorResult.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorResult.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.expectation_values"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.expectation_values</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.standard_errors</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.raw"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutEstimatorEntry.__init__"><code class="docutils literal notranslate"><span class="pre">CutEstimatorEntry.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampler">Sampler</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler.run"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CutQuasiSampler.estimate"><code class="docutils literal notranslate"><span class="pre">CutQuasiSampler.estimate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerJob.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerJob.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.quasi_dists"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.quasi_dists()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerResult.standard_errors"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerResult.standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.quasi_probabilities</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.raw"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.raw</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.standard_error"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.standard_error</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.quasi_dist"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.quasi_dist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutQuasiSamplerEntry.__init__"><code class="docutils literal notranslate"><span class="pre">CutQuasiSamplerEntry.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared">Shared</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.__init__"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.jobs"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.jobs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.experiments"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.experiments</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.num_circuits"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.num_circuits</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.total_shots"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.total_shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.job_id"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.job_id()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.job_ids"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.job_ids()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.statuses"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.statuses()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.status"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.status()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.done"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.done()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.running"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.running()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.cancelled"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.cancelled()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.in_final_state"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.in_final_state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.wait_for_final_state"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.wait_for_final_state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.cancel"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.cancel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.partial_results"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.partial_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.raw_results"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.raw_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.QCutPrimitiveJob.result"><code class="docutils literal notranslate"><span class="pre">QCutPrimitiveJob.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate.inputs"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate.inputs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.primitives.CutRunEstimate.__init__"><code class="docutils literal notranslate"><span class="pre">CutRunEstimate.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

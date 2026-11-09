@@ -41,7 +41,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=4e74574f"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -52,7 +52,7 @@
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.4.0.post1.dev3+g8b2ee8f58" />
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -193,38 +193,62 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Usage.html">Basic Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Examples.html">Examples on using QCut</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/WireCuts.html">Wire cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/GateCuts.html">Gate cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/AutomaticCuts.html">Automatic cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/ParallelBackends.html">Running on several backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire Cut QPD derivation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
 </ul>
 </details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QCut.html">QCut API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
 </ul>
 
     </div>
@@ -347,6 +371,7 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
@@ -358,22 +383,30 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CircuitResult.__init__">__init__() (QCut.CircuitResult method)</a>
+      <li><a href="api/results.html#QCut.CircuitResult.__init__">__init__() (QCut.CircuitResult method)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.CutOptions.__init__">(QCut.CutOptions method)</a>
+        <li><a href="api/options.html#QCut.CutOptions.__init__">(QCut.CutOptions method)</a>
 </li>
-        <li><a href="QCut.html#QCut.JobEstimate.__init__">(QCut.JobEstimate method)</a>
+        <li><a href="api/experiments.html#QCut.JobEstimate.__init__">(QCut.JobEstimate method)</a>
 </li>
-        <li><a href="QCut.html#QCut.ParallelBackend.__init__">(QCut.ParallelBackend method)</a>
+        <li><a href="api/experiments.html#QCut.ParallelBackend.__init__">(QCut.ParallelBackend method)</a>
 </li>
-        <li><a href="QCut.html#QCut.QCutJob.__init__">(QCut.QCutJob method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutEstimatorEntry.__init__">(QCut.primitives.CutEstimatorEntry method)</a>
 </li>
-        <li><a href="QCut.html#QCut.QuasiProbabilities.__init__">(QCut.QuasiProbabilities method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry.__init__">(QCut.primitives.CutQuasiSamplerEntry method)</a>
 </li>
-        <li><a href="QCut.html#QCut.RawResult.__init__">(QCut.RawResult method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutRunEstimate.__init__">(QCut.primitives.CutRunEstimate method)</a>
 </li>
-        <li><a href="QCut.html#QCut.RunEstimate.__init__">(QCut.RunEstimate method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.__init__">(QCut.primitives.QCutPrimitiveJob method)</a>
+</li>
+        <li><a href="api/experiments.html#QCut.QCutJob.__init__">(QCut.QCutJob method)</a>
+</li>
+        <li><a href="api/results.html#QCut.QuasiProbabilities.__init__">(QCut.QuasiProbabilities method)</a>
+</li>
+        <li><a href="api/results.html#QCut.RawResult.__init__">(QCut.RawResult method)</a>
+</li>
+        <li><a href="api/experiments.html#QCut.RunEstimate.__init__">(QCut.RunEstimate method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -382,13 +415,13 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QCutJob.backend">backend (QCut.QCutJob property)</a>
+      <li><a href="api/experiments.html#QCut.QCutJob.backend">backend (QCut.QCutJob property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.ParallelBackend.backends">backends (QCut.ParallelBackend attribute)</a>
+      <li><a href="api/experiments.html#QCut.ParallelBackend.backends">backends (QCut.ParallelBackend attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.RunEstimate.breakdown">breakdown (QCut.RunEstimate attribute)</a>
+      <li><a href="api/experiments.html#QCut.RunEstimate.breakdown">breakdown (QCut.RunEstimate attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -396,45 +429,71 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QCutJob.cancel">cancel() (QCut.QCutJob method)</a>
-</li>
-      <li><a href="QCut.html#QCut.QCutJob.cancelled">cancelled() (QCut.QCutJob method)</a>
-</li>
-      <li><a href="QCut.html#QCut.CircuitResult">CircuitResult (class in QCut)</a>
-</li>
-      <li><a href="QCut.html#QCut.JobEstimate.circuits">circuits (QCut.JobEstimate attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.cancel">cancel() (QCut.primitives.QCutPrimitiveJob method)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.PartialBatch.circuits">(QCut.PartialBatch attribute)</a>
-</li>
-        <li><a href="QCut.html#QCut.RunEstimate.circuits">(QCut.RunEstimate property)</a>
+        <li><a href="api/experiments.html#QCut.QCutJob.cancel">(QCut.QCutJob method)</a>
 </li>
       </ul></li>
-      <li><a href="QCut.html#QCut.CutOptions.consolidate">consolidate (QCut.CutOptions attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.cancelled">cancelled() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.cancelled">(QCut.QCutJob method)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.consolidate_mode">consolidate_mode (QCut.CutOptions property)</a>
+      </ul></li>
+      <li><a href="api/results.html#QCut.CircuitResult">CircuitResult (class in QCut)</a>
+</li>
+      <li><a href="api/experiments.html#QCut.JobEstimate.circuits">circuits (QCut.JobEstimate attribute)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.PartialBatch.circuits">(QCut.PartialBatch attribute)</a>
+</li>
+        <li><a href="api/experiments.html#QCut.RunEstimate.circuits">(QCut.RunEstimate property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/options.html#QCut.CutOptions.consolidate">consolidate (QCut.CutOptions attribute)</a>
+</li>
+      <li><a href="api/options.html#QCut.CutOptions.consolidate_mode">consolidate_mode (QCut.CutOptions property)</a>
+</li>
+      <li><a href="api/cutting.html#QCut.consolidate_two_qubit_blocks">consolidate_two_qubit_blocks() (in module QCut)</a>
+</li>
+      <li><a href="api/results.html#QCut.CircuitResult.counts">counts() (QCut.CircuitResult method)</a>
+
+      <ul>
+        <li><a href="api/results.html#QCut.QuasiProbabilities.counts">(QCut.QuasiProbabilities method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cutting.html#QCut.cut">cut() (in module QCut)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.consolidate_two_qubit_blocks">consolidate_two_qubit_blocks() (in module QCut)</a>
+      <li><a href="api/cutting.html#QCut.cutCZ">cutCZ() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.CircuitResult.counts">counts() (QCut.CircuitResult method)</a>
-
-      <ul>
-        <li><a href="QCut.html#QCut.QuasiProbabilities.counts">(QCut.QuasiProbabilities method)</a>
+      <li><a href="api/primitives.html#QCut.CutEstimator">CutEstimator (class in QCut)</a>
 </li>
-      </ul></li>
-      <li><a href="QCut.html#QCut.cut">cut() (in module QCut)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorEntry">CutEstimatorEntry (class in QCut.primitives)</a>
 </li>
-      <li><a href="QCut.html#QCut.cutCZ">cutCZ() (in module QCut)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorJob">CutEstimatorJob (class in QCut.primitives)</a>
 </li>
-      <li><a href="QCut.html#QCut.cutGate">cutGate() (in module QCut)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorResult">CutEstimatorResult (class in QCut.primitives)</a>
 </li>
-      <li><a href="QCut.html#QCut.cutISWAP">cutISWAP() (in module QCut)</a>
+      <li><a href="api/cutting.html#QCut.cutGate">cutGate() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions">CutOptions (class in QCut)</a>
+      <li><a href="api/cutting.html#QCut.cutISWAP">cutISWAP() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.cutSWAP">cutSWAP() (in module QCut)</a>
+      <li><a href="api/options.html#QCut.CutOptions">CutOptions (class in QCut)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.CutQuasiSampler">CutQuasiSampler (class in QCut)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry">CutQuasiSamplerEntry (class in QCut.primitives)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerJob">CutQuasiSamplerJob (class in QCut.primitives)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerResult">CutQuasiSamplerResult (class in QCut.primitives)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutRunEstimate">CutRunEstimate (class in QCut.primitives)</a>
+</li>
+      <li><a href="api/cutting.html#QCut.cutSWAP">cutSWAP() (in module QCut)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -442,57 +501,81 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CutOptions.deduplicate">deduplicate (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.deduplicate">deduplicate (QCut.CutOptions attribute)</a>
+</li>
+      <li><a href="api/options.html#QCut.DEFAULT_OPTIONS">DEFAULT_OPTIONS (in module QCut)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QCutJob.done">done() (QCut.QCutJob method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.done">done() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.done">(QCut.QCutJob method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.estimate_expectation_values">estimate_expectation_values() (in module QCut)</a>
+      <li><a href="api/primitives.html#QCut.CutEstimator.estimate">estimate() (QCut.CutEstimator method)</a>
+
+      <ul>
+        <li><a href="api/primitives.html#QCut.CutQuasiSampler.estimate">(QCut.CutQuasiSampler method)</a>
 </li>
-      <li><a href="QCut.html#QCut.estimate_probabilities">estimate_probabilities() (in module QCut)</a>
+      </ul></li>
+      <li><a href="api/results.html#QCut.estimate_expectation_values">estimate_expectation_values() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.estimate_run">estimate_run() (in module QCut)</a>
+      <li><a href="api/results.html#QCut.estimate_probabilities">estimate_probabilities() (in module QCut)</a>
+</li>
+      <li><a href="api/experiments.html#QCut.estimate_run">estimate_run() (in module QCut)</a>
+</li>
+      <li><a href="api/results.html#QCut.estimate_standard_errors">estimate_standard_errors() (in module QCut)</a>
+</li>
+      <li><a href="api/experiments.html#QCut.RunEstimate.exact">exact (QCut.RunEstimate attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.RunEstimate.exact">exact (QCut.RunEstimate attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.expansion">expansion (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.expansion">expansion (QCut.CutOptions attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorEntry.expectation_values">expectation_values (QCut.primitives.CutEstimatorEntry attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.experiment">experiment (QCut.QCutJob property)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorJob.expectation_values">expectation_values() (QCut.primitives.CutEstimatorJob method)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.RawResult.experiment">(QCut.RawResult property)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutEstimatorResult.expectation_values">(QCut.primitives.CutEstimatorResult method)</a>
 </li>
       </ul></li>
+      <li><a href="api/experiments.html#QCut.QCutJob.experiment">experiment (QCut.QCutJob property)</a>
+
+      <ul>
+        <li><a href="api/results.html#QCut.RawResult.experiment">(QCut.RawResult property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.experiments">experiments (QCut.primitives.QCutPrimitiveJob property)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.find_cuts">find_cuts() (in module QCut)</a>
+      <li><a href="api/cutting.html#QCut.find_cuts">find_cuts() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.finder_candidates">finder_candidates (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.finder_candidates">finder_candidates (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.finder_cut_mode">finder_cut_mode (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.finder_cut_mode">finder_cut_mode (QCut.CutOptions attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CutOptions.finder_max_qubits">finder_max_qubits (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.finder_max_qubits">finder_max_qubits (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.finder_num_partitions">finder_num_partitions (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.finder_num_partitions">finder_num_partitions (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.from_array">from_array() (QCut.QuasiProbabilities class method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.from_array">from_array() (QCut.QuasiProbabilities class method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.from_distribution">from_distribution() (QCut.QuasiProbabilities class method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.from_distribution">from_distribution() (QCut.QuasiProbabilities class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -500,11 +583,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.get_experiment_circuits">get_experiment_circuits() (in module QCut)</a>
+      <li><a href="api/experiments.html#QCut.get_experiment_circuits">get_experiment_circuits() (in module QCut)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.get_locations_and_subcircuits">get_locations_and_subcircuits() (in module QCut)</a>
+      <li><a href="api/cutting.html#QCut.get_locations_and_subcircuits">get_locations_and_subcircuits() (in module QCut)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -512,35 +595,53 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QCutJob.in_final_state">in_final_state() (QCut.QCutJob method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CircuitResult.index">index (QCut.CircuitResult attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.in_final_state">in_final_state() (QCut.primitives.QCutPrimitiveJob method)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.PartialBatch.index">(QCut.PartialBatch attribute)</a>
+        <li><a href="api/experiments.html#QCut.QCutJob.in_final_state">(QCut.QCutJob method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/results.html#QCut.CircuitResult.index">index (QCut.CircuitResult attribute)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.PartialBatch.index">(QCut.PartialBatch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/primitives.html#QCut.primitives.CutRunEstimate.inputs">inputs (QCut.primitives.CutRunEstimate attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="J">J</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.PartialBatch.job_id">job_id (QCut.PartialBatch attribute)</a>
+      <li><a href="api/experiments.html#QCut.PartialBatch.job_id">job_id (QCut.PartialBatch attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.job_id">job_id() (QCut.QCutJob method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.job_id">job_id() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.job_id">(QCut.QCutJob method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.job_ids">job_ids() (QCut.QCutJob method)</a>
+      </ul></li>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.job_ids">job_ids() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.job_ids">(QCut.QCutJob method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.JobEstimate">JobEstimate (class in QCut)</a>
+      <li><a href="api/experiments.html#QCut.JobEstimate">JobEstimate (class in QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.RunEstimate.jobs">jobs (QCut.RunEstimate property)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.jobs">jobs (QCut.primitives.QCutPrimitiveJob property)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.RunEstimate.jobs">(QCut.RunEstimate property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.joint_rotation_cuts">joint_rotation_cuts (QCut.CutOptions attribute)</a>
+      </ul></li>
+      <li><a href="api/options.html#QCut.CutOptions.joint_rotation_cuts">joint_rotation_cuts (QCut.CutOptions attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -548,7 +649,7 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CircuitResult.label_filter">label_filter (QCut.CircuitResult attribute)</a>
+      <li><a href="api/results.html#QCut.CircuitResult.label_filter">label_filter (QCut.CircuitResult attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -556,44 +657,49 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.marginal">marginal() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.marginal">marginal() (QCut.QuasiProbabilities method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.max_batch_size">max_batch_size (QCut.QCutJob property)</a>
+      <li><a href="api/experiments.html#QCut.QCutJob.max_batch_size">max_batch_size (QCut.QCutJob property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.max_exact_groups">max_exact_groups (QCut.CutOptions attribute)</a>
-</li>
-      <li><a href="QCut.html#QCut.CutOptions.max_qubits">max_qubits (QCut.CutOptions property)</a>
+      <li><a href="api/options.html#QCut.CutOptions.max_exact_groups">max_exact_groups (QCut.CutOptions attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.ParallelBackend.max_shots">max_shots (QCut.ParallelBackend property)</a>
+      <li><a href="api/options.html#QCut.CutOptions.max_qubits">max_qubits (QCut.CutOptions property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.min_communicating_block">min_communicating_block (QCut.CutOptions property)</a>
+      <li><a href="api/experiments.html#QCut.ParallelBackend.max_shots">max_shots (QCut.ParallelBackend property)</a>
 </li>
-      <li>
-    module
-
-      <ul>
-        <li><a href="QCut.html#module-QCut">QCut</a>
+      <li><a href="api/options.html#QCut.CutOptions.min_communicating_block">min_communicating_block (QCut.CutOptions property)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.nearest_probabilities">nearest_probabilities() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.nearest_probabilities">nearest_probabilities() (QCut.QuasiProbabilities method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.num_circuits">num_circuits (QCut.QCutJob property)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.num_circuits">num_circuits (QCut.primitives.QCutPrimitiveJob property)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.num_circuits">(QCut.QCutJob property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CutOptions.num_partitions">num_partitions (QCut.CutOptions property)</a>
+      <li><a href="api/options.html#QCut.CutOptions.num_partitions">num_partitions (QCut.CutOptions property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.num_samples">num_samples (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.num_samples">num_samples (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.num_waves">num_waves (QCut.QCutJob property)</a>
+      <li><a href="api/experiments.html#QCut.QCutJob.num_waves">num_waves (QCut.QCutJob property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/experiments.html#QCut.ObservablesLike">ObservablesLike (in module QCut)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -601,17 +707,21 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.ParallelBackend">ParallelBackend (class in QCut)</a>
+      <li><a href="api/experiments.html#QCut.ParallelBackend">ParallelBackend (class in QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.partial_results">partial_results() (QCut.QCutJob method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.partial_results">partial_results() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.partial_results">(QCut.QCutJob method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.PartialBatch">PartialBatch (class in QCut)</a>
+      <li><a href="api/experiments.html#QCut.PartialBatch">PartialBatch (class in QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.probabilities">probabilities() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.probabilities">probabilities() (QCut.QuasiProbabilities method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.probability_of">probability_of() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.probability_of">probability_of() (QCut.QuasiProbabilities method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -619,22 +729,29 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    QCut
-
-      <ul>
-        <li><a href="QCut.html#module-QCut">module</a>
+      <li><a href="api/experiments.html#QCut.QCutJob">QCutJob (class in QCut)</a>
 </li>
-      </ul></li>
-      <li><a href="QCut.html#QCut.QCutJob">QCutJob (class in QCut)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob">QCutPrimitiveJob (class in QCut.primitives)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry.quasi_dist">quasi_dist() (QCut.primitives.CutQuasiSamplerEntry method)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerResult.quasi_dists">quasi_dists() (QCut.primitives.CutQuasiSamplerResult method)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry.quasi_probabilities">quasi_probabilities (QCut.primitives.CutQuasiSamplerEntry attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.quasi_probabilities">quasi_probabilities() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerJob.quasi_probabilities">quasi_probabilities() (QCut.primitives.CutQuasiSamplerJob method)</a>
+
+      <ul>
+        <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerResult.quasi_probabilities">(QCut.primitives.CutQuasiSamplerResult method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities">QuasiProbabilities (class in QCut)</a>
+        <li><a href="api/results.html#QCut.QuasiProbabilities.quasi_probabilities">(QCut.QuasiProbabilities method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.qubits">qubits (QCut.QuasiProbabilities attribute)</a>
+      </ul></li>
+      <li><a href="api/results.html#QCut.QuasiProbabilities">QuasiProbabilities (class in QCut)</a>
+</li>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.qubits">qubits (QCut.QuasiProbabilities attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -642,81 +759,127 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CircuitResult.raw_counts">raw_counts() (QCut.CircuitResult method)</a>
-</li>
-      <li><a href="QCut.html#QCut.RawResult">RawResult (class in QCut)</a>
-</li>
-      <li><a href="QCut.html#QCut.CutOptions.replace">replace() (QCut.CutOptions method)</a>
-</li>
-      <li><a href="QCut.html#QCut.CircuitResult.result">result (QCut.CircuitResult attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorEntry.raw">raw (QCut.primitives.CutEstimatorEntry attribute)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.PartialBatch.result">(QCut.PartialBatch attribute)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry.raw">(QCut.primitives.CutQuasiSamplerEntry attribute)</a>
 </li>
       </ul></li>
-      <li><a href="QCut.html#QCut.QCutJob.result">result() (QCut.QCutJob method)</a>
+      <li><a href="api/results.html#QCut.CircuitResult.raw_counts">raw_counts() (QCut.CircuitResult method)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.raw_results">raw_results() (QCut.primitives.QCutPrimitiveJob method)</a>
+</li>
+      <li><a href="api/results.html#QCut.RawResult">RawResult (class in QCut)</a>
+</li>
+      <li><a href="api/options.html#QCut.CutOptions.replace">replace() (QCut.CutOptions method)</a>
+</li>
+      <li><a href="api/results.html#QCut.CircuitResult.result">result (QCut.CircuitResult attribute)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.RawResult.result">(QCut.RawResult method)</a>
+        <li><a href="api/experiments.html#QCut.PartialBatch.result">(QCut.PartialBatch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.result">result() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.result">(QCut.QCutJob method)</a>
+</li>
+        <li><a href="api/results.html#QCut.RawResult.result">(QCut.RawResult method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.run">run() (in module QCut)</a>
+      <li><a href="api/experiments.html#QCut.run">run() (in module QCut)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.ParallelBackend.run">(QCut.ParallelBackend method)</a>
+        <li><a href="api/primitives.html#QCut.CutEstimator.run">(QCut.CutEstimator method)</a>
+</li>
+        <li><a href="api/primitives.html#QCut.CutQuasiSampler.run">(QCut.CutQuasiSampler method)</a>
+</li>
+        <li><a href="api/experiments.html#QCut.ParallelBackend.run">(QCut.ParallelBackend method)</a>
 </li>
       </ul></li>
-      <li><a href="QCut.html#QCut.run_cut_circuit">run_cut_circuit() (in module QCut)</a>
+      <li><a href="api/experiments.html#QCut.run_cut_circuit">run_cut_circuit() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.run_experiments">run_experiments() (in module QCut)</a>
+      <li><a href="api/experiments.html#QCut.run_experiments">run_experiments() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.run_options">run_options (QCut.QCutJob property)</a>
+      <li><a href="api/experiments.html#QCut.QCutJob.run_options">run_options (QCut.QCutJob property)</a>
 </li>
-      <li><a href="QCut.html#QCut.RunEstimate">RunEstimate (class in QCut)</a>
+      <li><a href="api/experiments.html#QCut.RunEstimate">RunEstimate (class in QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.running">running() (QCut.QCutJob method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.running">running() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.running">(QCut.QCutJob method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CutOptions.sample_count">sample_count (QCut.CutOptions property)</a>
+      <li><a href="api/options.html#QCut.CutOptions.sample_count">sample_count (QCut.CutOptions property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CircuitResult.scale">scale (QCut.CircuitResult attribute)</a>
+      <li><a href="api/results.html#QCut.CircuitResult.scale">scale (QCut.CircuitResult attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.seed">seed (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.seed">seed (QCut.CutOptions attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.JobEstimate.shots">shots (QCut.JobEstimate attribute)</a>
+      <li><a href="api/experiments.html#QCut.JobEstimate.shots">shots (QCut.JobEstimate attribute)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.PartialBatch.shots">(QCut.PartialBatch attribute)</a>
+        <li><a href="api/experiments.html#QCut.PartialBatch.shots">(QCut.PartialBatch attribute)</a>
 </li>
-        <li><a href="QCut.html#QCut.QCutJob.shots">(QCut.QCutJob property)</a>
+        <li><a href="api/experiments.html#QCut.QCutJob.shots">(QCut.QCutJob property)</a>
 </li>
-        <li><a href="QCut.html#QCut.QuasiProbabilities.shots">(QCut.QuasiProbabilities attribute)</a>
+        <li><a href="api/results.html#QCut.QuasiProbabilities.shots">(QCut.QuasiProbabilities attribute)</a>
 </li>
-        <li><a href="QCut.html#QCut.RawResult.shots">(QCut.RawResult property)</a>
+        <li><a href="api/results.html#QCut.RawResult.shots">(QCut.RawResult property)</a>
 </li>
-        <li><a href="QCut.html#QCut.RunEstimate.shots">(QCut.RunEstimate property)</a>
+        <li><a href="api/experiments.html#QCut.RunEstimate.shots">(QCut.RunEstimate property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/options.html#QCut.CutOptions.should_sample">should_sample() (QCut.CutOptions method)</a>
+</li>
+      <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerEntry.standard_error">standard_error (QCut.primitives.CutQuasiSamplerEntry property)</a>
+
+      <ul>
+        <li><a href="api/results.html#QCut.QuasiProbabilities.standard_error">(QCut.QuasiProbabilities property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.CutOptions.should_sample">should_sample() (QCut.CutOptions method)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorEntry.standard_errors">standard_errors (QCut.primitives.CutEstimatorEntry attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.PartialBatch.status">status (QCut.PartialBatch attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.CutEstimatorJob.standard_errors">standard_errors() (QCut.primitives.CutEstimatorJob method)</a>
+
+      <ul>
+        <li><a href="api/primitives.html#QCut.primitives.CutEstimatorResult.standard_errors">(QCut.primitives.CutEstimatorResult method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.status">status() (QCut.QCutJob method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerJob.standard_errors">(QCut.primitives.CutQuasiSamplerJob method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.statuses">statuses() (QCut.QCutJob method)</a>
+        <li><a href="api/primitives.html#QCut.primitives.CutQuasiSamplerResult.standard_errors">(QCut.primitives.CutQuasiSamplerResult method)</a>
 </li>
-      <li><a href="QCut.html#QCut.submit_experiments">submit_experiments() (in module QCut)</a>
+      </ul></li>
+      <li><a href="api/experiments.html#QCut.PartialBatch.status">status (QCut.PartialBatch attribute)</a>
 </li>
-      <li><a href="QCut.html#QCut.ParallelBackend.submitted">submitted (QCut.ParallelBackend attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.status">status() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.status">(QCut.QCutJob method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.statuses">statuses() (QCut.primitives.QCutPrimitiveJob method)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.statuses">(QCut.QCutJob method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/experiments.html#QCut.submit_experiments">submit_experiments() (in module QCut)</a>
+</li>
+      <li><a href="api/experiments.html#QCut.ParallelBackend.submitted">submitted (QCut.ParallelBackend attribute)</a>
+</li>
+      <li><a href="api/experiments.html#QCut.ParallelBackend.submitted_shots">submitted_shots (QCut.ParallelBackend attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -724,17 +887,21 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.top">top() (QCut.QuasiProbabilities method)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.top">top() (QCut.QuasiProbabilities method)</a>
 </li>
-      <li><a href="QCut.html#QCut.QCutJob.total_shots">total_shots (QCut.QCutJob property)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.total_shots">total_shots (QCut.primitives.QCutPrimitiveJob property)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.total_shots">(QCut.QCutJob property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.transpile_circuits">transpile_circuits() (in module QCut)</a>
+      <li><a href="api/transpilation.html#QCut.transpile_circuits">transpile_circuits() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.transpile_experiments">transpile_experiments() (in module QCut)</a>
+      <li><a href="api/transpilation.html#QCut.transpile_experiments">transpile_experiments() (in module QCut)</a>
 </li>
-      <li><a href="QCut.html#QCut.transpile_subcircuits">transpile_subcircuits() (in module QCut)</a>
+      <li><a href="api/transpilation.html#QCut.transpile_subcircuits">transpile_subcircuits() (in module QCut)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -742,19 +909,23 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QCutJob.wait_for_final_state">wait_for_final_state() (QCut.QCutJob method)</a>
-</li>
-      <li><a href="QCut.html#QCut.PartialBatch.wave">wave (QCut.PartialBatch attribute)</a>
+      <li><a href="api/primitives.html#QCut.primitives.QCutPrimitiveJob.wait_for_final_state">wait_for_final_state() (QCut.primitives.QCutPrimitiveJob method)</a>
 
       <ul>
-        <li><a href="QCut.html#QCut.QCutJob.wave">(QCut.QCutJob property)</a>
+        <li><a href="api/experiments.html#QCut.QCutJob.wait_for_final_state">(QCut.QCutJob method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/experiments.html#QCut.PartialBatch.wave">wave (QCut.PartialBatch attribute)</a>
+
+      <ul>
+        <li><a href="api/experiments.html#QCut.QCutJob.wave">(QCut.QCutJob property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="QCut.html#QCut.QuasiProbabilities.width">width (QCut.QuasiProbabilities property)</a>
+      <li><a href="api/results.html#QCut.QuasiProbabilities.width">width (QCut.QuasiProbabilities property)</a>
 </li>
-      <li><a href="QCut.html#QCut.CutOptions.wire_cut_communication">wire_cut_communication (QCut.CutOptions attribute)</a>
+      <li><a href="api/options.html#QCut.CutOptions.wire_cut_communication">wire_cut_communication (QCut.CutOptions attribute)</a>
 </li>
   </ul></td>
 </tr></table>

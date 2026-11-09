@@ -41,7 +41,7 @@
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=4e74574f"></script>
+    <script src="../_static/documentation_options.js?v=0d83c195"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -52,7 +52,7 @@
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.4.0.post1.dev3+g8b2ee8f58" />
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -193,38 +193,62 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Usage.html">Basic Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Options.html">Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../Examples.html">Examples on using QCut</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/WireCuts.html">Wire cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/GateCuts.html">Gate cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/AutomaticCuts.html">Automatic cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ParallelBackends.html">Running on several backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../AutomaticCuts.html">Automatic cuts</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../Notebooks.html">Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theory/CZ_derivation.html">CZ QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../theory/Wire_derivation.html">Wire Cut QPD derivation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
 </ul>
 </details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../Acknowledgement.html">Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../License.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../QCut.html">QCut API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Changelog.html">Changelog</a></li>
 </ul>
 
     </div>
@@ -333,17 +357,24 @@
                   
   <h1>All modules for which code is available</h1>
 <ul><li><a href="QCut/QCutFind/cut_finding.html">QCut.QCutFind.cut_finding</a></li>
-<li><a href="QCut/cutting/circuit_preparation.html">QCut.cutting.circuit_preparation</a></li>
-<li><a href="QCut/cutting/consolidate.html">QCut.cutting.consolidate</a></li>
-<li><a href="QCut/execution/backend_utility.html">QCut.execution.backend_utility</a></li>
-<li><a href="QCut/execution/circuit_knitting.html">QCut.execution.circuit_knitting</a></li>
-<li><a href="QCut/execution/job.html">QCut.execution.job</a></li>
+<li><a href="QCut/execution/estimate.html">QCut.execution.estimate</a></li>
+<li><a href="QCut/execution/experiments.html">QCut.execution.experiments</a></li>
 <li><a href="QCut/execution/parallel.html">QCut.execution.parallel</a></li>
-<li><a href="QCut/execution/postprocess.html">QCut.execution.postprocess</a></li>
-<li><a href="QCut/execution/probabilities.html">QCut.execution.probabilities</a></li>
-<li><a href="QCut/execution/qcutresult.html">QCut.execution.qcutresult</a></li>
+<li><a href="QCut/execution/run.html">QCut.execution.run</a></li>
+<li><a href="QCut/execution/submit.html">QCut.execution.submit</a></li>
+<li><a href="QCut/job/cutresult.html">QCut.job.cutresult</a></li>
+<li><a href="QCut/job/handle.html">QCut.job.handle</a></li>
 <li><a href="QCut/options.html">QCut.options</a></li>
+<li><a href="QCut/post_process/postprocess.html">QCut.post_process.postprocess</a></li>
+<li><a href="QCut/post_process/probabilities.html">QCut.post_process.probabilities</a></li>
+<li><a href="QCut/pre_process/circuit_preparation.html">QCut.pre_process.circuit_preparation</a></li>
+<li><a href="QCut/pre_process/consolidate.html">QCut.pre_process.consolidate</a></li>
+<li><a href="QCut/primitives/base.html">QCut.primitives.base</a></li>
+<li><a href="QCut/primitives/estimator.html">QCut.primitives.estimator</a></li>
+<li><a href="QCut/primitives/job.html">QCut.primitives.job</a></li>
+<li><a href="QCut/primitives/sampler.html">QCut.primitives.sampler</a></li>
 <li><a href="QCut/qpd/qpd_gates.html">QCut.qpd.qpd_gates</a></li>
+<li><a href="QCut/transpilation/transpile_cut_circuits.html">QCut.transpilation.transpile_cut_circuits</a></li>
 </ul>
 
                 </article>

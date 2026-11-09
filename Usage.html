@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basic Usage &#8212; QCut</title>
+    <title>User guide &#8212; QCut</title>
   
   
   
@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=4e74574f"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -51,11 +51,11 @@
     <link rel="icon" href="_static/qcut-logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Options" href="Options.html" />
-    <link rel="prev" title="QCut documentation" href="index.html" />
+    <link rel="next" title="Cutting circuits" href="CuttingCircuits.html" />
+    <link rel="prev" title="Getting started" href="GettingStarted.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.4.0.post1.dev3+g8b2ee8f58" />
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -140,10 +140,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -198,38 +194,62 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Basic Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Examples.html">Examples on using QCut</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/WireCuts.html">Wire cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/GateCuts.html">Gate cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/AutomaticCuts.html">Automatic cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/ParallelBackends.html">Running on several backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire Cut QPD derivation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
 </ul>
 </details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QCut.html">QCut API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
 </ul>
 
     </div>
@@ -359,9 +379,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -372,39 +390,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basic Usage</h1>
+    <h1>User guide</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-cut-circuits-and-experiments">Creating cut circuits and experiments</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-needed-packages">Import needed packages</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-quantumcircuit-just-like-in-qiskit">Define a QuantumCircuit just like in Qiskit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insert-cuts-to-denote-where-to-cut-the-circuit">Insert cuts to denote where to cut the circuit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-cut-locations-and-split-into-independent-subcircuits">Extract cut locations and split into independent subcircuits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-observables-and-generate-experiment-circuits">Define observables and generate experiment circuits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-cut-costs">What a cut costs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cheaper-decompositions">Cheaper decompositions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cuts">Automatic cuts</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpilation">Transpilation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">Execution</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shorthand">Shorthand</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-fiqci">Running on FiQCI</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-other-hardware">Running on other hardware</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -414,424 +404,60 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="basic-usage">
-<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h1>
+  <section id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
 <p>QCut is a quantum circuit knitting package capable of efficiently partitioning
 quantum circuits with wire and gate cuts using advanced LOCC and joint rotation decompositions
 along with the standard local decompositions. It is designed to be compatible with Qiskit and should
 be compatible with any Qiskit programmable backend but has been especially designed to be compatible
 with IQM’s qpus and the Finnish Quantum Computing Infrastructure (<a class="reference external" href="https://fiqci.fi/">FiQCI</a>).</p>
-<p>QCut has been built at CSC - IT Center for Science (Finnish IT Center for Science)</p>
-<section id="creating-cut-circuits-and-experiments">
-<h2>Creating cut circuits and experiments<a class="headerlink" href="#creating-cut-circuits-and-experiments" title="Link to this heading">#</a></h2>
-<section id="import-needed-packages">
-<h3>Import needed packages<a class="headerlink" href="#import-needed-packages" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">cut</span><span class="p">,</span> <span class="n">cutGate</span><span class="p">,</span> <span class="n">CutOptions</span><span class="p">,</span> <span class="n">find_cuts</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">CXGate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatevectorEstimator</span> <span class="k">as</span> <span class="n">Estimator</span><span class="p">,</span> <span class="n">BackendEstimatorV2</span> <span class="k">as</span> <span class="n">BackendEstimator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">iqm.qiskit_iqm</span><span class="w"> </span><span class="kn">import</span> <span class="n">IQMFakeAdonis</span>
-</pre></div>
+<p>The pages below follow one example from start to finish, in the order a run goes: cut the
+circuit, transpile it for a device, then run it and reconstruct the results. Each page
+builds on the variables of the ones before it, and the imports are at the start of
+<a class="reference internal" href="CuttingCircuits.html"><span class="doc">Cutting circuits</span></a>. The pages under it on wire, gate and automatic cuts go further
+into each, and set up their own examples. <a class="reference internal" href="Primitives.html"><span class="doc">Primitives</span></a> covers running several cut
+circuits in one call.</p>
+<p>Click <a class="reference download internal" download="" href="_downloads/72b7f72ab949efe38d6bef6ecbc57581/QCutBasicUsage.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a> to download the example as a
+notebook.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#import-needed-packages">Import needed packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#define-a-quantumcircuit-just-like-in-qiskit">Define a QuantumCircuit just like in Qiskit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#insert-cuts-to-denote-where-to-cut-the-circuit">Insert cuts to denote where to cut the circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#extract-cut-locations-and-split-into-independent-subcircuits">Extract cut locations and split into independent subcircuits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#define-observables-and-generate-experiment-circuits">Define observables and generate experiment circuits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#what-a-cut-costs">What a cut costs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#cheaper-decompositions">Cheaper decompositions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#automatic-cuts">Automatic cuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CuttingCircuits.html#in-depth">In depth</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RunningExperiments.html">Running experiments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html#execution">Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html#probability-distributions">Probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html#logging">Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Primitives.html">Primitives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#estimating-expectation-values">Estimating expectation values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#reconstructing-distributions">Reconstructing distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#binding-parameters">Binding parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#running-on-a-device">Running on a device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#what-a-run-costs">What a run costs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html#the-job">The job</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Hardware.html">Running on hardware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html#running-on-fiqci">Running on FiQCI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html#running-on-other-hardware">Running on other hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html#running-on-several-backends">Running on several backends</a></li>
+</ul>
+</li>
+</ul>
 </div>
-</section>
-<section id="define-a-quantumcircuit-just-like-in-qiskit">
-<h3>Define a QuantumCircuit just like in Qiskit<a class="headerlink" href="#define-a-quantumcircuit-just-like-in-qiskit" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
-<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/circ1.png" src="_images/circ1.png" />
-</section>
-<section id="insert-cuts-to-denote-where-to-cut-the-circuit">
-<h3>Insert cuts to denote where to cut the circuit<a class="headerlink" href="#insert-cuts-to-denote-where-to-cut-the-circuit" title="Link to this heading">#</a></h3>
-<p>Note that here we don’t insert any measurements. Measurements will be
-automatically handled by QCut.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">marked_circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">marked_circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">**</span><span class="n">cutGate</span><span class="p">(</span><span class="n">CXGate</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="n">marked_circuit</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">gates_to_decompose</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CutGate&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/circ2.png" src="_images/circ2.png" />
-<p><code class="code docutils literal notranslate"><span class="pre">cutGate()</span></code> marks a gate cut and <code class="code docutils literal notranslate"><span class="pre">cut()</span></code> a wire cut. Any two-qubit gate can
-be cut, with the decomposition derived from the gate’s KAK coordinates, so the CX above
-is a single cut rather than a CZ with fix-up gates around it. See
-<a class="reference internal" href="examples/GateCuts.html"><span class="doc">gate cuts</span></a> and <a class="reference internal" href="examples/WireCuts.html"><span class="doc">wire cuts</span></a> for more on
-placing them, and <a class="reference internal" href="Theory.html"><span class="doc">Theory</span></a> for where the decompositions come from.</p>
-</section>
-<section id="extract-cut-locations-and-split-into-independent-subcircuits">
-<h3>Extract cut locations and split into independent subcircuits<a class="headerlink" href="#extract-cut-locations-and-split-into-independent-subcircuits" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">marked_circuit</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Now we can draw our subcircuits.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/circ3.png" src="_images/circ3.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/circ4.png" src="_images/circ4.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/circ11.png" src="_images/circ11.png" />
-</section>
-<section id="define-observables-and-generate-experiment-circuits">
-<h3>Define observables and generate experiment circuits<a class="headerlink" href="#define-observables-and-generate-experiment-circuits" title="Link to this heading">#</a></h3>
-<p>Observables are given the way Qiskit’s estimator takes them: a Pauli label, a
-<code class="code docutils literal notranslate"><span class="pre">Pauli</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparsePauliOp</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparseObservable</span></code> (qiskit 2.1+), a
-<code class="code docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">coefficient}</span></code> mapping, or any nested sequence of those. The expectation
-values come back shaped like what you pass, so a list of four observables gives four
-values, in order.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IIIIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZII&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZZ&quot;</span><span class="p">]</span>
-
-<span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">num_groups</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">48</span></code></p>
-<p><code class="code docutils literal notranslate"><span class="pre">get_experiment_circuits()</span></code> does not modify the <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> it is given, so
-the same split can be reused for several observable sets. Both <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> and
-<code class="code docutils literal notranslate"><span class="pre">CutExperiment</span></code> implement the <code class="code docutils literal notranslate"><span class="pre">assign_parameters()</span></code> function of
-<code class="code docutils literal notranslate"><span class="pre">Qiskit.QuantumCircuit</span></code>.</p>
-<p>Click <a class="reference download internal" download="" href="_downloads/72b7f72ab949efe38d6bef6ecbc57581/QCutBasicUsage.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a> to download example notebook.</p>
-</section>
-<section id="what-a-cut-costs">
-<h3>What a cut costs<a class="headerlink" href="#what-a-cut-costs" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">optimal_gamma</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">12.0</span> <span class="pre">9.0</span></code></p>
-<p><code class="code docutils literal notranslate"><span class="pre">gamma</span></code> is the sampling overhead of this split and <code class="code docutils literal notranslate"><span class="pre">optimal_gamma</span></code> the least
-those same cuts could cost with every decomposition available. Shot cost goes as
-<code class="code docutils literal notranslate"><span class="pre">gamma</span></code> squared. Both are closed form, so a plan can be costed before any
-experiment circuits are built, and <code class="code docutils literal notranslate"><span class="pre">CutExperiment</span></code> carries both forward.</p>
-<p>The gap here is the lone wire cut: on its own it does not communicate under the default
-<code class="code docutils literal notranslate"><span class="pre">wire_cut_communication=&quot;auto&quot;</span></code>, so it costs 4 rather than 3. Passing
-<code class="code docutils literal notranslate"><span class="pre">&quot;always&quot;</span></code> closes it and this split reaches 9.</p>
-</section>
-<section id="cheaper-decompositions">
-<h3>Cheaper decompositions<a class="headerlink" href="#cheaper-decompositions" title="Link to this heading">#</a></h3>
-<p>Cuts are not decomposed one at a time where a cheaper joint decomposition exists. All
-three of the below are on by default and can be turned off through <a class="reference internal" href="Options.html"><span class="doc">Options</span></a>.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 46.0%" />
-<col style="width: 27.0%" />
-<col style="width: 27.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"></th>
-<th class="head"><p>default</p></th>
-<th class="head"><p>turned off</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>A run of gates on one qubit pair costs a single cut</p></td>
-<td><p>1 cut, gamma 1.59, 6 subexperiments</p></td>
-<td><p>2 cuts, gamma 9, 36</p></td>
-</tr>
-<tr class="row-odd"><td><p>Parallel single-axis rotations share one decomposition
-(<a class="reference internal" href="theory/Joint_rotation_derivation.html"><span class="doc">derivation</span></a>)</p></td>
-<td><p>gamma 5.50, 30 subexperiments</p></td>
-<td><p>gamma 6.77, 36</p></td>
-</tr>
-<tr class="row-even"><td><p>A block of parallel wire cuts exchanges its measured outcome
-(<a class="reference internal" href="theory/LOCC_wire_derivation.html"><span class="doc">derivation</span></a>)</p></td>
-<td><p>gamma 7, 28 subexperiments</p></td>
-<td><p>gamma 16, 64</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>A separate circuit, to show the last of those on its own. Two parallel wire cuts cost
-<code class="code docutils literal notranslate"><span class="pre">2**(n+1)</span> <span class="pre">-</span> <span class="pre">1</span></code> rather than <code class="code docutils literal notranslate"><span class="pre">4**n</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pair</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
-    <span class="n">pair</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-
-<span class="n">block</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
-<span class="n">local</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span>
-    <span class="n">pair</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CutOptions</span><span class="p">(</span><span class="n">wire_cut_communication</span><span class="o">=</span><span class="s2">&quot;never&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">local</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">local</span><span class="o">.</span><span class="n">optimal_gamma</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">7.0</span> <span class="pre">16.0</span> <span class="pre">7.0</span></code></p>
-<p>Those cuts run in waves, since one side has to be measured before the other can prepare
-what it measured. <code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> handles that itself.</p>
-</section>
-<section id="options">
-<h3>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h3>
-<p><code class="code docutils literal notranslate"><span class="pre">CutOptions</span></code> is collected once and carried through the run. It covers the three
-decompositions above, the expansion strategy, sampling and the cut finder. Above 1000
-groups the experiment is sampled from the quasiprobability distribution rather than
-enumerated. Every option and its default is listed under <a class="reference internal" href="Options.html"><span class="doc">Options</span></a>.</p>
-</section>
-<section id="automatic-cuts">
-<h3>Automatic cuts<a class="headerlink" href="#automatic-cuts" title="Link to this heading">#</a></h3>
-<p>QCut comes with functionality for automatically finding good cut locations that can place both wire and gate cuts.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">CutOptions</span><span class="p">(</span>
-   <span class="n">finder_num_partitions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-   <span class="n">finder_cut_mode</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="n">find_cuts</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">),</span> <span class="n">found</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">9.0</span></code></p>
-<p>Here the finder reaches the <code class="code docutils literal notranslate"><span class="pre">optimal_gamma</span></code> the hand-placed cuts above did not. See
-<a class="reference internal" href="examples/AutomaticCuts.html"><span class="doc">automatic cuts</span></a> for the finder’s own options and how it
-chooses.</p>
-</section>
-</section>
-<section id="transpilation">
-<h2>Transpilation<a class="headerlink" href="#transpilation" title="Link to this heading">#</a></h2>
-<p>Two helpers, <code class="code docutils literal notranslate"><span class="pre">transpile_subcircuits()</span></code> and <code class="code docutils literal notranslate"><span class="pre">transpile_circuits()</span></code>, differing in when they run:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span> <span class="o">=</span> <span class="n">IQMFakeAdonis</span><span class="p">()</span> <span class="c1">#noisy</span>
-<span class="n">sim</span> <span class="o">=</span> <span class="n">AerSimulator</span><span class="p">()</span> <span class="c1">#ideal</span>
-</pre></div>
-</div>
-<p><code class="code docutils literal notranslate"><span class="pre">transpile_circuits()</span></code> does whichever of the two the thing it is given calls for.
-Each subcircuit once, before the experiment circuits are built:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transpiled</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">transpile_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">fake</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">transpiled</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Or every experiment circuit, afterwards:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">transpile_circuits</span><span class="p">(</span>
-    <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">),</span> <span class="n">fake</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>Given a cut circuit it is much the faster of the two, but the subcircuits still carry the
-cut and observable placeholders, so the transpiler is working on a circuit it cannot see
-all of. It therefore disallows <code class="code docutils literal notranslate"><span class="pre">remove_final_rzs</span></code> and
-<code class="code docutils literal notranslate"><span class="pre">optimize_single_qubits</span></code> and raises if you pass them. Given an experiment there are
-no placeholders left to, so it optimises further.</p>
-<p>Plain circuits are transpiled as they are, which is what a backend handed circuits rather
-than an experiment needs. See <a class="reference internal" href="examples/ParallelBackends.html"><span class="doc">Running on several backends</span></a>.</p>
-<p>On an IQM backend both use IQM’s own transpiler. Pass <code class="code docutils literal notranslate"><span class="pre">use_iqm_transpiler=False</span></code>
-for the ordinary Qiskit path. On a resonator device such as <code class="code docutils literal notranslate"><span class="pre">IQMFakeDeneb</span></code> the MOVE
-gates are routed in for you.</p>
-</section>
-<section id="execution">
-<h2>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
-<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-</pre></div>
-</div>
-<p><code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns a <code class="code docutils literal notranslate"><span class="pre">QCutJob</span></code> as soon as everything is
-submitted, and <code class="code docutils literal notranslate"><span class="pre">result()</span></code> waits for the results. The job is shaped like a Qiskit
-job, so it can be checked on while the run is under way:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">job_ids</span><span class="p">()</span>          <span class="c1"># every backend job, in submission order</span>
-<span class="n">job</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>           <span class="c1"># one JobStatus for the whole experiment</span>
-<span class="n">job</span><span class="o">.</span><span class="n">partial_results</span><span class="p">()</span>  <span class="c1"># per batch: wave, job id, status, circuits, shots, result</span>
-</pre></div>
-</div>
-<p><code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> takes the same arguments and is the same as
-<code class="code docutils literal notranslate"><span class="pre">submit_experiments(...).result()</span></code>.</p>
-<p>The cost of an experiment run can be checked before submission:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">estimate_run</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Experiment</span> <span class="pre">will</span> <span class="pre">run</span> <span class="pre">144</span> <span class="pre">circuits</span> <span class="pre">in</span> <span class="pre">4</span> <span class="pre">jobs</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">total</span> <span class="pre">of</span> <span class="pre">589824</span> <span class="pre">shots.</span> <span class="pre">See</span> <span class="pre">the</span>
-<span class="pre">returned</span> <span class="pre">object</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">breakdown.</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;job1&#39;</span><span class="p">:</span> <span class="n">JobEstimate</span><span class="p">(</span><span class="n">circuits</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">),</span>
- <span class="s1">&#39;job2&#39;</span><span class="p">:</span> <span class="n">JobEstimate</span><span class="p">(</span><span class="n">circuits</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">),</span> <span class="o">...</span><span class="p">}</span>
-</pre></div>
-</div>
-<p>Exact for non-cummunicating runs. Runs whose wire cuts communicate get executed in waves so that
-each wave after the first spends its shots on what the one before it measured. For these jobs
-the circuit count is exact and job and shot counts are estimates.</p>
-<p>The job submits those waves itself. The first goes out before
-<code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns, and a thread of the job’s own submits each later
-one as soon as the one before it is in, so nothing has to keep polling for the run to
-move on. <code class="code docutils literal notranslate"><span class="pre">job.cancel()</span></code> cancels what is still queued and submits no further waves.</p>
-<p><code class="code docutils literal notranslate"><span class="pre">backend</span></code> takes a Qiskit backend, a V2 sampler, or anything else shaped like a
-backend, which is what lets e.g. <a class="reference external" href="https://github.com/FiQCI/fiqci-ems">fiqci-ems</a> run the experiment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fiqci.ems</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiQCISampler</span>
-
-<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span>
-    <span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">FiQCISampler</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">mitigation_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>Every batch is submitted before any of it is collected, so a run queues all its jobs at
-once. <code class="code docutils literal notranslate"><span class="pre">max_batch_size</span></code> bounds how many circuits go in one, and a target that
-batches on its own account is given that same size so it does not split a batch again.
-<code class="code docutils literal notranslate"><span class="pre">run_options</span></code> is passed on to every <code class="code docutils literal notranslate"><span class="pre">run</span></code> call for anything else the target
-takes.</p>
-<p>Note that <code class="code docutils literal notranslate"><span class="pre">qiskit.primitives.StatevectorSampler</span></code> cannot be used since circuits
-from QCut contain mid-circuit measurements and that sampler refuses those.
-<code class="code docutils literal notranslate"><span class="pre">qiskit_aer.primitives.SamplerV2</span></code> and <code class="code docutils literal notranslate"><span class="pre">BackendSamplerV2</span></code> are both fine.</p>
-<p>Comparing against the exact and noisy expectation values of the original circuit:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">Estimator</span><span class="p">()</span>
-<span class="n">exact_expvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
-   <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">circuit</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">observables</span><span class="p">),</span> <span class="n">observables</span><span class="p">)])</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-<span class="p">]</span>
-
-<span class="n">tr</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
-
-<span class="n">tr_obs_separate</span> <span class="o">=</span> <span class="p">[</span>
-   <span class="n">SparsePauliOp</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">apply_layout</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">observables</span>
-<span class="p">]</span>
-
-<span class="n">fake_estimator</span> <span class="o">=</span> <span class="n">BackendEstimator</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
-<span class="n">exps</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
-   <span class="n">fake_estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">tr</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr_obs_separate</span><span class="p">),</span> <span class="n">tr_obs_separate</span><span class="p">)])</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;QCut expectation values:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expectation_values</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noisy expectation values with fake backend:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exact expectation values with ideal simulator :</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">exact_expvals</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">QCut</span> <span class="pre">expectation</span> <span class="pre">values:[0.763209</span> <span class="pre">0.602396</span> <span class="pre">0.328544</span> <span class="pre">0.575471]</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">Noisy</span> <span class="pre">expectation</span> <span class="pre">values</span> <span class="pre">with</span> <span class="pre">fake</span> <span class="pre">backend:[0.846680</span> <span class="pre">0.564941</span> <span class="pre">0.323242</span> <span class="pre">0.593262]</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">Exact</span> <span class="pre">expectation</span> <span class="pre">values</span> <span class="pre">with</span> <span class="pre">ideal</span> <span class="pre">simulator</span> <span class="pre">:[0.921061</span> <span class="pre">0.704466</span> <span class="pre">0.380625</span> <span class="pre">0.764842]</span></code></p>
-<p>As we can see QCut is able to accurately reconstruct the expectation values and be more accurate that just using the fake backend as is. (Note that since this is a probabilistic method the results vary a bit each run)</p>
-<p>Additionally we can execute QCut using the ideal Aer simulator and see that we get (practically) exact results:</p>
-<p><code class="docutils literal notranslate"><span class="pre">QCut</span> <span class="pre">expectation</span> <span class="pre">values:[0.920158</span> <span class="pre">0.706660</span> <span class="pre">0.379018</span> <span class="pre">0.778012]</span></code></p>
-<section id="shorthand">
-<h3>Shorthand<a class="headerlink" href="#shorthand" title="Link to this heading">#</a></h3>
-<p>It is not necessary to go through each of the aforementioned steps individually.
-<code class="code docutils literal notranslate"><span class="pre">run()</span></code> takes a circuit with cuts marked in it and executes the whole sequence, and
-<code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> does the same for one that has already been split.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">marked_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">sim</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">run_cut_circuit</span><span class="p">(</span><span class="n">found</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">sim</span><span class="p">))</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">[0.926887</span> <span class="pre">0.699149</span> <span class="pre">0.372935</span> <span class="pre">0.765253]</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">[0.932540</span> <span class="pre">0.717683</span> <span class="pre">0.386038</span> <span class="pre">0.775063]</span></code></p>
-</section>
-<section id="probability-distributions">
-<h3>Probability distributions<a class="headerlink" href="#probability-distributions" title="Link to this heading">#</a></h3>
-<p>A cut experiment estimates expectation values, so there are no counts to tally, but the
-distribution over a chosen set of qubits can still be recovered from them. Pass
-<code class="code docutils literal notranslate"><span class="pre">qubits</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">observables</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">sim</span><span class="p">)</span>
-
-<span class="n">probs</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_probabilities</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">{'00':</span> <span class="pre">0.8658,</span> <span class="pre">'01':</span> <span class="pre">-0.0024,</span> <span class="pre">'10':</span> <span class="pre">0.1041,</span> <span class="pre">'11':</span> <span class="pre">0.0324}</span></code></p>
-<p><code class="code docutils literal notranslate"><span class="pre">run()</span></code> and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> take <code class="code docutils literal notranslate"><span class="pre">qubits</span></code> in the same way, and hand
-back the distribution rather than expectation values.</p>
-<p>The whole distribution needs one measurement setting, so the experiment is the size it
-would have been for a single observable however many qubits are asked for. See
-<a class="reference internal" href="theory/Probability_reconstruction.html"><span class="doc">the derivation</span></a>. for how the distribution
-id reconstructed.</p>
-<p>The result is a mapping, so it indexes and plots like a dict, and carries three views:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">]</span>                     <span class="c1"># 0.8658</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="p">()</span>     <span class="c1"># the same values, as a plain dict</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">nearest_probabilities</span><span class="p">()</span>   <span class="c1"># closest true distribution, negatives projected away</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>                  <span class="c1"># scaled by the shots the experiment ran at</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>        <span class="c1"># or by any other shots</span>
-</pre></div>
-</div>
-<p>The three dict views report, by default, the ten most likely bitstrings. Pass <code class="code docutils literal notranslate"><span class="pre">top</span></code> for a different
-number, or <code class="code docutils literal notranslate"><span class="pre">top=None</span></code> for all of them:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>      <span class="c1"># the fifty most likely</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>     <span class="c1"># the whole distribution, as before</span>
-</pre></div>
-</div>
-<p>Note that <code class="code docutils literal notranslate"><span class="pre">counts()</span></code> sums to <code class="code docutils literal notranslate"><span class="pre">shots</span></code> only with <code class="code docutils literal notranslate"><span class="pre">top=None</span></code> and
-Only <code class="code docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code> gets cheaper this way since the other two project onto the
-nearest physical distribution first.</p>
-<p>Additionally you can get probabilities of a single bitstring or a marginal distribution over a subset of the qubits:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>               <span class="c1"># the 100 most likely bitstrings, exactly</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">probability_of</span><span class="p">(</span><span class="s1">&#39;01&#39;</span><span class="p">)</span>   <span class="c1"># one bitstring, without the others</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">marginal</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>          <span class="c1"># a coarser distribution, summed over the rest</span>
-</pre></div>
-</div>
-<p>Against the same circuit run whole:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">marginal_counts</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
-
-<span class="n">measured</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">measure_all</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transpile</span><span class="p">(</span><span class="n">measured</span><span class="p">,</span> <span class="n">sim</span><span class="p">),</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
-
-<span class="n">plot_histogram</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(),</span> <span class="n">marginal_counts</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])],</span> <span class="n">legend</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;QCut&quot;</span><span class="p">,</span> <span class="s2">&quot;uncut circuit&quot;</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/probs1.png" src="_images/probs1.png" />
-</section>
-<section id="running-on-fiqci">
-<h3>Running on FiQCI<a class="headerlink" href="#running-on-fiqci" title="Link to this heading">#</a></h3>
-<p>For running on real hardware through the Lumi supercomputer’s FiQCI
-partition follow the instructions
-<a class="reference external" href="https://docs.csc.fi/computing/quantum-computing/helmi/running-on-helmi/">here</a>.
-If you are used to using Qiskit on jupyter notebooks it is recommended
-to use the <a class="reference external" href="https://docs.lumi-supercomputer.eu/runjobs/webui/">Lumi web
-interface</a>.</p>
-</section>
-<section id="running-on-other-hardware">
-<h3>Running on other hardware<a class="headerlink" href="#running-on-other-hardware" title="Link to this heading">#</a></h3>
-<p>Running on other providers such as IBM is untested at the moment but as
-long as the hardware can be accessed with Qiskit version &gt; 1.0 QCut
-should be compatible.</p>
-</section>
-</section>
-<section id="logging">
-<h2>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h2>
-<p>QCut reports what it decided at <code class="code docutils literal notranslate"><span class="pre">INFO</span></code>, which nothing prints until logging is
-configured:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;QCut&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;qiskit&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>That covers the whole run: which partitions the finder costed and which it kept, whether
-consolidation was worth it, which cuts were bundled and the gamma that bought, any bundle
-the device could not take and what it fell back to, how many circuits went into each job
-and that job’s id, and how a communicating run split its shots between waves.</p>
-<p>The job ids are the most important part. A job that fails or stalls on the device can be looked up by its id from the log.</p>
-</section>
 </section>
 
 
@@ -846,20 +472,20 @@ and that job’s id, and how a communicating run split its shots between waves.<
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="GettingStarted.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">QCut documentation</p>
+        <p class="prev-next-title">Getting started</p>
       </div>
     </a>
     <a class="right-next"
-       href="Options.html"
+       href="CuttingCircuits.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Options</p>
+        <p class="prev-next-title">Cutting circuits</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -869,43 +495,6 @@ and that job’s id, and how a communicating run split its shots between waves.<
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-cut-circuits-and-experiments">Creating cut circuits and experiments</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-needed-packages">Import needed packages</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-quantumcircuit-just-like-in-qiskit">Define a QuantumCircuit just like in Qiskit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insert-cuts-to-denote-where-to-cut-the-circuit">Insert cuts to denote where to cut the circuit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-cut-locations-and-split-into-independent-subcircuits">Extract cut locations and split into independent subcircuits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-observables-and-generate-experiment-circuits">Define observables and generate experiment circuits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-cut-costs">What a cut costs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cheaper-decompositions">Cheaper decompositions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cuts">Automatic cuts</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpilation">Transpilation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">Execution</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shorthand">Shorthand</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-fiqci">Running on FiQCI</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-other-hardware">Running on other hardware</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

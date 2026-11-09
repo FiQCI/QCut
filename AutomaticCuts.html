@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Automatic cuts &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"tex": {"macros": {"ket": ["\\left|#1\\right\\rangle", 1], "bra": ["\\left\\langle#1\\right|", 1], "braket": ["\\left\\langle#1\\middle|#2\\right\\rangle", 2], "Tr": "\\operatorname{Tr}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'AutomaticCuts';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Transpilation" href="Transpilation.html" />
+    <link rel="prev" title="Gate cuts" href="GateCuts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Usage.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/AutomaticCuts.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Automatic cuts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-cuts-are-costed">How cuts are costed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meeting-a-qubit-budget">Meeting a qubit budget</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="automatic-cuts">
+<h1>Automatic cuts<a class="headerlink" href="#automatic-cuts" title="Link to this heading">#</a></h1>
+<p>QCut comes with functionality for automatically finding good cut locations that can place both wire and gate cuts.
+The number of partitions, the size of the partitions, and the type of cuts can be specified.</p>
+<p>Under the hood QCut uses <a class="reference external" href="https://github.com/inducer/pymetis">pymetis</a>  to find good cut locations based on the circuit’s graph representation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_cuts</span><span class="p">,</span> <span class="n">CutOptions</span>
+
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">control</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]:</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">rzz</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">rx</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+
+<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IIIIZZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IZZIII&quot;</span><span class="p">,</span> <span class="s2">&quot;ZZIIII&quot;</span><span class="p">]</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">CutOptions</span><span class="p">(</span>
+   <span class="n">finder_num_partitions</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+   <span class="n">finder_cut_mode</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">find_cuts</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">subcircuit</span><span class="o">.</span><span class="n">num_qubits</span> <span class="k">for</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">])</span>
+
+<span class="n">estimated_expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">run_cut_circuit</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">AerSimulator</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Nothing here says where to cut. The finder settles on the single <code class="docutils literal notranslate"><span class="pre">rzz</span></code> in the middle of
+the chain, splitting the six qubits into two halves of three for 12 experiment circuits.
+Cutting a wire there instead would cost <span class="math notranslate nohighlight">\(\gamma = 4\)</span> against roughly 2.4 for that
+gate, which is the sort of choice <code class="docutils literal notranslate"><span class="pre">finder_cut_mode=&quot;both&quot;</span></code> exists to make; restricting
+it to <code class="docutils literal notranslate"><span class="pre">&quot;wire&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;gate&quot;</span></code> forces one kind.</p>
+<p><code class="docutils literal notranslate"><span class="pre">finder_num_partitions</span></code> asks for a number of pieces, and <code class="docutils literal notranslate"><span class="pre">finder_max_qubits</span></code> asks
+instead for a size limit per piece, either as one number for all of them or as a list
+with one entry per partition. At least one of the two has to be given.</p>
+<section id="how-cuts-are-costed">
+<h2>How cuts are costed<a class="headerlink" href="#how-cuts-are-costed" title="Link to this heading">#</a></h2>
+<p>METIS minimises the <strong>sum</strong> of the weights of the edges it cuts, but the sampling
+overhead of a set of cuts is the <strong>product</strong> of their <span class="math notranslate nohighlight">\(\gamma\)</span> values. Taking the
+logarithm turns one into the other, so each edge is weighted by
+<span class="math notranslate nohighlight">\(\log\gamma\)</span> rather than by <span class="math notranslate nohighlight">\(\gamma\)</span>, and the partitioner then optimises
+the cost that actually matters.</p>
+<p>A wire cut weighs <span class="math notranslate nohighlight">\(\log 4\)</span>, and a gate cut weighs the logarithm of its own
+<span class="math notranslate nohighlight">\(\gamma\)</span>, so an <code class="docutils literal notranslate"><span class="pre">rzz</span></code> with a small angle is correctly treated as nearly free.
+A cut whose <span class="math notranslate nohighlight">\(\gamma\)</span> is exactly 1 costs no shots at all, but it still adds
+circuits, so its weight floors at one rather than zero.</p>
+<p>One thing the weights cannot express is that parallel rotation gates get cheaper when
+cut together, since that is a property of a set of edges rather than of any one edge.
+Choosing between candidate partitions
+————————————–</p>
+<p>METIS minimises the weighted edge cut. With <code class="docutils literal notranslate"><span class="pre">log</span> <span class="pre">gamma</span></code> weights that is exactly the
+true cost of a plan, right up until two cuts share a decomposition. A joint rotation
+bundle or a communicating block of wires costs less than the product of its parts, and
+METIS cannot know that. It also returns only the partitioning that scored best by its
+own measure, discarding the rest.</p>
+<p>So the finder asks for one partitioning per seed, builds each one out in full, and costs
+the finished plans with <code class="xref py py-func docutils literal notranslate"><span class="pre">plan_cost()</span></code>, which does see the
+bundles. The cheapest wins. <code class="docutils literal notranslate"><span class="pre">CutOptions.finder_candidates</span></code> (default 5) sets how many to try, and
+because the seeds are consecutive a larger set contains the smaller one, so raising it
+cannot give a worse answer.</p>
+</section>
+<section id="meeting-a-qubit-budget">
+<h2>Meeting a qubit budget<a class="headerlink" href="#meeting-a-qubit-budget" title="Link to this heading">#</a></h2>
+<p>A budget has to be asked for rather than repaired for. The graph METIS partitions has
+one node per wire segment, so several nodes belong to one qubit and balancing node
+counts says nothing about how many qubits a partition ends up holding. Each of a
+qubit’s nodes therefore carries an equal share of one qubit’s worth, which makes a
+partition’s weight its qubit count, and <code class="docutils literal notranslate"><span class="pre">max_qubits</span></code> becomes the share each partition
+may hold. A straddling qubit counts in both, which is what a wire cut costs anyway.</p>
+<p>The weighting only applies when there is a budget. With none, an unbalanced split is
+often cheaper, so forcing balance would make that case worse.</p>
+<p><code class="docutils literal notranslate"><span class="pre">find_cuts</span></code> still applies joint cutting to whatever cuts it settles on, it just does
+not actively steer the partitioner towards cut sets that would bundle well.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="GateCuts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Gate cuts</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Transpilation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Transpilation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-cuts-are-costed">How cuts are costed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meeting-a-qubit-budget">Meeting a qubit budget</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

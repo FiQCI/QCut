@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Running on hardware &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Hardware';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Options" href="Options.html" />
+    <link rel="prev" title="Primitives" href="Primitives.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Usage.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Hardware.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Running on hardware</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-fiqci">Running on FiQCI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-other-hardware">Running on other hardware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-several-backends">Running on several backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-can-be-shared">Why it can be shared</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machines-of-different-sizes">Machines of different sizes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-your-own">Writing your own</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="running-on-hardware">
+<h1>Running on hardware<a class="headerlink" href="#running-on-hardware" title="Link to this heading">#</a></h1>
+<section id="running-on-fiqci">
+<h2>Running on FiQCI<a class="headerlink" href="#running-on-fiqci" title="Link to this heading">#</a></h2>
+<p>For running on real hardware through the Lumi supercomputer’s FiQCI
+partition follow the instructions
+<a class="reference external" href="https://docs.csc.fi/computing/quantum-computing/helmi/running-on-helmi/">here</a>.
+If you are used to using Qiskit on jupyter notebooks it is recommended
+to use the <a class="reference external" href="https://docs.lumi-supercomputer.eu/runjobs/webui/">Lumi web
+interface</a>.</p>
+<p><a class="reference external" href="https://github.com/FiQCI/fiqci-ems">fiqci-ems</a> can run the experiments too, with its
+error mitigation applied: see <a class="reference internal" href="RunningExperiments.html"><span class="doc">Running experiments</span></a>.</p>
+</section>
+<section id="running-on-other-hardware">
+<h2>Running on other hardware<a class="headerlink" href="#running-on-other-hardware" title="Link to this heading">#</a></h2>
+<p>Running on other providers such as IBM is untested at the moment but as
+long as the hardware can be accessed with Qiskit version &gt; 1.0 QCut
+should be compatible.</p>
+</section>
+<section id="running-on-several-backends">
+<span id="several-backends"></span><h2>Running on several backends<a class="headerlink" href="#running-on-several-backends" title="Link to this heading">#</a></h2>
+<p>A cut experiment is a collection of many independent circuits, so it does not have to run on one
+machine. <a class="reference internal" href="api/experiments.html#QCut.ParallelBackend" title="QCut.ParallelBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelBackend</span></code></a> takes several backends and
+gives each batch to the one with the fewest shots so far.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">CXGate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelBackend</span><span class="p">,</span> <span class="n">cutGate</span>
+
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">**</span><span class="n">cutGate</span><span class="p">(</span><span class="n">CXGate</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;IIIIIZ&quot;</span><span class="p">])</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">ParallelBackend</span><span class="p">([</span><span class="n">first_device</span><span class="p">,</span> <span class="n">second_device</span><span class="p">])</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+
+<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+
+<span class="n">backend</span><span class="o">.</span><span class="n">submitted</span>  <span class="c1"># circuits given to each, e.g. [1728, 1728]</span>
+</pre></div>
+</div>
+<section id="why-it-can-be-shared">
+<h3>Why it can be shared<a class="headerlink" href="#why-it-can-be-shared" title="Link to this heading">#</a></h3>
+<p>QCut submits every batch of a wave before collecting any of it, so the machines queue at
+the same time rather than one after another. Communicating wire cuts still run in waves,
+because a preparing side needs the measuring side’s outcome, but the circuits <em>within</em> a
+wave are independent and are shared like any others.</p>
+<p>The experiment is not transpiled beforehand. Each batch is transpiled for the backend
+about to run it, so only one batch is ever held in its transpiled form and the
+experiment itself stays as it was built. Pass untranspiled cut circuits; each batch is
+transpiled for the device it lands on.</p>
+</section>
+<section id="machines-of-different-sizes">
+<h3>Machines of different sizes<a class="headerlink" href="#machines-of-different-sizes" title="Link to this heading">#</a></h3>
+<p>A batch only goes to a backend with room for it, so the pieces that fit anywhere are
+shared while the widest go to the backends that can fit them. Cutting a circuit into a
+wide piece and a narrow one and giving it a large device and a small one uses both:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">ParallelBackend</span><span class="p">([</span><span class="n">five_qubit_device</span><span class="p">,</span> <span class="n">twenty_qubit_device</span><span class="p">])</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If nothing is wide enough for a subcircuit, QCut says so rather than letting the device
+refuse the job. Cut into smaller pieces with <code class="docutils literal notranslate"><span class="pre">max_qubits</span></code>, or pass a larger backend.</p>
+</section>
+<section id="writing-your-own">
+<h3>Writing your own<a class="headerlink" href="#writing-your-own" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ParallelBackend</span></code> is not special: QCut asks a backend only for
+<code class="docutils literal notranslate"><span class="pre">run(circuits,</span> <span class="pre">shots=...,</span> <span class="pre">**options)</span></code> returning a job whose <code class="docutils literal notranslate"><span class="pre">result()</span></code> gives counts
+by position. Anything answering that can decide for itself where circuits go.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyParallelBackend</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backends</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backends</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">backends</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turn</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">circuits</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backends</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_turn</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backends</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turn</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ready</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">transpile_circuits</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">circuits</span><span class="p">),</span> <span class="n">backend</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ready</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">shots</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="api/transpilation.html#QCut.transpile_circuits" title="QCut.transpile_circuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">transpile_circuits()</span></code></a> is what QCut transpiles with
+itself, so an IQM device goes through IQM’s own transpiler and a resonator machine gets
+its MOVE routing. It takes a <code class="docutils literal notranslate"><span class="pre">CutCircuit</span></code>, a <code class="docutils literal notranslate"><span class="pre">CutExperiment</span></code> or plain circuits.</p>
+<p>Four things keep it correct:</p>
+<ul class="simple">
+<li><p><strong>Return the backend’s own job.</strong> Its <code class="docutils literal notranslate"><span class="pre">result()</span></code> already answers <code class="docutils literal notranslate"><span class="pre">get_counts(index)</span></code>
+for that batch, which is what QCut reads. Splitting one batch across machines instead
+means merging the results back into submission order yourself.</p></li>
+<li><p><strong>Pass ``shots`` through untouched.</strong> It is what the estimate divides by, and the waves
+allocate it themselves.</p></li>
+<li><p><strong>Submit one batch per call and do not merge them.</strong> The batches are already sized, and
+waves are grouped so that circuits wanting very different shot counts do not share
+a job.</p></li>
+<li><p><strong>Do not wait for results inside</strong> <code class="docutils literal notranslate"><span class="pre">run</span></code>. Returning immediately is what leaves the
+machines running at the same time.</p></li>
+</ul>
+<p>A backend that declares <code class="docutils literal notranslate"><span class="pre">max_shots</span></code> has it respected; <code class="docutils literal notranslate"><span class="pre">ParallelBackend</span></code> reports the
+smallest of its own, since a batch may land on any of them. Add <code class="docutils literal notranslate"><span class="pre">max_batch_size</span></code> to
+<code class="docutils literal notranslate"><span class="pre">run</span></code>’s signature to use the value QCut used.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Primitives.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Primitives</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Options.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Options</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-fiqci">Running on FiQCI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-other-hardware">Running on other hardware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-several-backends">Running on several backends</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-can-be-shared">Why it can be shared</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machines-of-different-sizes">Machines of different sizes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-your-own">Writing your own</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

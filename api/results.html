@@ -1,0 +1,1094 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Results and post-processing &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"tex": {"macros": {"ket": ["\\left|#1\\right\\rangle", 1], "bra": ["\\left\\langle#1\\right|", 1], "braket": ["\\left\\langle#1\\middle|#2\\right\\rangle", 2], "Tr": "\\operatorname{Tr}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/results';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../Changelog.html" />
+    <link rel="prev" title="Experiments and execution" href="experiments.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../QCut.html">QCut API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/results.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Results and post-processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raw-results">Raw results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult"><code class="docutils literal notranslate"><span class="pre">RawResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.__init__"><code class="docutils literal notranslate"><span class="pre">RawResult.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.experiment"><code class="docutils literal notranslate"><span class="pre">RawResult.experiment</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.shots"><code class="docutils literal notranslate"><span class="pre">RawResult.shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.result"><code class="docutils literal notranslate"><span class="pre">RawResult.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult"><code class="docutils literal notranslate"><span class="pre">CircuitResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.result"><code class="docutils literal notranslate"><span class="pre">CircuitResult.result</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.index"><code class="docutils literal notranslate"><span class="pre">CircuitResult.index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.scale"><code class="docutils literal notranslate"><span class="pre">CircuitResult.scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.label_filter"><code class="docutils literal notranslate"><span class="pre">CircuitResult.label_filter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.raw_counts"><code class="docutils literal notranslate"><span class="pre">CircuitResult.raw_counts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.counts"><code class="docutils literal notranslate"><span class="pre">CircuitResult.counts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.__init__"><code class="docutils literal notranslate"><span class="pre">CircuitResult.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-values">Expectation values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_expectation_values"><code class="docutils literal notranslate"><span class="pre">estimate_expectation_values()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_standard_errors"><code class="docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_probabilities"><code class="docutils literal notranslate"><span class="pre">estimate_probabilities()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.shots"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.qubits"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.qubits</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.__init__"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.from_distribution"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.from_distribution()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.from_array()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.width"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.width</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.standard_error"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.standard_error</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.probability_of"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.probability_of()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.top"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.top()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.marginal"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.marginal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.nearest_probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.nearest_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.counts"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.counts()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="results-and-post-processing">
+<h1>Results and post-processing<a class="headerlink" href="#results-and-post-processing" title="Link to this heading">#</a></h1>
+<section id="raw-results">
+<h2>Raw results<a class="headerlink" href="#raw-results" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.RawResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">RawResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#QCut.CircuitResult" title="QCut.job.cutresult.CircuitResult"><span class="pre">CircuitResult</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#RawResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.RawResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simple wrapper class for raw experiment results. Stores the raw results, the shot
+count they were taken at, and the experiment they came from, so that
+<a class="reference internal" href="#QCut.estimate_expectation_values" title="QCut.estimate_expectation_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_expectation_values()</span></code></a> can be called on the result alone rather
+than having the caller carry a second object around.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.RawResult.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#QCut.CircuitResult" title="QCut.job.cutresult.CircuitResult"><span class="pre">CircuitResult</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#RawResult.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.RawResult.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.RawResult.experiment">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">experiment</span></span><a class="headerlink" href="#QCut.RawResult.experiment" title="Link to this definition">#</a></dt>
+<dd><p>The experiment these results came from, if it was recorded.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.RawResult.shots">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">shots</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.RawResult.shots" title="Link to this definition">#</a></dt>
+<dd><p>The shot count the experiment was run at.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.RawResult.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#QCut.CircuitResult" title="QCut.job.cutresult.CircuitResult"><span class="pre">CircuitResult</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#RawResult.result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.RawResult.result" title="Link to this definition">#</a></dt>
+<dd><p>Get raw results for all experiments, as <code class="docutils literal notranslate"><span class="pre">[group][observable][subcircuit]</span></code>.</p>
+<p>Each subcircuit holds a <a class="reference internal" href="#QCut.CircuitResult" title="QCut.CircuitResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitResult</span></code></a>, which is what the backend or
+sampler returned rather than counts taken out of it. Call
+<a class="reference internal" href="#QCut.CircuitResult.counts" title="QCut.CircuitResult.counts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CircuitResult.counts()</span></code></a> on one for its counts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.CircuitResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">CircuitResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#CircuitResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CircuitResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One subcircuit’s result within one group, before it is turned into counts.</p>
+<p>Holds what the backend or the sampler handed back rather than counts taken out of
+it, so running an experiment does no arithmetic of its own and the estimate can be
+recomputed from the same results.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scale</span></code> brings the circuit back to the nominal shot count, since a batch runs at
+whatever its own circuits asked for. <code class="docutils literal notranslate"><span class="pre">label_filter</span></code> is the communicating wire
+cuts’ selection: several groups share one measuring circuit and each keeps only the
+shots carrying the label it answers, so the selection belongs to the group’s own
+result rather than to the circuit they all read.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.CircuitResult.result">
+<span class="sig-name descname"><span class="pre">result</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></span><a class="headerlink" href="#QCut.CircuitResult.result" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.CircuitResult.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#QCut.CircuitResult.index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.CircuitResult.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#QCut.CircuitResult.scale" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.CircuitResult.label_filter">
+<span class="sig-name descname"><span class="pre">label_filter</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#QCut.CircuitResult.label_filter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CircuitResult.raw_counts">
+<span class="sig-name descname"><span class="pre">raw_counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#CircuitResult.raw_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CircuitResult.raw_counts" title="Link to this definition">#</a></dt>
+<dd><p>Counts as measured, brought to the nominal shot count.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CircuitResult.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/job/cutresult.html#CircuitResult.counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.CircuitResult.counts" title="Link to this definition">#</a></dt>
+<dd><p>What this group takes from the circuit: rescaled, then label-selected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.CircuitResult.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#QCut.CircuitResult.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="expectation-values">
+<h2>Expectation values<a class="headerlink" href="#expectation-values" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCut.estimate_expectation_values">
+<span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">estimate_expectation_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/QCut/post_process/postprocess.html#estimate_expectation_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.estimate_expectation_values" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the estimated expectation values.</p>
+<p>The estimate is the quasiprobability sum itself,</p>
+<div class="math notranslate nohighlight">
+\[\langle O \rangle = (-1)^{w+1} \sum_g c_g E_g\]</div>
+<p>over the subcircuit groups, where <span class="math notranslate nohighlight">\(c_g\)</span> is the group’s coefficient, <span class="math notranslate nohighlight">\(w\)</span>
+counts the wire cuts and <span class="math notranslate nohighlight">\(E_g\)</span> is the group’s own estimate: over the outcomes
+of its subcircuits, the product of their probabilities times the observable’s
+eigenvalue times the sign the mid-circuit measurements carry. The parity is the qpd
+register’s sign convention: every one of its bits maps 0 to -1, so an unwritten bit
+contributes -1 and only the number allocated per subcircuit survives.</p>
+<p>Multi-qubit observables pick up a further <span class="math notranslate nohighlight">\((-1)^{m+1}\)</span> for their <span class="math notranslate nohighlight">\(m\)</span>
+qubits.</p>
+<p><span class="math notranslate nohighlight">\(E_g\)</span> factorises over the subcircuits, so each is read once per group rather
+than walking the product of their outcomes, and the observables sharing a
+measurement setting are read together rather than one pass each. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_outcome_spectrum()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>results</strong> (<a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult"><em>RawResult</em></a>) – raw results from experiment circuits, carrying the
+experiment they came from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>one expectation value per observable, shaped like the observables the
+experiment was built with, so a single observable comes back as a
+zero-dimensional array</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCut.estimate_standard_errors">
+<span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">estimate_standard_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/QCut/post_process/postprocess.html#estimate_standard_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.estimate_standard_errors" title="Link to this definition">#</a></dt>
+<dd><p>An upper bound on the shot noise in <a class="reference internal" href="#QCut.estimate_expectation_values" title="QCut.estimate_expectation_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_expectation_values()</span></code></a>.</p>
+<p>Each Pauli term is the sum <span class="math notranslate nohighlight">\(\sum_g c_g E_g\)</span> over the groups, each group
+estimated from <span class="math notranslate nohighlight">\(n\)</span> shots of outcomes in <span class="math notranslate nohighlight">\([-1, 1]\)</span>, so its standard
+error is at most</p>
+<div class="math notranslate nohighlight">
+\[\sqrt{\sum_g c_g^2 / n \; + \; \gamma^2 / D}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\gamma = \sum_g |c_g|\)</span>. The second term is there only when the
+decomposition was sampled, <span class="math notranslate nohighlight">\(D\)</span> being the number of draws. This is the
+stratified-sampling variance with each group’s variance taken at its largest, see
+arXiv:2602.11245. An observable <span class="math notranslate nohighlight">\(\sum_j a_j P_j\)</span> gets
+<span class="math notranslate nohighlight">\(\sum_j |a_j|\)</span> times that.</p>
+<p>It covers sampling error only, not device noise or bias.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>results</strong> (<a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult"><em>RawResult</em></a>) – raw results from experiment circuits, carrying the
+experiment they came from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>one standard error per observable, shaped like the expectation
+values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="probability-distributions">
+<h2>Probability distributions<a class="headerlink" href="#probability-distributions" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCut.estimate_probabilities">
+<span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">estimate_probabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#QCut.RawResult" title="QCut.job.cutresult.RawResult"><span class="pre">RawResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#estimate_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.estimate_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>Reconstruct the distribution over the qubits the experiment measured.</p>
+<p>The circuits do not grow with the number of qubits asked for. Z observables all
+commute, so they share one measurement setting and the experiment is the size it
+would have been for a single observable. Neither does the reading. What comes back
+is held as a product over the subcircuits rather than as a table, so building it
+costs nothing in <code class="docutils literal notranslate"><span class="pre">k</span></code> – see <code class="xref py py-func docutils literal notranslate"><span class="pre">_separable_form()</span></code>. Only asking for every
+bitstring at once does, and <a class="reference internal" href="#QCut.QuasiProbabilities.top" title="QCut.QuasiProbabilities.top"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QuasiProbabilities.top()</span></code></a>,
+<a class="reference internal" href="#QCut.QuasiProbabilities.probability_of" title="QCut.QuasiProbabilities.probability_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QuasiProbabilities.probability_of()</span></code></a> and
+<a class="reference internal" href="#QCut.QuasiProbabilities.marginal" title="QCut.QuasiProbabilities.marginal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QuasiProbabilities.marginal()</span></code></a> answer without doing that.</p>
+<p>The bitstrings are written with the first of the chosen qubits last, so a subset
+given as <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">0]</span></code> reads qubit 2 as the rightmost character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#QCut.RawResult" title="QCut.RawResult"><em>RawResult</em></a>) – results of an experiment built with <code class="docutils literal notranslate"><span class="pre">qubits</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the distribution, which also offers the projected
+distribution and a scaling to counts.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.QuasiProbabilities">QuasiProbabilities</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – the experiment was built with observables rather than <code class="docutils literal notranslate"><span class="pre">qubits</span></code>, so
+    it does not carry the full set this needs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">QCut.</span></span><span class="sig-name descname"><span class="pre">QuasiProbabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></p>
+<p>A reconstructed distribution over bitstrings.</p>
+<p>A mapping from bitstring to quasi-probability, so it indexes, iterates and plots
+like a dict. The values are held as a product over the subcircuits,
+which is what lets <a class="reference internal" href="#QCut.QuasiProbabilities.top" title="QCut.QuasiProbabilities.top"><code class="xref py py-meth docutils literal notranslate"><span class="pre">top()</span></code></a>, <a class="reference internal" href="#QCut.QuasiProbabilities.probability_of" title="QCut.QuasiProbabilities.probability_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">probability_of()</span></code></a> and <a class="reference internal" href="#QCut.QuasiProbabilities.marginal" title="QCut.QuasiProbabilities.marginal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal()</span></code></a> answer
+without ever building the <code class="docutils literal notranslate"><span class="pre">2**k</span></code> entries the mapping would have. Iterating,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">values()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">items()</span></code> do build them, once, and keep them.</p>
+<p>The three dict views, <a class="reference internal" href="#QCut.QuasiProbabilities.quasi_probabilities" title="QCut.QuasiProbabilities.quasi_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code></a>, <a class="reference internal" href="#QCut.QuasiProbabilities.nearest_probabilities" title="QCut.QuasiProbabilities.nearest_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nearest_probabilities()</span></code></a>
+and <a class="reference internal" href="#QCut.QuasiProbabilities.counts" title="QCut.QuasiProbabilities.counts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">counts()</span></code></a>, report the <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_TOP</span></code> most likely bitstrings unless
+given a <code class="docutils literal notranslate"><span class="pre">top</span></code> of their own, since a distribution over more than a few qubits has
+more entries than is usually needed. <code class="docutils literal notranslate"><span class="pre">top=None</span></code> asks for all of them. Only
+<a class="reference internal" href="#QCut.QuasiProbabilities.quasi_probabilities" title="QCut.QuasiProbabilities.quasi_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code></a> gets out of building them all, since the other two
+project onto the nearest physical distribution first, and what that projection is
+depends on every value.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.shots">
+<span class="sig-name descname"><span class="pre">shots</span></span><a class="headerlink" href="#QCut.QuasiProbabilities.shots" title="Link to this definition">#</a></dt>
+<dd><p>what the experiment ran at, carried so <a class="reference internal" href="#QCut.QuasiProbabilities.counts" title="QCut.QuasiProbabilities.counts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">counts()</span></code></a> has a
+scale to work with by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.qubits">
+<span class="sig-name descname"><span class="pre">qubits</span></span><a class="headerlink" href="#QCut.QuasiProbabilities.qubits" title="Link to this definition">#</a></dt>
+<dd><p>the qubits the distribution spans, in the order their bits
+are read back. The first is the last character of a key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Init from a mapping of bitstring to value, which must cover every bitstring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – the quasi-probabilities, keyed by bitstring.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – what the experiment ran at, if it is known.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.from_distribution">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SeparableDistribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.from_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.from_distribution" title="Link to this definition">#</a></dt>
+<dd><p>Wrap a separable distribution without expanding it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distribution</strong> (<em>SeparableDistribution</em>) – the reconstruction, as
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_separable_form()</span></code> builds it.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – what the experiment ran at, if it is known.</p></li>
+<li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – the qubits it spans, in the order their bits are read
+back. Defaults to naming the bits themselves.</p></li>
+<li><p><strong>term_error</strong> (<em>float</em>) – the standard-error bound of one Z string’s estimate,
+which <a class="reference internal" href="#QCut.QuasiProbabilities.standard_error" title="QCut.QuasiProbabilities.standard_error"><code class="xref py py-attr docutils literal notranslate"><span class="pre">standard_error</span></code></a> is worked out from.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the distribution, nothing materialised.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.QuasiProbabilities">QuasiProbabilities</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.from_array">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.from_array" title="Link to this definition">#</a></dt>
+<dd><p>Wrap values already worked out, indexed by outcome.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<em>np.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">2**k</span></code> quasi-probabilities, entry <code class="docutils literal notranslate"><span class="pre">x</span></code> being the
+bitstring <code class="docutils literal notranslate"><span class="pre">format(x,</span> <span class="pre">f&quot;0{k}b&quot;)</span></code>.</p></li>
+<li><p><strong>shots</strong> (<em>int</em>) – what the experiment ran at, if it is known.</p></li>
+<li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – the qubits it spans, in the order their bits are read
+back. Defaults to naming the bits themselves.</p></li>
+<li><p><strong>term_error</strong> (<em>float</em>) – as in <a class="reference internal" href="#QCut.QuasiProbabilities.from_distribution" title="QCut.QuasiProbabilities.from_distribution"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_distribution()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the distribution.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.QuasiProbabilities">QuasiProbabilities</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.width">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">width</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#QCut.QuasiProbabilities.width" title="Link to this definition">#</a></dt>
+<dd><p>How many qubits the distribution spans.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.standard_error">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">standard_error</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#QCut.QuasiProbabilities.standard_error" title="Link to this definition">#</a></dt>
+<dd><p>An upper bound on the shot noise of each quasi-probability.</p>
+<p>One bitstring’s probability is the sum of the <span class="math notranslate nohighlight">\(2^k - 1\)</span> Z strings over
+the <span class="math notranslate nohighlight">\(k\)</span> qubits, each weighted <span class="math notranslate nohighlight">\(2^{-k}\)</span>, plus a constant. So it gets
+<span class="math notranslate nohighlight">\(1 - 2^{-k}\)</span> times the bound <a class="reference internal" href="#QCut.estimate_standard_errors" title="QCut.estimate_standard_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">QCut.estimate_standard_errors()</span></code></a> gives
+one Z string, the same for every bitstring. It is loose for unlikely bitstrings.</p>
+<p>It does not apply to <a class="reference internal" href="#QCut.QuasiProbabilities.nearest_probabilities" title="QCut.QuasiProbabilities.nearest_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nearest_probabilities()</span></code></a> or <a class="reference internal" href="#QCut.QuasiProbabilities.counts" title="QCut.QuasiProbabilities.counts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">counts()</span></code></a>. None if
+the distribution was not reconstructed from an experiment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.probabilities">
+<span class="sig-name descname"><span class="pre">probabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.probabilities" title="Link to this definition">#</a></dt>
+<dd><p>Every value at once.</p>
+<p>This is the one accessor that holds <code class="docutils literal notranslate"><span class="pre">2**width</span></code> values. It is built on the
+first call and kept, so asking twice costs once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2**width</span></code> quasi-probabilities, entry <code class="docutils literal notranslate"><span class="pre">x</span></code> being the
+bitstring <code class="docutils literal notranslate"><span class="pre">format(x,</span> <span class="pre">f&quot;0{width}b&quot;)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.probability_of">
+<span class="sig-name descname"><span class="pre">probability_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bitstring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.probability_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.probability_of" title="Link to this definition">#</a></dt>
+<dd><p>One bitstring’s quasi-probability, without building the rest.</p>
+<p>Costs one pass over the experiment’s groups per subcircuit, so it does not grow
+with how many qubits the distribution spans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bitstring</strong> (<em>str</em>) – the bitstring, first chosen qubit last.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>its quasi-probability, which may be negative.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – the bitstring is not one of this distribution’s.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.top">
+<span class="sig-name descname"><span class="pre">top</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.top"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.top" title="Link to this definition">#</a></dt>
+<dd><p>The most likely bitstrings, without building the rest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>int</em>) – how many bitstrings to return. Capped at <code class="docutils literal notranslate"><span class="pre">2**width</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the bitstrings and their quasi-probabilities, most likely
+first. Values may be negative and are not projected – projection needs the
+whole distribution, so it is only offered by
+<a class="reference internal" href="#QCut.QuasiProbabilities.nearest_probabilities" title="QCut.QuasiProbabilities.nearest_probabilities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nearest_probabilities()</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">count</span></code> is not positive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.marginal">
+<span class="sig-name descname"><span class="pre">marginal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.post_process.probabilities.QuasiProbabilities"><span class="pre">QuasiProbabilities</span></a></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.marginal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.marginal" title="Link to this definition">#</a></dt>
+<dd><p>The distribution over a subset of the qubits, summed over the rest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – the qubits to keep, from <a class="reference internal" href="#QCut.QuasiProbabilities.qubits" title="QCut.QuasiProbabilities.qubits"><code class="xref py py-attr docutils literal notranslate"><span class="pre">qubits</span></code></a>, in the order
+their bits should be read back.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the marginal distribution.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#QCut.QuasiProbabilities" title="QCut.QuasiProbabilities">QuasiProbabilities</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – a qubit is not one this distribution spans.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.quasi_probabilities">
+<span class="sig-name descname"><span class="pre">quasi_probabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.quasi_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.quasi_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>The values as reconstructed, negative ones included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top</strong> (<em>int</em>) – how many of the most likely bitstrings to return, most likely
+first. <code class="docutils literal notranslate"><span class="pre">None</span></code> for the whole distribution, in numerical order. Capped
+at <code class="docutils literal notranslate"><span class="pre">2**width</span></code>. Defaults to <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_TOP</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the quasi-probabilities, keyed by bitstring.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">top</span></code> is neither <code class="docutils literal notranslate"><span class="pre">None</span></code> nor positive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.nearest_probabilities">
+<span class="sig-name descname"><span class="pre">nearest_probabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.nearest_probabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.nearest_probabilities" title="Link to this definition">#</a></dt>
+<dd><p>The closest true distribution.</p>
+<p>The projection is over the whole distribution however few bitstrings are asked
+for, since the mass clipped off the negative entries has to go somewhere.
+So <code class="docutils literal notranslate"><span class="pre">top</span></code> sets how much is reported, not how much is computed.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">top=None</span></code> the bitstrings clipped to zero are kept, so the result covers
+the same keys as the quasi-probabilities it came from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top</strong> (<em>int</em>) – how many of the most likely bitstrings to return, most likely
+first. <code class="docutils literal notranslate"><span class="pre">None</span></code> for all of them, in numerical order. Defaults to
+<code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_TOP</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the projected distribution, keyed by bitstring.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">top</span></code> is neither <code class="docutils literal notranslate"><span class="pre">None</span></code> nor positive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QCut.QuasiProbabilities.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/QCut/post_process/probabilities.html#QuasiProbabilities.counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCut.QuasiProbabilities.counts" title="Link to this definition">#</a></dt>
+<dd><p>The distribution scaled to a shot count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shots</strong> (<em>int</em>) – what to scale by. Defaults to the shots the experiment ran at.</p></li>
+<li><p><strong>top</strong> (<em>int</em>) – how many of the most likely bitstrings to return, most likely
+first. <code class="docutils literal notranslate"><span class="pre">None</span></code> for all of them. Defaults to <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_TOP</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the projected distribution scaled by <code class="docutils literal notranslate"><span class="pre">shots</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – no shot count was carried and none was given, or <code class="docutils literal notranslate"><span class="pre">top</span></code> is
+    neither <code class="docutils literal notranslate"><span class="pre">None</span></code> nor positive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="experiments.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Experiments and execution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Changelog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Changelog</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raw-results">Raw results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult"><code class="docutils literal notranslate"><span class="pre">RawResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.__init__"><code class="docutils literal notranslate"><span class="pre">RawResult.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.experiment"><code class="docutils literal notranslate"><span class="pre">RawResult.experiment</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.shots"><code class="docutils literal notranslate"><span class="pre">RawResult.shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.RawResult.result"><code class="docutils literal notranslate"><span class="pre">RawResult.result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult"><code class="docutils literal notranslate"><span class="pre">CircuitResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.result"><code class="docutils literal notranslate"><span class="pre">CircuitResult.result</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.index"><code class="docutils literal notranslate"><span class="pre">CircuitResult.index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.scale"><code class="docutils literal notranslate"><span class="pre">CircuitResult.scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.label_filter"><code class="docutils literal notranslate"><span class="pre">CircuitResult.label_filter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.raw_counts"><code class="docutils literal notranslate"><span class="pre">CircuitResult.raw_counts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.counts"><code class="docutils literal notranslate"><span class="pre">CircuitResult.counts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.CircuitResult.__init__"><code class="docutils literal notranslate"><span class="pre">CircuitResult.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-values">Expectation values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_expectation_values"><code class="docutils literal notranslate"><span class="pre">estimate_expectation_values()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_standard_errors"><code class="docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.estimate_probabilities"><code class="docutils literal notranslate"><span class="pre">estimate_probabilities()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.shots"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.shots</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.qubits"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.qubits</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.__init__"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.from_distribution"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.from_distribution()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.from_array()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.width"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.width</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.standard_error"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.standard_error</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.probability_of"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.probability_of()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.top"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.top()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.marginal"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.marginal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.quasi_probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.quasi_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.nearest_probabilities"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.nearest_probabilities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#QCut.QuasiProbabilities.counts"><code class="docutils literal notranslate"><span class="pre">QuasiProbabilities.counts()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

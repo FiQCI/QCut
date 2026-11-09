@@ -1,0 +1,1032 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QCut.post_process.probabilities &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/QCut/post_process/probabilities';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for QCut.post_process.probabilities</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The distribution a cut experiment reconstructs over a chosen set of qubits.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuasiDistribution</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.job.cutresult</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.model.cutlocation</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleQubitCutLocation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.post_process.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mode</span><span class="p">,</span> <span class="n">SeparableDistribution</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.post_process.postprocess</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_bit_layout</span><span class="p">,</span>
+    <span class="n">_outcome_rows</span><span class="p">,</span>
+    <span class="n">_process_results</span><span class="p">,</span>
+    <span class="n">_term_standard_error</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#: How many bitstrings are shown without being asked for: the default of the dict views</span>
+<span class="c1">#: and the length of a ``repr`` too wide to print whole. A distribution over more than a</span>
+<span class="c1">#: few qubits has more entries than anyone reads, and the leading ones are what a reader</span>
+<span class="c1">#: is normally after. Pass ``top=None`` to a view for the whole distribution.</span>
+<span class="n">DEFAULT_TOP</span> <span class="o">=</span> <span class="mi">10</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_checked_top</span><span class="p">(</span><span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the ``top`` argument the dict views take.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        top (int | None): how many bitstrings to report, or None for all of them.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int | None: ``top`` unchanged.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: ``top`` is neither None nor positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">top</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;top must be at least one, or None for all, got </span><span class="si">{</span><span class="n">top</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">top</span>
+
+
+<div class="viewcode-block" id="QuasiProbabilities">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">QuasiProbabilities</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A reconstructed distribution over bitstrings.</span>
+
+<span class="sd">    A mapping from bitstring to quasi-probability, so it indexes, iterates and plots</span>
+<span class="sd">    like a dict. The values are held as a product over the subcircuits,</span>
+<span class="sd">    which is what lets :meth:`top`, :meth:`probability_of` and :meth:`marginal` answer</span>
+<span class="sd">    without ever building the ``2**k`` entries the mapping would have. Iterating,</span>
+<span class="sd">    :meth:`values` and :meth:`items` do build them, once, and keep them.</span>
+
+<span class="sd">    The three dict views, :meth:`quasi_probabilities`, :meth:`nearest_probabilities`</span>
+<span class="sd">    and :meth:`counts`, report the :data:`DEFAULT_TOP` most likely bitstrings unless</span>
+<span class="sd">    given a ``top`` of their own, since a distribution over more than a few qubits has</span>
+<span class="sd">    more entries than is usually needed. ``top=None`` asks for all of them. Only</span>
+<span class="sd">    :meth:`quasi_probabilities` gets out of building them all, since the other two</span>
+<span class="sd">    project onto the nearest physical distribution first, and what that projection is</span>
+<span class="sd">    depends on every value.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        shots (int | None): what the experiment ran at, carried so :meth:`counts` has a</span>
+<span class="sd">            scale to work with by default.</span>
+<span class="sd">        qubits (list[int]): the qubits the distribution spans, in the order their bits</span>
+<span class="sd">            are read back. The first is the last character of a key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The :func:`QCut.estimate_standard_errors` bound of one Z string, None if unknown.</span>
+    <span class="n">_term_error</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="QuasiProbabilities.__init__">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Init from a mapping of bitstring to value, which must cover every bitstring.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (Mapping[str, float]): the quasi-probabilities, keyed by bitstring.</span>
+<span class="sd">            shots (int): what the experiment ran at, if it is known.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">keys</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">width</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span><span class="p">:</span> <span class="n">SeparableDistribution</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.from_distribution">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.from_distribution">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_distribution</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">distribution</span><span class="p">:</span> <span class="n">SeparableDistribution</span><span class="p">,</span>
+        <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">term_error</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuasiProbabilities</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrap a separable distribution without expanding it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            distribution (SeparableDistribution): the reconstruction, as</span>
+<span class="sd">                :func:`_separable_form` builds it.</span>
+<span class="sd">            shots (int): what the experiment ran at, if it is known.</span>
+<span class="sd">            qubits (list[int]): the qubits it spans, in the order their bits are read</span>
+<span class="sd">                back. Defaults to naming the bits themselves.</span>
+<span class="sd">            term_error (float): the standard-error bound of one Z string&#39;s estimate,</span>
+<span class="sd">                which :attr:`standard_error` is worked out from.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuasiProbabilities: the distribution, nothing materialised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="o">=</span> <span class="n">distribution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">distribution</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">qubits</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span> <span class="o">=</span> <span class="n">term_error</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.from_array">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.from_array">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_array</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">term_error</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuasiProbabilities</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrap values already worked out, indexed by outcome.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            values (np.ndarray): ``2**k`` quasi-probabilities, entry ``x`` being the</span>
+<span class="sd">                bitstring ``format(x, f&quot;0{k}b&quot;)``.</span>
+<span class="sd">            shots (int): what the experiment ran at, if it is known.</span>
+<span class="sd">            qubits (list[int]): the qubits it spans, in the order their bits are read</span>
+<span class="sd">                back. Defaults to naming the bits themselves.</span>
+<span class="sd">            term_error (float): as in :meth:`from_distribution`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuasiProbabilities: the distribution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">)</span> <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">qubits</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span> <span class="o">=</span> <span class="n">term_error</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;How many qubits the distribution spans.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">standard_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;An upper bound on the shot noise of each quasi-probability.</span>
+
+<span class="sd">        One bitstring&#39;s probability is the sum of the :math:`2^k - 1` Z strings over</span>
+<span class="sd">        the :math:`k` qubits, each weighted :math:`2^{-k}`, plus a constant. So it gets</span>
+<span class="sd">        :math:`1 - 2^{-k}` times the bound :func:`QCut.estimate_standard_errors` gives</span>
+<span class="sd">        one Z string, the same for every bitstring. It is loose for unlikely bitstrings.</span>
+
+<span class="sd">        It does not apply to :meth:`nearest_probabilities` or :meth:`counts`. None if</span>
+<span class="sd">        the distribution was not reconstructed from an experiment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">**-</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span>
+
+<div class="viewcode-block" id="QuasiProbabilities.probabilities">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.probabilities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">probabilities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every value at once.</span>
+
+<span class="sd">        This is the one accessor that holds ``2**width`` values. It is built on the</span>
+<span class="sd">        first call and kept, so asking twice costs once.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: ``2**width`` quasi-probabilities, entry ``x`` being the</span>
+<span class="sd">            bitstring ``format(x, f&quot;0{width}b&quot;)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># One of the two is always set, whichever way the object was built.</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span><span class="o">.</span><span class="n">array</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcome</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">outcome</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;0</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="si">}</span><span class="s2">b&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The quasi-probability of one bitstring.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">outcome</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">outcome</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probabilities</span><span class="p">()[</span><span class="n">outcome</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every bitstring, in numerical order.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span> <span class="k">for</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;How many bitstrings the distribution covers, which is ``2**width``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Represent as string.&quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">DEFAULT_TOP</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="n">DEFAULT_TOP</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="se">{{</span><span class="si">{</span><span class="n">entries</span><span class="si">}</span><span class="s2">, ...</span><span class="se">}}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> bitstrings)&quot;</span>
+
+<div class="viewcode-block" id="QuasiProbabilities.probability_of">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.probability_of">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">probability_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bitstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;One bitstring&#39;s quasi-probability, without building the rest.</span>
+
+<span class="sd">        Costs one pass over the experiment&#39;s groups per subcircuit, so it does not grow</span>
+<span class="sd">        with how many qubits the distribution spans.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bitstring (str): the bitstring, first chosen qubit last.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: its quasi-probability, which may be negative.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: the bitstring is not one of this distribution&#39;s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">bitstring</span><span class="p">]</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bitstring</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">bitstring</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.top">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.top">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The most likely bitstrings, without building the rest.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (int): how many bitstrings to return. Capped at ``2**width``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[str, float]: the bitstrings and their quasi-probabilities, most likely</span>
+<span class="sd">            first. Values may be negative and are not projected -- projection needs the</span>
+<span class="sd">            whole distribution, so it is only offered by</span>
+<span class="sd">            :meth:`nearest_probabilities`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: ``count`` is not positive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;count must be at least one, got </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+            <span class="n">take</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="o">-</span><span class="n">values</span><span class="p">,</span> <span class="n">take</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)[:</span><span class="n">take</span><span class="p">]</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">outcome</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">outcome</span><span class="p">]))</span> <span class="k">for</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="n">order</span><span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="o">-</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">found</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.marginal">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.marginal">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">marginal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qubits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">QuasiProbabilities</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The distribution over a subset of the qubits, summed over the rest.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            qubits (list[int]): the qubits to keep, from :attr:`qubits`, in the order</span>
+<span class="sd">                their bits should be read back.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuasiProbabilities: the marginal distribution.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: a qubit is not one this distribution spans.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="n">qubit</span> <span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="n">qubits</span> <span class="k">if</span> <span class="n">qubit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qubits</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;qubits </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2"> are not among the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">qubits</span><span class="si">}</span><span class="s2"> this distribution &quot;</span>
+                <span class="s2">&quot;spans&quot;</span>
+            <span class="p">)</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">qubits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span> <span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="n">qubits</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QuasiProbabilities</span><span class="o">.</span><span class="n">from_distribution</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span><span class="o">.</span><span class="n">marginal</span><span class="p">(</span><span class="n">bits</span><span class="p">),</span>
+                <span class="n">shots</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span>
+                <span class="n">qubits</span><span class="o">=</span><span class="n">qubits</span><span class="p">,</span>
+                <span class="n">term_error</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probabilities</span><span class="p">()</span>
+        <span class="n">reduced</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bits</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">bit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
+                <span class="n">index</span> <span class="o">|=</span> <span class="p">((</span><span class="n">outcome</span> <span class="o">&gt;&gt;</span> <span class="n">bit</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">position</span>
+            <span class="n">reduced</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">values</span><span class="p">[</span><span class="n">outcome</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">QuasiProbabilities</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
+            <span class="n">reduced</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span> <span class="n">qubits</span><span class="o">=</span><span class="n">qubits</span><span class="p">,</span> <span class="n">term_error</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_term_error</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.quasi_probabilities">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.quasi_probabilities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">quasi_probabilities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_TOP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The values as reconstructed, negative ones included.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            top (int): how many of the most likely bitstrings to return, most likely</span>
+<span class="sd">                first. ``None`` for the whole distribution, in numerical order. Capped</span>
+<span class="sd">                at ``2**width``. Defaults to :data:`DEFAULT_TOP`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[str, float]: the quasi-probabilities, keyed by bitstring.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: ``top`` is neither ``None`` nor positive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">_checked_top</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="n">top</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.nearest_probabilities">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.nearest_probabilities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nearest_probabilities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_TOP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The closest true distribution.</span>
+
+<span class="sd">        The projection is over the whole distribution however few bitstrings are asked</span>
+<span class="sd">        for, since the mass clipped off the negative entries has to go somewhere.</span>
+<span class="sd">        So ``top`` sets how much is reported, not how much is computed.</span>
+
+<span class="sd">        With ``top=None`` the bitstrings clipped to zero are kept, so the result covers</span>
+<span class="sd">        the same keys as the quasi-probabilities it came from.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            top (int): how many of the most likely bitstrings to return, most likely</span>
+<span class="sd">                first. ``None`` for all of them, in numerical order. Defaults to</span>
+<span class="sd">                :data:`DEFAULT_TOP`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[str, float]: the projected distribution, keyed by bitstring.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: ``top`` is neither ``None`` nor positive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">_checked_top</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">nearest</span> <span class="o">=</span> <span class="n">QuasiDistribution</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">nearest_probability_distribution</span><span class="p">()</span>
+        <span class="n">projected</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">projected</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span><span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;0</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">b&quot;</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">nearest</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">projected</span>
+        <span class="n">leading</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">projected</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="o">-</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="n">top</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">leading</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiProbabilities.counts">
+<a class="viewcode-back" href="../../../api/results.html#QCut.QuasiProbabilities.counts">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">counts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_TOP</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The distribution scaled to a shot count.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            shots (int): what to scale by. Defaults to the shots the experiment ran at.</span>
+<span class="sd">            top (int): how many of the most likely bitstrings to return, most likely</span>
+<span class="sd">                first. ``None`` for all of them. Defaults to :data:`DEFAULT_TOP`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict[str, float]: the projected distribution scaled by ``shots``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: no shot count was carried and none was given, or ``top`` is</span>
+<span class="sd">                neither ``None`` nor positive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="k">if</span> <span class="n">shots</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">shots</span>
+        <span class="k">if</span> <span class="n">shots</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;these results carried no shot count, so pass shots to scale by&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="o">*</span> <span class="n">shots</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nearest_probabilities</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span></div>
+</div>
+
+
+
+<span class="c1">#: One group&#39;s measured outcomes for one subcircuit, and the weight each carried.</span>
+<span class="n">_SparseRows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stacked</span><span class="p">(</span><span class="n">columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_SparseRows</span><span class="p">],</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One mode from the same subcircuit&#39;s rows in each group.</span>
+
+<span class="sd">    The groups measured overlapping but not identical sets of outcomes, so the mode</span>
+<span class="sd">    holds their union, with a zero wherever a group did not see one.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        columns (list[_SparseRows]): per group, the outcomes it measured and their</span>
+<span class="sd">            weights.</span>
+<span class="sd">        width (int): how many bits the local outcome spans.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Mode: the rows any group measured, one column per group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">present</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_values</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">present</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Mode</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">present</span><span class="p">))</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">group_idx</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">val</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">group_idx</span><span class="p">),</span> <span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
+
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">val</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Mode</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">val</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">width</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_separable_form</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">RawResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeparableDistribution</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distribution the results describe, in the form it is actually held in.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        result (RawResult): results of an experiment built with ``qubits``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        SeparableDistribution: the distribution over ``result.experiment.qubits``, bit</span>
+<span class="sd">        ``j`` of an outcome being the qubit ``qubits[j]``, or None when the subcircuits</span>
+<span class="sd">        did not cover the same bits in every group and there is no one form to hold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">per_group</span> <span class="o">=</span> <span class="n">_group_weights</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">per_group</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SeparableDistribution</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">,</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">))],</span> <span class="p">[</span><span class="n">Mode</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">layout</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">per_group</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">layout</span> <span class="k">for</span> <span class="n">modes</span> <span class="ow">in</span> <span class="n">per_group</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">SeparableDistribution</span><span class="p">(</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">held</span><span class="p">)</span> <span class="k">for</span> <span class="n">held</span> <span class="ow">in</span> <span class="n">layout</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">_stacked</span><span class="p">([</span><span class="n">modes</span><span class="p">[</span><span class="n">held</span><span class="p">]</span> <span class="k">for</span> <span class="n">modes</span> <span class="ow">in</span> <span class="n">per_group</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">held</span><span class="p">))</span> <span class="k">for</span> <span class="n">held</span> <span class="ow">in</span> <span class="n">layout</span><span class="p">],</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coefficients</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_group_weights</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">RawResult</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">_SparseRows</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per group, the weight of each outcome of the bits each subcircuit covers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        result (RawResult): results of an experiment built with ``qubits``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[int, list[float], list[dict[tuple[int, ...], _SparseRows]]]: the width,</span>
+<span class="sd">        one coefficient per contributing group, and that group&#39;s measured outcomes and</span>
+<span class="sd">        their weights, by the bits they hold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">experiment</span>
+    <span class="n">qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">qubits</span><span class="p">)</span>
+    <span class="n">processed</span> <span class="o">=</span> <span class="n">_process_results</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">results</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">_shots</span><span class="p">,</span> <span class="n">experiment</span><span class="o">.</span><span class="n">qpd_bits</span><span class="p">)</span>
+
+    <span class="n">wire_cuts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">experiment</span><span class="o">.</span><span class="n">cut_locations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">SingleQubitCutLocation</span><span class="p">)]</span>
+    <span class="p">)</span>
+    <span class="n">parity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">wire_cuts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">coefficients</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">per_group</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">_SparseRows</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">experiment_run</span><span class="p">,</span> <span class="n">coefficient</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">processed</span><span class="p">,</span> <span class="n">experiment</span><span class="o">.</span><span class="n">coefficients</span><span class="p">):</span>
+        <span class="c1"># Every Z string shares one measurement setting, so there is only ever one.</span>
+        <span class="n">subcircuits</span> <span class="o">=</span> <span class="n">experiment_run</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subcircuits</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">parity</span> <span class="o">*</span> <span class="n">coefficient</span>
+        <span class="n">modes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sub</span><span class="p">,</span> <span class="p">(</span><span class="n">held</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">subcircuits</span><span class="p">,</span> <span class="n">_bit_layout</span><span class="p">(</span><span class="n">subcircuits</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">experiment</span><span class="o">.</span><span class="n">map_qubit</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">idx</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">_outcome_rows</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">held</span><span class="p">:</span>
+                <span class="n">modes</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">held</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">scale</span> <span class="o">*=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">coefficients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">per_group</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">qubits</span><span class="p">),</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">per_group</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_dense_values</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">RawResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distribution built group by group, for results with no one separable form.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        result (RawResult): results of an experiment built with ``qubits``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: ``2**k`` quasi-probabilities, indexed by outcome.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">per_group</span> <span class="o">=</span> <span class="n">_group_weights</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">accumulated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">width</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">coefficient</span><span class="p">,</span> <span class="n">modes</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">per_group</span><span class="p">):</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">SeparableDistribution</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">,</span>
+            <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">held</span><span class="p">)</span> <span class="k">for</span> <span class="n">held</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">],</span>
+            <span class="p">[</span>
+                <span class="n">Mode</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">held</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">held</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="ow">in</span> <span class="n">modes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">coefficient</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="n">accumulated</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">array</span><span class="p">()</span> <span class="o">-</span> <span class="n">block</span><span class="o">.</span><span class="n">constant</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">accumulated</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">width</span><span class="p">)</span> <span class="o">+</span> <span class="n">accumulated</span>
+
+
+<div class="viewcode-block" id="estimate_probabilities">
+<a class="viewcode-back" href="../../../api/results.html#QCut.estimate_probabilities">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_probabilities</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">RawResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuasiProbabilities</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reconstruct the distribution over the qubits the experiment measured.</span>
+
+<span class="sd">    The circuits do not grow with the number of qubits asked for. Z observables all</span>
+<span class="sd">    commute, so they share one measurement setting and the experiment is the size it</span>
+<span class="sd">    would have been for a single observable. Neither does the reading. What comes back</span>
+<span class="sd">    is held as a product over the subcircuits rather than as a table, so building it</span>
+<span class="sd">    costs nothing in ``k`` -- see :func:`_separable_form`. Only asking for every</span>
+<span class="sd">    bitstring at once does, and :meth:`QuasiProbabilities.top`,</span>
+<span class="sd">    :meth:`QuasiProbabilities.probability_of` and</span>
+<span class="sd">    :meth:`QuasiProbabilities.marginal` answer without doing that.</span>
+
+<span class="sd">    The bitstrings are written with the first of the chosen qubits last, so a subset</span>
+<span class="sd">    given as ``[2, 0]`` reads qubit 2 as the rightmost character.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        result (RawResult): results of an experiment built with ``qubits``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        QuasiProbabilities: the distribution, which also offers the projected</span>
+<span class="sd">        distribution and a scaling to counts.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: the experiment was built with observables rather than ``qubits``, so</span>
+<span class="sd">            it does not carry the full set this needs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">can_reconstruct_probabilities</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot reconstruct probabilities for this experiment. Pass ``qubits`` to &quot;</span>
+            <span class="s2">&quot;the ``get_experiment_circuits`` function to enable this feature.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">qubits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">qubits</span><span class="p">)</span>
+    <span class="n">term_error</span> <span class="o">=</span> <span class="n">_term_standard_error</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">distribution</span> <span class="o">=</span> <span class="n">_separable_form</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">distribution</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">QuasiProbabilities</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
+            <span class="n">_dense_values</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+            <span class="n">shots</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span>
+            <span class="n">qubits</span><span class="o">=</span><span class="n">qubits</span><span class="p">,</span>
+            <span class="n">term_error</span><span class="o">=</span><span class="n">term_error</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">QuasiProbabilities</span><span class="o">.</span><span class="n">from_distribution</span><span class="p">(</span>
+        <span class="n">distribution</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span> <span class="n">qubits</span><span class="o">=</span><span class="n">qubits</span><span class="p">,</span> <span class="n">term_error</span><span class="o">=</span><span class="n">term_error</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

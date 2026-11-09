@@ -42,7 +42,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=4e74574f"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -51,10 +51,11 @@
     <link rel="icon" href="_static/qcut-logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="QCut API reference" href="QCut.html" />
+    <link rel="next" title="Acknowledgements" href="Acknowledgement.html" />
+    <link rel="prev" title="Results and post-processing" href="api/results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.4.0.post1.dev3+g8b2ee8f58" />
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -197,38 +198,62 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Usage.html">Basic Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Examples.html">Examples on using QCut</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/WireCuts.html">Wire cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/GateCuts.html">Gate cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/AutomaticCuts.html">Automatic cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/ParallelBackends.html">Running on several backends</a></li>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire Cut QPD derivation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
 </ul>
 </details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QCut.html">QCut API reference</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Changelog</a></li>
 </ul>
 
     </div>
@@ -381,6 +406,17 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-5-0"><strong>Version 2.5.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives">Primitives</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reorganised-source">Reorganised source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-backends">Parallel backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors">Standard errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling">Sampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixes">Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecations">Deprecations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc">Misc</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-4-0"><strong>Version 2.4.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-without-blocking">Submitting without blocking</a></li>
 </ul>
@@ -463,6 +499,106 @@
                   
   <section id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="version-2-5-0">
+<h2><strong>Version 2.5.0</strong><a class="headerlink" href="#version-2-5-0" title="Link to this heading">#</a></h2>
+<section id="primitives">
+<h3>Primitives<a class="headerlink" href="#primitives" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>New <code class="code docutils literal notranslate"><span class="pre">CutEstimator</span></code> and <code class="code docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code>, shaped like
+<a class="reference external" href="https://github.com/FiQCI/fiqci-ems">FiQCI-EMS</a>’s estimator and sampler.
+They run a list of cut circuits in one call and return a job, which gives
+each circuit’s expectation values or quasi-probability distribution together with
+its standard error. See <a class="reference external" href="https://fiqci.fi/QCut/Primitives.html">Primitives</a>.</p></li>
+<li><p>They take <code class="code docutils literal notranslate"><span class="pre">parameter_values</span></code>, bound into each circuit before its experiment is
+built. A sweep is the same circuit listed once per set of values. A circuit with a
+parameter left unbound is refused before anything is submitted.</p></li>
+<li><p>They do not transpile. A cut circuit for a backend with a coupling map has to be
+transpiled for that same backend with <code class="code docutils literal notranslate"><span class="pre">transpile_subcircuits()</span></code> first.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> records the final measurements of the circuit it was split from as
+<code class="code docutils literal notranslate"><span class="pre">final_measurements</span></code> and <code class="code docutils literal notranslate"><span class="pre">uncut_num_clbits</span></code>, which is where the sampler
+reads the measured qubits from. <code class="code docutils literal notranslate"><span class="pre">find_cuts()</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">get_locations_and_subcircuits()</span></code> fill them in.</p></li>
+</ul>
+</section>
+<section id="reorganised-source">
+<h3>Reorganised source<a class="headerlink" href="#reorganised-source" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Modules are regrouped in a more sensible way: <code class="code docutils literal notranslate"><span class="pre">QCut.model</span></code> (the cut circuit and its
+cut locations), <code class="code docutils literal notranslate"><span class="pre">QCut.pre_process</span></code> (was <code class="code docutils literal notranslate"><span class="pre">QCut.cutting</span></code>),
+<code class="code docutils literal notranslate"><span class="pre">QCut.transpilation</span></code>, <code class="code docutils literal notranslate"><span class="pre">QCut.job</span></code> and <code class="code docutils literal notranslate"><span class="pre">QCut.post_process</span></code>, with
+shared helpers in <code class="code docutils literal notranslate"><span class="pre">QCut.utils</span></code>. Everything exported from <code class="code docutils literal notranslate"><span class="pre">QCut</span></code> itself is
+unchanged.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">QCut.execution.circuit_knitting</span></code> is split into <code class="code docutils literal notranslate"><span class="pre">experiments</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">dispatch</span></code>, <code class="code docutils literal notranslate"><span class="pre">waves</span></code>, <code class="code docutils literal notranslate"><span class="pre">submit</span></code>, <code class="code docutils literal notranslate"><span class="pre">estimate</span></code> and <code class="code docutils literal notranslate"><span class="pre">run</span></code>
+under <code class="code docutils literal notranslate"><span class="pre">QCut.execution</span></code>. <code class="code docutils literal notranslate"><span class="pre">run()</span></code>, <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> are in <code class="code docutils literal notranslate"><span class="pre">QCut.execution.run</span></code>.</p></li>
+<li><p>The old module paths, such as <code class="code docutils literal notranslate"><span class="pre">QCut.execution.probabilities</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">QCut.cutcircuit</span></code> or <code class="code docutils literal notranslate"><span class="pre">QCut.execution.circuit_knitting</span></code>, still import but
+raise a <code class="code docutils literal notranslate"><span class="pre">FutureWarning</span></code> naming the new path, and are planned to be removed in
+3.0. They give back the new modules, so a class imported from either path is the
+same class, and results pickled under the old paths still load.</p></li>
+<li><p>Helpers whose names start with an underscore are not public API, and those that moved
+to a different module than the rest of their file cannot be imported from the old
+path.</p></li>
+<li><p>Log records come from the new modules, e.g. <code class="code docutils literal notranslate"><span class="pre">QCut.execution.dispatch</span></code> or
+<code class="code docutils literal notranslate"><span class="pre">QCut.utils.backend</span></code> rather than <code class="code docutils literal notranslate"><span class="pre">QCut.execution.circuit_knitting</span></code>. A
+filter on <code class="code docutils literal notranslate"><span class="pre">QCut</span></code> still catches all of them.</p></li>
+</ul>
+</section>
+<section id="parallel-backends">
+<h3>Parallel backends<a class="headerlink" href="#parallel-backends" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">ParallelBackend</span></code> gives each batch to the backend with the fewest shots so far,
+rather than to the next one in turn, which put large batches of the same size on the
+same backend. <code class="code docutils literal notranslate"><span class="pre">submitted_shots</span></code> reports the shots each backend was given, and
+the backend is safe to call from several threads at once.</p></li>
+</ul>
+</section>
+<section id="standard-errors">
+<h3>Standard errors<a class="headerlink" href="#standard-errors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>New <code class="code docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code> gives an upper bound on the shot noise of each
+estimated expectation value, shaped like the values.</p></li>
+<li><p>A reconstructed distribution carries the same bound for its quasi-probabilities as
+<code class="code docutils literal notranslate"><span class="pre">QuasiProbabilities.standard_error</span></code>.</p></li>
+</ul>
+</section>
+<section id="sampling">
+<h3>Sampling<a class="headerlink" href="#sampling" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A sampled decomposition without a <code class="code docutils literal notranslate"><span class="pre">seed</span></code> records the one it drew as
+<code class="code docutils literal notranslate"><span class="pre">CutExperiment.seed</span></code>.</p></li>
+</ul>
+</section>
+<section id="fixes">
+<h3>Fixes<a class="headerlink" href="#fixes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">CutCircuit.assign_parameters()</span></code> and <code class="code docutils literal notranslate"><span class="pre">CutExperiment.assign_parameters()</span></code>
+bind parameters spread across several subcircuits.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">find_cuts()</span></code> no longer raises <code class="code docutils literal notranslate"><span class="pre">IndexError</span></code> for a circuit whose two-qubit
+gates act only on high-index qubits. The graph it partitions is now built without
+state shared between calls, which also stops two parts of one wire from sharing a
+node.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">find_cuts()</span></code> and <code class="code docutils literal notranslate"><span class="pre">get_locations_and_subcircuits()</span></code> add qubits that no
+cut separates from anything to an existing subcircuit, rather than returning each as
+a one-qubit subcircuit of its own. A cut that separates nothing is refused even when
+the circuit has such qubits.</p></li>
+</ul>
+</section>
+<section id="deprecations">
+<h3>Deprecations<a class="headerlink" href="#deprecations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Importing QCut with qiskit older than 2.1 raises a <code class="code docutils literal notranslate"><span class="pre">FutureWarning</span></code>. QCut 3.0 is
+planned to need qiskit 2.1 or newer.</p></li>
+</ul>
+</section>
+<section id="misc">
+<h3>Misc<a class="headerlink" href="#misc" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Dead and duplicated code removed throughout.</p></li>
+</ul>
+</section>
+</section>
 <section id="version-2-4-0">
 <h2><strong>Version 2.4.0</strong><a class="headerlink" href="#version-2-4-0" title="Link to this heading">#</a></h2>
 <section id="submitting-without-blocking">
@@ -546,7 +682,7 @@ nearest physical distribution first.</p></li>
 <h3>Reconstructing a distribution no longer costs <code class="code docutils literal notranslate"><span class="pre">2**k</span></code><a class="headerlink" href="#reconstructing-a-distribution-no-longer-costs-2-k" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Reconstructing a distribution over <code class="code docutils literal notranslate"><span class="pre">k</span></code> qubits is now flat in <code class="code docutils literal notranslate"><span class="pre">k</span></code> rather
-than exponential in it with a proper reconstruction method. See <a class="reference external" href="https://jooniv.github.io/QCut/theory/Probability_reconstruction.html">the
+than exponential in it with a proper reconstruction method. See <a class="reference external" href="https://fiqci.fi/QCut/theory/Probability_reconstruction.html">the
 derivation</a>.</p></li>
 <li><p>The distribution is held in that product form, so three new queries never expand it:
 <code class="code docutils literal notranslate"><span class="pre">top(count)</span></code> gives the most likely bitstrings, exactly, by branch and bound
@@ -594,7 +730,7 @@ holding one.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">run()</span></code> and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> take <code class="code docutils literal notranslate"><span class="pre">run_options</span></code> as well.</p></li>
 <li><p>Added <code class="code docutils literal notranslate"><span class="pre">ParallelBackend</span></code>, which runs an experiment on several backends at once,
 each batch transpiled for the one about to run it.
-See <a class="reference external" href="https://jooniv.github.io/QCut/examples/ParallelBackends.html">Running on several backends</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/Hardware.html#running-on-several-backends">Running on several backends</a>.</p></li>
 <li><p>Added <code class="code docutils literal notranslate"><span class="pre">transpile_circuits()</span></code>, which takes a <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code>, a
 <code class="code docutils literal notranslate"><span class="pre">CutExperiment</span></code> or plain circuits.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">transpile_experiments()</span></code> defaults to <code class="code docutils literal notranslate"><span class="pre">optimization_level=3</span></code> rather than
@@ -634,7 +770,7 @@ reconstructed distribution instead of expectation values when given it.
 distribution over those qubits by an inverse Walsh-Hadamard transform. Costs
 <code class="code docutils literal notranslate"><span class="pre">2**k</span></code> observables but no extra circuits, since they share one measurement
 setting.
-See <a class="reference external" href="https://jooniv.github.io/QCut/theory/Probability_reconstruction.html">the derivation</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/theory/Probability_reconstruction.html">the derivation</a>.</p></li>
 <li><p>The result is a <code class="code docutils literal notranslate"><span class="pre">dict</span></code> of quasi-probabilities, which can be negative.
 <code class="code docutils literal notranslate"><span class="pre">nearest_probabilities()</span></code> gives the closest true distribution and
 <code class="code docutils literal notranslate"><span class="pre">counts()</span></code> scales it by the shots the experiment ran at, or by one of your own.</p></li>
@@ -662,9 +798,9 @@ from <code class="code docutils literal notranslate"><span class="pre">QCut</spa
 <li><p><code class="code docutils literal notranslate"><span class="pre">find_cuts()</span></code> is now deterministic and costs several candidate partitions before
 choosing, so it returns different, cheaper plans than 1.3.2 did for the same circuit.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">find_cuts()</span></code> now reads its configuration from a <code class="code docutils literal notranslate"><span class="pre">CutOptions</span></code> object rather than from keyword arguments. See
-<a class="reference external" href="https://jooniv.github.io/QCut/Options.html">Options</a> and <a class="reference external" href="https://jooniv.github.io/QCut/examples/AutomaticCuts.html">Automatic cuts</a> for details.</p></li>
+<a class="reference external" href="https://fiqci.fi/QCut/Options.html">Options</a> and <a class="reference external" href="https://fiqci.fi/QCut/examples/AutomaticCuts.html">Automatic cuts</a> for details.</p></li>
 <li><p>Cut edge weights are <code class="code docutils literal notranslate"><span class="pre">log</span> <span class="pre">gamma</span></code> rather than <code class="code docutils literal notranslate"><span class="pre">gamma</span></code>, which also changes
-which cuts are chosen. See <a class="reference external" href="https://jooniv.github.io/QCut/examples/AutomaticCuts.html">Automatic cuts</a>.</p></li>
+which cuts are chosen. See <a class="reference external" href="https://fiqci.fi/QCut/examples/AutomaticCuts.html">Automatic cuts</a>.</p></li>
 <li><p>Subcircuits are no longer given empty classical registers, and an unused
 <code class="code docutils literal notranslate"><span class="pre">qpd_meas</span></code> register is dropped. Code reading registers by position rather than by
 name has to be updated.</p></li>
@@ -672,7 +808,7 @@ name has to be updated.</p></li>
 takes only the results, which now carry the experiment they came from. Replace
 <code class="code docutils literal notranslate"><span class="pre">estimate_expectation_values(results,</span> <span class="pre">experiment.expv_data())</span></code> with
 <code class="code docutils literal notranslate"><span class="pre">estimate_expectation_values(results)</span></code>.
-See <a class="reference external" href="https://jooniv.github.io/QCut/Usage.html">Usage</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/Usage.html">Usage</a>.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">get_experiment_circuits()</span></code> no longer modifies the <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> it is
 given, so one can be reused for several observable sets.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">transpile_subcircuits()</span></code> raises rather than quietly overriding when
@@ -687,8 +823,8 @@ resonator device and off otherwise, and an explicit value is honoured either way
 <h3>Cutting arbitrary two-qubit gates<a class="headerlink" href="#cutting-arbitrary-two-qubit-gates" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Any two-qubit gate can be cut, with the decomposition derived from its KAK
-coordinates. See <a class="reference external" href="https://jooniv.github.io/QCut/examples/GateCuts.html">Gate cuts</a> and
-<a class="reference external" href="https://jooniv.github.io/QCut/Theory.html">Theory</a>.</p></li>
+coordinates. See <a class="reference external" href="https://fiqci.fi/QCut/examples/GateCuts.html">Gate cuts</a> and
+<a class="reference external" href="https://fiqci.fi/QCut/Theory.html">Theory</a>.</p></li>
 </ul>
 </section>
 <section id="joint-cutting-of-parallel-rotation-gates">
@@ -697,7 +833,7 @@ coordinates. See <a class="reference external" href="https://jooniv.github.io/QC
 <li><p>Single-axis rotation gates running in parallel between the same two partitions share
 one decomposition: two parallel <code class="code docutils literal notranslate"><span class="pre">rzz</span></code> cost 30 subexperiments instead of 36, three
 cost 132 instead of 216. On by default.
-See <a class="reference external" href="https://jooniv.github.io/QCut/theory/Joint_rotation_derivation.html">the derivation</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/theory/Joint_rotation_derivation.html">the derivation</a>.</p></li>
 </ul>
 </section>
 <section id="wire-cuts-with-classical-communication">
@@ -706,7 +842,7 @@ See <a class="reference external" href="https://jooniv.github.io/QCut/theory/Joi
 <li><p>A block of parallel wire cuts can exchange the measured outcome, taking the overhead
 from <code class="code docutils literal notranslate"><span class="pre">4**n</span></code> to <code class="code docutils literal notranslate"><span class="pre">2**(n+1)</span> <span class="pre">-</span> <span class="pre">1</span></code> and two wires from 64 subexperiments to 28.
 These run in waves. Used by default for blocks of two or more.
-See <a class="reference external" href="https://jooniv.github.io/QCut/theory/LOCC_wire_derivation.html">the derivation</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/theory/LOCC_wire_derivation.html">the derivation</a>.</p></li>
 </ul>
 </section>
 <section id="gate-consolidation">
@@ -715,7 +851,7 @@ See <a class="reference external" href="https://jooniv.github.io/QCut/theory/LOC
 <li><p>Runs of gates on the same qubit pair are merged before cutting, so the pair costs one
 cut. Runs need not be contiguous, gates that commute with the run are moved out of the
 way. On by default, and compared against not merging.
-See <a class="reference external" href="https://jooniv.github.io/QCut/Options.html">Options</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/Options.html">Options</a>.</p></li>
 </ul>
 </section>
 <section id="sampling-instead-of-enumerating">
@@ -723,7 +859,7 @@ See <a class="reference external" href="https://jooniv.github.io/QCut/Options.ht
 <ul class="simple">
 <li><p>The experiment can be sampled from the quasiprobability distribution rather than
 enumerated, which bounds the number of circuits when the exact count is out of reach.
-Automatic above 1000 groups. See <a class="reference external" href="https://jooniv.github.io/QCut/Options.html">Options</a>.</p></li>
+Automatic above 1000 groups. See <a class="reference external" href="https://fiqci.fi/QCut/Options.html">Options</a>.</p></li>
 </ul>
 </section>
 <section id="configuration">
@@ -731,7 +867,7 @@ Automatic above 1000 groups. See <a class="reference external" href="https://joo
 <ul class="simple">
 <li><p>Added <code class="code docutils literal notranslate"><span class="pre">CutOptions</span></code>, collected once and carried through the run. Covers
 consolidation, joint cuts, wire cut communication, expansion strategy, sampling and the
-cut finder. See <a class="reference external" href="https://jooniv.github.io/QCut/Options.html">Options</a>.</p></li>
+cut finder. See <a class="reference external" href="https://fiqci.fi/QCut/Options.html">Options</a>.</p></li>
 </ul>
 </section>
 <section id="knowing-what-a-cut-costs">
@@ -750,7 +886,7 @@ before any experiment circuits are built. <code class="code docutils literal not
 <li><p>Better IQM support: <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;QCut[iqm]&quot;</span></code>, and both transpile helpers use IQM’s own
 transpiler for IQM backends, resonator machines included. Pass
 <code class="code docutils literal notranslate"><span class="pre">use_iqm_transpiler=False</span></code> to opt out.
-See <a class="reference external" href="https://jooniv.github.io/QCut/Usage.html">Usage</a>.</p></li>
+See <a class="reference external" href="https://fiqci.fi/QCut/Usage.html">Usage</a>.</p></li>
 <li><p>Resonator devices are supported by both transpile helpers. Their MOVE gates are routed
 while the subcircuits still carry cut placeholders, which the routing pass used to
 drop along with the classical registers and the layout.
@@ -1169,13 +1305,22 @@ call. A target that batches on its own account, such as
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="QCut.html"
+       href="api/results.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">QCut API reference</p>
+        <p class="prev-next-title">Results and post-processing</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="Acknowledgement.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Acknowledgements</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -1195,6 +1340,17 @@ call. A target that batches on its own account, such as
   </div>
   <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-5-0"><strong>Version 2.5.0</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives">Primitives</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reorganised-source">Reorganised source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-backends">Parallel backends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors">Standard errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling">Sampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixes">Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecations">Deprecations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc">Misc</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-4-0"><strong>Version 2.4.0</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-without-blocking">Submitting without blocking</a></li>
 </ul>

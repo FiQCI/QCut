@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QCut.execution.submit &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/QCut/execution/submit';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for QCut.execution.submit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Submitting an experiment and handing back a job without waiting for it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.errors.qcuterror</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCutError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
+    <span class="n">_has_measurements</span><span class="p">,</span>
+    <span class="n">_seeded</span><span class="p">,</span>
+    <span class="n">_submit_batches</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.waves</span><span class="w"> </span><span class="kn">import</span> <span class="n">_submit_communicating</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.job.cutresult</span><span class="w"> </span><span class="kn">import</span> <span class="n">CircuitResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.job.handle</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCutJob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.model.cutcircuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutExperiment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.circuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">circuit_fingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.deprecation</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
+
+<span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1">#: One slot of an experiment: which group, which measurement setting, which subcircuit.</span>
+<span class="n">Slot</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_runnable</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split an experiment&#39;s slots into the ones worth submitting and the ones not.</span>
+
+<span class="sd">    A QPD term that measures nothing on a subcircuit leaves a circuit with no</span>
+<span class="sd">    measurements at all. There is nothing to run, and its counts are known: every shot</span>
+<span class="sd">    reads zero. Those are filled in directly rather than submitted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The slots to submit, as ``(slot, circuit)``, and the empty ones, as</span>
+<span class="sd">        ``(slot, num_clbits)``. Both in group, setting, subcircuit order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">runnable</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Slot</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">empty</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Slot</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">circuit_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">experiments</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">obs_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">circuit_group</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub_idx</span><span class="p">,</span> <span class="n">subcircuit</span> <span class="ow">in</span> <span class="n">obs_group</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">slot</span> <span class="o">=</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">_has_measurements</span><span class="p">(</span><span class="n">subcircuit</span><span class="p">):</span>
+                    <span class="n">runnable</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">slot</span><span class="p">,</span> <span class="n">subcircuit</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">empty</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">slot</span><span class="p">,</span> <span class="n">subcircuit</span><span class="o">.</span><span class="n">num_clbits</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">runnable</span><span class="p">,</span> <span class="n">empty</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_deduplicate</span><span class="p">(</span><span class="n">runnable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group slots filled by the same circuit, so it is only submitted once.</span>
+
+<span class="sd">    A subcircuit&#39;s experiment circuit depends on the QPD terms of the cuts touching that</span>
+<span class="sd">    subcircuit and on the measurement setting restricted to its own qubits, neither of</span>
+<span class="sd">    which most of an experiment&#39;s groups change. The slot count grows exponentially in</span>
+<span class="sd">    the number of pieces and the distinct count linearly, so almost all of a large run</span>
+<span class="sd">    is the same handful of circuits submitted over and over.</span>
+
+<span class="sd">    The key carries the subcircuit index as well as the fingerprint. The estimator takes</span>
+<span class="sd">    one factor per subcircuit from each group and multiplies them, so two factors of a</span>
+<span class="sd">    single product sharing a sample would give ``E[X**2]`` where ``E[X]**2`` is meant.</span>
+<span class="sd">    Keying on the subcircuit makes that impossible, since a group holds each subcircuit</span>
+<span class="sd">    once. Sharing between groups is a different matter: groups are summed rather than</span>
+<span class="sd">    multiplied, so it leaves the estimate unbiased and moves only its variance.</span>
+
+<span class="sd">    Two subcircuits of a symmetric circuit really can produce identical experiment</span>
+<span class="sd">    circuits, so this is not a theoretical concern.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``(slots, circuit)`` per distinct circuit, in the order first seen, so two runs</span>
+<span class="sd">        of one experiment submit the same circuits in the same order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[([</span><span class="n">slot</span><span class="p">],</span> <span class="n">circuit</span><span class="p">)</span> <span class="k">for</span> <span class="n">slot</span><span class="p">,</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">runnable</span><span class="p">]</span>
+
+    <span class="n">cache</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">distinct</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">slot</span><span class="p">,</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">runnable</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">slot</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">circuit_fingerprint</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">cache</span><span class="p">))</span>
+        <span class="n">hit</span> <span class="o">=</span> <span class="n">distinct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">distinct</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="n">slot</span><span class="p">],</span> <span class="n">circuit</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">distinct</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_submission</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">QuantumCircuit</span><span class="p">]],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a run of this experiment actually submits, and what it fills in itself.&quot;&quot;&quot;</span>
+    <span class="n">runnable</span><span class="p">,</span> <span class="n">empty</span> <span class="o">=</span> <span class="n">_runnable</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="n">_deduplicate</span><span class="p">(</span><span class="n">runnable</span><span class="p">,</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">deduplicate</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">runnable</span><span class="p">)</span><span class="si">}</span><span class="s2"> experiment circuits hold </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="si">}</span><span class="s2"> distinct ones&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">empty</span>
+
+
+<div class="viewcode-block" id="submit_experiments">
+<a class="viewcode-back" href="../../../api/experiments.html#QCut.submit_experiments">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="s2">&quot;submit_experiments() is planned to be removed in QCut 3.0. run_experiments() will &quot;</span>
+    <span class="s2">&quot;return the QCutJob itself, and the job&#39;s result() will give expectation values &quot;</span>
+    <span class="s2">&quot;or a distribution rather than raw counts. The raw counts will stay available on &quot;</span>
+    <span class="s2">&quot;the job.&quot;</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">submit_experiments</span><span class="p">(</span>
+    <span class="n">cut_experiment</span><span class="p">:</span> <span class="n">CutExperiment</span><span class="p">,</span>
+    <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
+    <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">run_options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QCutJob</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Submit experiment circuits and return without waiting for their results.</span>
+
+<span class="sd">    Every batch is submitted before this returns, and the returned job collects them</span>
+<span class="sd">    when its :meth:`QCutJob.result` is asked for. An experiment whose wire cuts</span>
+<span class="sd">    communicate runs in waves: the first is submitted before this returns, and the</span>
+<span class="sd">    job submits the rest itself as each wave before them comes back.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cut_experiment (CutExperiment): the experiment circuits to run</span>
+<span class="sd">        shots (int): number of shots per circuit run (optional). Communicating wire</span>
+<span class="sd">            cuts spend it differently: the waves split a total of ``shots`` times the</span>
+<span class="sd">            number of groups per subcircuit between them, in proportion to how often</span>
+<span class="sd">            each label came up, so individual circuits run at very different counts and</span>
+<span class="sd">            only that total is fixed. See :func:`_submit_communicating`.</span>
+<span class="sd">        backend: backend or V2 sampler used for running the circuits.</span>
+<span class="sd">            A sampler is run through its own interface and its results are read</span>
+<span class="sd">            per register, so the circuits must already be in its target&#39;s basis.</span>
+<span class="sd">        max_batch_size (int): maximum number of circuits submitted per backend.run</span>
+<span class="sd">            call. Larger batches reduce per-job overhead on real hardware. A target that</span>
+<span class="sd">            batches on its own account, as e.g. fiqci-ems does, is given this size</span>
+<span class="sd">            too, so it does not split a batch QCut has already sized.</span>
+<span class="sd">        run_options (dict): passed on to every ``run`` call. Use it for whatever the</span>
+<span class="sd">            target takes per run, since QCut sets only ``shots`` itself.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        QCutJob: a handle on the submitted experiment, whose :meth:`QCutJob.result`</span>
+<span class="sd">        returns what :func:`run_experiments` does.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">QCutError</span><span class="p">(</span><span class="s2">&quot;a backend or sampler to run the circuits on is needed&quot;</span><span class="p">)</span>
+
+    <span class="n">plan</span> <span class="o">=</span> <span class="n">cut_experiment</span><span class="o">.</span><span class="n">plan</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">QCutJob</span><span class="p">(</span>
+        <span class="n">cut_experiment</span><span class="p">,</span>
+        <span class="n">backend</span><span class="p">,</span>
+        <span class="n">shots</span><span class="p">,</span>
+        <span class="n">max_batch_size</span><span class="p">,</span>
+        <span class="n">run_options</span><span class="p">,</span>
+        <span class="n">num_waves</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">plan</span><span class="o">.</span><span class="n">last_wave</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_submit_communicating</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span>
+
+    <span class="n">jobs</span><span class="p">,</span> <span class="n">empty_locations</span> <span class="o">=</span> <span class="n">_submission</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
+
+    <span class="n">num_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">//</span> <span class="n">max_batch_size</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span> <span class="o">%</span> <span class="n">max_batch_size</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Running </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span><span class="si">}</span><span class="s2"> circuits on the backend </span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">shots</span><span class="si">}</span><span class="s2"> shots each&quot;</span>
+    <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Circuits will be split into &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_batches</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot; batches of size </span><span class="si">{</span><span class="n">max_batch_size</span><span class="si">}</span><span class="s2"> for execution.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">_submit_batches</span><span class="p">(</span>
+        <span class="n">job</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="p">[</span><span class="n">circuit</span> <span class="k">for</span> <span class="n">_slots</span><span class="p">,</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">slots</span> <span class="k">for</span> <span class="n">slots</span><span class="p">,</span> <span class="n">_circuit</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">],</span>
+                <span class="n">shots</span><span class="p">,</span>
+                <span class="mf">1.0</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">jobs</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">max_batch_size</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">),</span> <span class="n">max_batch_size</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">collect</span><span class="p">():</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">_seeded</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_collect</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">group_idx</span><span class="p">,</span> <span class="n">obs_idx</span><span class="p">,</span> <span class="n">sub_idx</span><span class="p">),</span> <span class="n">num_clbits</span> <span class="ow">in</span> <span class="n">empty_locations</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">group_idx</span><span class="p">][</span><span class="n">obs_idx</span><span class="p">][</span><span class="n">sub_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">CircuitResult</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;0&quot;</span> <span class="o">*</span> <span class="n">num_clbits</span><span class="p">:</span> <span class="n">shots</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="n">job</span><span class="o">.</span><span class="n">_start</span><span class="p">(</span><span class="n">collect</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">job</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

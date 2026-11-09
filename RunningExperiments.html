@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Running experiments &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"tex": {"macros": {"ket": ["\\left|#1\\right\\rangle", 1], "bra": ["\\left\\langle#1\\right|", 1], "braket": ["\\left\\langle#1\\middle|#2\\right\\rangle", 2], "Tr": "\\operatorname{Tr}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'RunningExperiments';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Primitives" href="Primitives.html" />
+    <link rel="prev" title="Transpilation" href="Transpilation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Usage.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/RunningExperiments.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Running experiments</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">Execution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#several-circuits-at-once">Several circuits at once</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="running-experiments">
+<h1>Running experiments<a class="headerlink" href="#running-experiments" title="Link to this heading">#</a></h1>
+<section id="execution">
+<h2>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
+<span class="n">expectation_values</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns a <code class="code docutils literal notranslate"><span class="pre">QCutJob</span></code> as soon as everything is
+submitted, and <code class="code docutils literal notranslate"><span class="pre">result()</span></code> waits for the results. The job is shaped like a Qiskit
+job, so it can be checked on while the run is under way:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">job_ids</span><span class="p">()</span>          <span class="c1"># every backend job, in submission order</span>
+<span class="n">job</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>           <span class="c1"># one JobStatus for the whole experiment</span>
+<span class="n">job</span><span class="o">.</span><span class="n">partial_results</span><span class="p">()</span>  <span class="c1"># per batch: wave, job id, status, circuits, shots, result</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">run_experiments()</span></code> takes the same arguments and is the same as
+<code class="code docutils literal notranslate"><span class="pre">submit_experiments(...).result()</span></code>.</p>
+<p><a class="reference internal" href="api/results.html#QCut.estimate_standard_errors" title="QCut.estimate_standard_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code></a> gives an upper bound on each value’s shot noise,
+shaped like the values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">standard_errors</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_standard_errors</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>It covers sampling error only, not device noise.</p>
+<p>The cost of an experiment run can be checked before submission:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">estimate_run</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Experiment</span> <span class="pre">will</span> <span class="pre">run</span> <span class="pre">144</span> <span class="pre">circuits</span> <span class="pre">in</span> <span class="pre">4</span> <span class="pre">jobs</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">total</span> <span class="pre">of</span> <span class="pre">589824</span> <span class="pre">shots.</span> <span class="pre">See</span> <span class="pre">the</span>
+<span class="pre">returned</span> <span class="pre">object</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">breakdown.</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;job1&#39;</span><span class="p">:</span> <span class="n">JobEstimate</span><span class="p">(</span><span class="n">circuits</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">),</span>
+ <span class="s1">&#39;job2&#39;</span><span class="p">:</span> <span class="n">JobEstimate</span><span class="p">(</span><span class="n">circuits</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">),</span> <span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Exact for non-communicating runs. Runs whose wire cuts communicate get executed in waves so that
+each wave after the first spends its shots on what the one before it measured. For these jobs
+the circuit count is exact and job and shot counts are estimates.</p>
+<p>The job submits those waves itself. The first goes out before
+<code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> returns, and a thread of the job’s own submits each later
+one as soon as the one before it is in, so nothing has to keep polling for the run to
+move on. <code class="code docutils literal notranslate"><span class="pre">job.cancel()</span></code> cancels what is still queued and submits no further waves.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">backend</span></code> takes a Qiskit backend, a V2 sampler, or anything else shaped like a
+backend, which is what lets e.g. <a class="reference external" href="https://github.com/FiQCI/fiqci-ems">fiqci-ems</a> run the experiment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fiqci.ems</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiQCISampler</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span>
+    <span class="n">cut_experiment</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">FiQCISampler</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">mitigation_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The same goes for <a class="reference internal" href="api/experiments.html#QCut.ParallelBackend" title="QCut.ParallelBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelBackend</span></code></a>, which spreads an experiment over
+several devices: see <a class="reference internal" href="Hardware.html#several-backends"><span class="std std-ref">Running on several backends</span></a>.</p>
+<p>Every batch is submitted before any of it is collected, so a run queues all its jobs at
+once. <code class="code docutils literal notranslate"><span class="pre">max_batch_size</span></code> bounds how many circuits go in one, and a target that
+batches on its own account is given that same size so it does not split a batch again.
+<code class="code docutils literal notranslate"><span class="pre">run_options</span></code> is passed on to every <code class="code docutils literal notranslate"><span class="pre">run</span></code> call for anything else the target
+takes.</p>
+<p>Note that <code class="code docutils literal notranslate"><span class="pre">qiskit.primitives.StatevectorSampler</span></code> cannot be used since circuits
+from QCut contain mid-circuit measurements and that sampler refuses those.
+<code class="code docutils literal notranslate"><span class="pre">qiskit_aer.primitives.SamplerV2</span></code> and <code class="code docutils literal notranslate"><span class="pre">BackendSamplerV2</span></code> are both fine.</p>
+<p>Comparing against the exact and noisy expectation values of the original circuit:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">Estimator</span><span class="p">()</span>
+<span class="n">exact_expvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+   <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">circuit</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">observables</span><span class="p">),</span> <span class="n">observables</span><span class="p">)])</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="p">]</span>
+
+<span class="n">tr</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
+
+<span class="n">tr_obs_separate</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="n">SparsePauliOp</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">apply_layout</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">observables</span>
+<span class="p">]</span>
+
+<span class="n">fake_estimator</span> <span class="o">=</span> <span class="n">BackendEstimator</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">fake</span><span class="p">)</span>
+<span class="n">exps</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+   <span class="n">fake_estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">tr</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr_obs_separate</span><span class="p">),</span> <span class="n">tr_obs_separate</span><span class="p">)])</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">0.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;QCut expectation values:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expectation_values</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noisy expectation values with fake backend:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exact expectation values with ideal simulator :</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">exact_expvals</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">QCut</span> <span class="pre">expectation</span> <span class="pre">values:[0.763209</span> <span class="pre">0.602396</span> <span class="pre">0.328544</span> <span class="pre">0.575471]</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">Noisy</span> <span class="pre">expectation</span> <span class="pre">values</span> <span class="pre">with</span> <span class="pre">fake</span> <span class="pre">backend:[0.846680</span> <span class="pre">0.564941</span> <span class="pre">0.323242</span> <span class="pre">0.593262]</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">Exact</span> <span class="pre">expectation</span> <span class="pre">values</span> <span class="pre">with</span> <span class="pre">ideal</span> <span class="pre">simulator</span> <span class="pre">:[0.921061</span> <span class="pre">0.704466</span> <span class="pre">0.380625</span> <span class="pre">0.764842]</span></code></p>
+<p>As we can see QCut is able to accurately reconstruct the expectation values and be more accurate that just using the fake backend as is. (Note that since this is a probabilistic method the results vary a bit each run)</p>
+<p>Additionally we can execute QCut using the ideal Aer simulator and see that we get (practically) exact results:</p>
+<p><code class="docutils literal notranslate"><span class="pre">QCut</span> <span class="pre">expectation</span> <span class="pre">values:[0.920158</span> <span class="pre">0.706660</span> <span class="pre">0.379018</span> <span class="pre">0.778012]</span></code></p>
+<section id="several-circuits-at-once">
+<h3>Several circuits at once<a class="headerlink" href="#several-circuits-at-once" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="Primitives.html"><span class="doc">Primitives</span></a> run a list of cut circuits in one call and hand back the expectation
+values, or the distributions, of all of them. <code class="code docutils literal notranslate"><span class="pre">run()</span></code> and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code>
+still do the whole sequence for a single circuit, from a marked circuit or an already
+split one, and are listed in the <a class="reference internal" href="api/experiments.html"><span class="doc">API reference</span></a>.</p>
+</section>
+</section>
+<section id="probability-distributions">
+<span id="id1"></span><h2>Probability distributions<a class="headerlink" href="#probability-distributions" title="Link to this heading">#</a></h2>
+<p>A cut experiment estimates expectation values, so there are no counts to tally, but the
+distribution over a chosen set of qubits can still be recovered from them. Pass
+<code class="code docutils literal notranslate"><span class="pre">qubits</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">observables</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">qubits</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">submit_experiments</span><span class="p">(</span><span class="n">cut_experiment</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">sim</span><span class="p">)</span>
+
+<span class="n">probs</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">estimate_probabilities</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">{'00':</span> <span class="pre">0.8658,</span> <span class="pre">'01':</span> <span class="pre">-0.0024,</span> <span class="pre">'10':</span> <span class="pre">0.1041,</span> <span class="pre">'11':</span> <span class="pre">0.0324}</span></code></p>
+<p><code class="code docutils literal notranslate"><span class="pre">run()</span></code> and <code class="code docutils literal notranslate"><span class="pre">run_cut_circuit()</span></code> take <code class="code docutils literal notranslate"><span class="pre">qubits</span></code> in the same way, and hand
+back the distribution rather than expectation values.</p>
+<p>The whole distribution needs one measurement setting, so the experiment is the size it
+would have been for a single observable however many qubits are asked for. See
+<a class="reference internal" href="theory/Probability_reconstruction.html"><span class="doc">the derivation</span></a> for how the distribution
+is reconstructed.</p>
+<p>The result is a mapping, so it indexes and plots like a dict, and carries three views:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">]</span>                     <span class="c1"># 0.8658</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="p">()</span>     <span class="c1"># the same values, as a plain dict</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">nearest_probabilities</span><span class="p">()</span>   <span class="c1"># closest true distribution, negatives projected away</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>                  <span class="c1"># scaled by the shots the experiment ran at</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>        <span class="c1"># or by any other shots</span>
+</pre></div>
+</div>
+<p>The three dict views report, by default, the ten most likely bitstrings. Pass <code class="code docutils literal notranslate"><span class="pre">top</span></code> for a different
+number, or <code class="code docutils literal notranslate"><span class="pre">top=None</span></code> for all of them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>      <span class="c1"># the fifty most likely</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">shots</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>     <span class="c1"># the whole distribution, as before</span>
+</pre></div>
+</div>
+<p>Note that <code class="code docutils literal notranslate"><span class="pre">counts()</span></code> sums to <code class="code docutils literal notranslate"><span class="pre">shots</span></code> only with <code class="code docutils literal notranslate"><span class="pre">top=None</span></code>, and
+only <code class="code docutils literal notranslate"><span class="pre">quasi_probabilities()</span></code> gets cheaper this way since the other two project onto the
+nearest physical distribution first.</p>
+<p>Additionally you can get probabilities of a single bitstring or a marginal distribution over a subset of the qubits:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">probs</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>               <span class="c1"># the 100 most likely bitstrings, exactly</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">probability_of</span><span class="p">(</span><span class="s1">&#39;01&#39;</span><span class="p">)</span>   <span class="c1"># one bitstring, without the others</span>
+<span class="n">probs</span><span class="o">.</span><span class="n">marginal</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>          <span class="c1"># a coarser distribution, summed over the rest</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">probs.standard_error</span></code> is an upper bound on the shot noise of each
+quasi-probability, the same for every bitstring. Each probability is a sum of the
+<span class="math notranslate nohighlight">\(2^k - 1\)</span> Z strings over the <span class="math notranslate nohighlight">\(k\)</span> qubits, weighted <span class="math notranslate nohighlight">\(2^{-k}\)</span>, so it is
+<span class="math notranslate nohighlight">\(1 - 2^{-k}\)</span> times the bound <a class="reference internal" href="api/results.html#QCut.estimate_standard_errors" title="QCut.estimate_standard_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code></a> gives one Z
+string. A marginal carries its own. The bound is loose for unlikely bitstrings, and does
+not apply to <code class="code docutils literal notranslate"><span class="pre">nearest_probabilities()</span></code> or <code class="code docutils literal notranslate"><span class="pre">counts()</span></code>.</p>
+<p>Against the same circuit run whole:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">marginal_counts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_histogram</span>
+
+<span class="n">measured</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">measure_all</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transpile</span><span class="p">(</span><span class="n">measured</span><span class="p">,</span> <span class="n">sim</span><span class="p">),</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+
+<span class="n">plot_histogram</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">probs</span><span class="o">.</span><span class="n">counts</span><span class="p">(),</span> <span class="n">marginal_counts</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])],</span> <span class="n">legend</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;QCut&quot;</span><span class="p">,</span> <span class="s2">&quot;uncut circuit&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/probs1.png" src="_images/probs1.png" />
+</section>
+<section id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h2>
+<p>QCut reports what it decided at <code class="code docutils literal notranslate"><span class="pre">INFO</span></code>, which nothing prints until logging is
+configured:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;QCut&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;qiskit&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That covers the whole run: which partitions the finder costed and which it kept, whether
+consolidation was worth it, which cuts were bundled and the gamma that bought, any bundle
+the device could not take and what it fell back to, how many circuits went into each job
+and that job’s id, and how a communicating run split its shots between waves.</p>
+<p>The job ids are the most important part. A job that fails or stalls on the device can be looked up by its id from the log.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Transpilation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transpilation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Primitives.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Primitives</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">Execution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#several-circuits-at-once">Several circuits at once</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions">Probability distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">Logging</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

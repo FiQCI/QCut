@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Primitives &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Primitives';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running on hardware" href="Hardware.html" />
+    <link rel="prev" title="Running experiments" href="RunningExperiments.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Usage.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Primitives.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Primitives</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-expectation-values">Estimating expectation values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-distributions">Reconstructing distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binding-parameters">Binding parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-a-device">Running on a device</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-run-costs">What a run costs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-job">The job</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="primitives">
+<h1>Primitives<a class="headerlink" href="#primitives" title="Link to this heading">#</a></h1>
+<p>For running several cut circuits in one call, QCut has two primitives shaped like
+<a class="reference external" href="https://github.com/FiQCI/fiqci-ems">FiQCI-EMS</a>’s estimator and sampler:
+<a class="reference internal" href="api/primitives.html#QCut.CutEstimator" title="QCut.CutEstimator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutEstimator</span></code></a> gives expectation values and <a class="reference internal" href="api/primitives.html#QCut.CutQuasiSampler" title="QCut.CutQuasiSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutQuasiSampler</span></code></a>
+quasi-probability distributions. Each is made once for a backend, and its <code class="code docutils literal notranslate"><span class="pre">run()</span></code>
+submits every circuit and hands back a job at once, without waiting for results.</p>
+<p>They take cut circuits, as <a class="reference internal" href="api/cutting.html#QCut.get_locations_and_subcircuits" title="QCut.get_locations_and_subcircuits"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_locations_and_subcircuits()</span></code></a> or
+<a class="reference internal" href="api/cutting.html#QCut.find_cuts" title="QCut.find_cuts"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_cuts()</span></code></a> make them, and each runs with the <a class="reference internal" href="Options.html"><span class="doc">options</span></a> it was
+made with.</p>
+<section id="estimating-expectation-values">
+<h2>Estimating expectation values<a class="headerlink" href="#estimating-expectation-values" title="Link to this heading">#</a></h2>
+<p>Continuing the example from <a class="reference internal" href="CuttingCircuits.html"><span class="doc">Cutting circuits</span></a>, here with two observables on the
+hand-cut circuit and a second, unrelated circuit whose cuts are found automatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutEstimator</span>
+
+<span class="n">ghz</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">ghz</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">ghz</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">found_ghz</span> <span class="o">=</span> <span class="n">find_cuts</span><span class="p">(</span><span class="n">ghz</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CutOptions</span><span class="p">(</span><span class="n">finder_num_partitions</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">CutEstimator</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">found_ghz</span><span class="p">],</span> <span class="p">[[</span><span class="s2">&quot;IIIIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZII&quot;</span><span class="p">],</span> <span class="s2">&quot;ZZZZZZ&quot;</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">expectation_values</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">[array([0.9227,</span> <span class="pre">0.3818]),</span> <span class="pre">array(1.0001)]</span></code></p>
+<p>The observables pair with the circuits the way FiQCI’s estimator pairs them:</p>
+<ul class="simple">
+<li><p>One circuit takes its observables exactly as given.</p></li>
+<li><p>With a list of circuits, a list of observables has one entry per circuit, each an
+observable or a list of them, as above.</p></li>
+<li><p>Anything else is a single observable used for every circuit.</p></li>
+</ul>
+<p>Each entry of the result belongs to one input circuit, in the order given.
+<code class="code docutils literal notranslate"><span class="pre">result[i].expectation_values</span></code> is shaped like that circuit’s observables,
+<code class="code docutils literal notranslate"><span class="pre">result[i].standard_errors</span></code> bounds their shot noise as
+<a class="reference internal" href="api/results.html#QCut.estimate_standard_errors" title="QCut.estimate_standard_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_standard_errors()</span></code></a> does, and <code class="code docutils literal notranslate"><span class="pre">result[i].raw</span></code> is the
+<a class="reference internal" href="api/results.html#QCut.RawResult" title="QCut.RawResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawResult</span></code></a> they were estimated from. <code class="code docutils literal notranslate"><span class="pre">job.expectation_values(i)</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">job.standard_errors(i)</span></code>, <code class="code docutils literal notranslate"><span class="pre">job.raw_results()</span></code> are shortcuts for them.</p>
+</section>
+<section id="reconstructing-distributions">
+<h2>Reconstructing distributions<a class="headerlink" href="#reconstructing-distributions" title="Link to this heading">#</a></h2>
+<p>Continuing the example from <a class="reference internal" href="CuttingCircuits.html"><span class="doc">Cutting circuits</span></a>, here with the same <code class="code docutils literal notranslate"><span class="pre">marked_circuit</span></code>.
+The sampler reconstructs the distribution over the qubits the circuit measured at its
+end. Measure before cutting: splitting strips the final measurements, and the cut circuit
+remembers where they were.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutQuasiSampler</span>
+
+<span class="n">measured</span> <span class="o">=</span> <span class="n">marked_circuit</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">measured</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">CutQuasiSampler</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">measured</span><span class="p">),</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+<span class="n">distribution</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">distribution</span><span class="o">.</span><span class="n">quasi_probabilities</span><span class="o">.</span><span class="n">top</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">{'10000':</span> <span class="pre">0.2252,</span> <span class="pre">'00000':</span> <span class="pre">0.1881,</span> <span class="pre">'01000':</span> <span class="pre">0.1184,</span> <span class="pre">'11000':</span> <span class="pre">0.1178}</span></code></p>
+<p>The bitstrings follow Qiskit’s convention, classical bit zero rightmost, whatever qubit it
+was measured from. Every classical bit has to be measured into exactly once.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">quasi_probabilities</span></code> is a <a class="reference internal" href="api/results.html#QCut.QuasiProbabilities" title="QCut.QuasiProbabilities"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiProbabilities</span></code></a>, so everything in
+<a class="reference internal" href="RunningExperiments.html#probability-distributions"><span class="std std-ref">probability distributions</span></a> applies, and it never
+expands the whole distribution unless asked. <code class="code docutils literal notranslate"><span class="pre">quasi_dist()</span></code> gives a Qiskit
+<code class="code docutils literal notranslate"><span class="pre">QuasiDistribution</span></code> instead, which does expand all <code class="code docutils literal notranslate"><span class="pre">2**n</span></code> outcomes unless
+<code class="code docutils literal notranslate"><span class="pre">top</span></code> limits it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span><span class="o">.</span><span class="n">quasi_dist</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">{16:</span> <span class="pre">0.2252,</span> <span class="pre">0:</span> <span class="pre">0.1881,</span> <span class="pre">8:</span> <span class="pre">0.1184}</span></code></p>
+<p><code class="code docutils literal notranslate"><span class="pre">result[i].standard_error</span></code> bounds the shot noise of each quasi-probability, see
+<a class="reference internal" href="RunningExperiments.html#probability-distributions"><span class="std std-ref">probability distributions</span></a>, and
+<code class="code docutils literal notranslate"><span class="pre">job.standard_errors(i)</span></code> is a shortcut for it. The raw results are accessible from
+the job as <code class="code docutils literal notranslate"><span class="pre">job.raw_results()</span></code>.</p>
+</section>
+<section id="binding-parameters">
+<h2>Binding parameters<a class="headerlink" href="#binding-parameters" title="Link to this heading">#</a></h2>
+<p>Both primitives take <code class="code docutils literal notranslate"><span class="pre">parameter_values</span></code>, a <code class="code docutils literal notranslate"><span class="pre">{parameter</span> <span class="pre">or</span> <span class="pre">name:</span> <span class="pre">value}</span></code> dict
+bound into the cut circuit before its experiment is built. It pairs with the circuits the
+way the observables do. A sweep is the same circuit listed once per set of values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">cut_circuit</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">),</span>
+    <span class="s2">&quot;ZZZZZ&quot;</span><span class="p">,</span>
+    <span class="n">parameter_values</span><span class="o">=</span><span class="p">[{</span><span class="n">theta</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">thetas</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Each entry of the result is one point of the sweep. A circuit with a parameter left
+unbound is refused before anything is submitted.</p>
+</section>
+<section id="running-on-a-device">
+<h2>Running on a device<a class="headerlink" href="#running-on-a-device" title="Link to this heading">#</a></h2>
+<p>The primitives do not transpile, much as Qiskit’s primitives take circuits already
+written for their target. On a backend with a coupling map, transpile each cut circuit
+for that same backend first:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span> <span class="o">=</span> <span class="n">IQMFakeAdonis</span><span class="p">()</span>
+
+<span class="n">transpiled</span> <span class="o">=</span> <span class="p">[</span><span class="n">ck</span><span class="o">.</span><span class="n">transpile_subcircuits</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">fake</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">found</span><span class="p">]]</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">CutEstimator</span><span class="p">(</span><span class="n">fake</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transpiled</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A cut circuit transpiled for a different backend object, or not transpiled at all, is
+refused there, before anything is submitted. A backend without a coupling map, such as an
+ideal simulator or a V2 sampler, runs the subcircuits as they are.</p>
+</section>
+<section id="what-a-run-costs">
+<h2>What a run costs<a class="headerlink" href="#what-a-run-costs" title="Link to this heading">#</a></h2>
+<p><code class="code docutils literal notranslate"><span class="pre">estimate()</span></code> takes the same arguments as <code class="code docutils literal notranslate"><span class="pre">run()</span></code> and submits nothing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">([</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">found_ghz</span><span class="p">],</span> <span class="p">[[</span><span class="s2">&quot;IIIIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZII&quot;</span><span class="p">],</span> <span class="s2">&quot;ZZZZZZ&quot;</span><span class="p">],</span> <span class="n">shots</span><span class="o">=</span><span class="mi">4096</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Experiment</span> <span class="pre">will</span> <span class="pre">run</span> <span class="pre">41</span> <span class="pre">circuits</span> <span class="pre">in</span> <span class="pre">2</span> <span class="pre">jobs</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">total</span> <span class="pre">of</span> <span class="pre">167936</span> <span class="pre">shots.</span> <span class="pre">See</span> <span class="pre">the</span>
+<span class="pre">returned</span> <span class="pre">object</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">breakdown.</span></code></p>
+<p>The totals cover the whole run, and indexing gives one circuit’s share, as a
+<a class="reference internal" href="api/experiments.html#QCut.RunEstimate" title="QCut.RunEstimate"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunEstimate</span></code></a>. It is exact wherever <a class="reference internal" href="api/experiments.html#QCut.estimate_run" title="QCut.estimate_run"><code class="xref py py-func docutils literal notranslate"><span class="pre">estimate_run()</span></code></a> is.</p>
+</section>
+<section id="the-job">
+<h2>The job<a class="headerlink" href="#the-job" title="Link to this heading">#</a></h2>
+<p>The job answers for every circuit at once. <code class="code docutils literal notranslate"><span class="pre">job_ids()</span></code>, <code class="code docutils literal notranslate"><span class="pre">status()</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">cancel()</span></code> and <code class="code docutils literal notranslate"><span class="pre">wait_for_final_state()</span></code> work as on a Qiskit job,
+<code class="code docutils literal notranslate"><span class="pre">statuses()</span></code> and <code class="code docutils literal notranslate"><span class="pre">partial_results()</span></code> give one entry per circuit, and
+<code class="code docutils literal notranslate"><span class="pre">job.jobs</span></code> holds each circuit’s own <a class="reference internal" href="api/experiments.html#QCut.QCutJob" title="QCut.QCutJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCutJob</span></code></a>. It also exposes
+the raw results of the executed job as <code class="code docutils literal notranslate"><span class="pre">job.raw_results()</span></code></p>
+<p>Each circuit is submitted in batches of its own, so circuits from different inputs never
+share a backend job.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="RunningExperiments.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Running experiments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Hardware.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Running on hardware</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-expectation-values">Estimating expectation values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-distributions">Reconstructing distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binding-parameters">Binding parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-on-a-device">Running on a device</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-run-costs">What a run costs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-job">The job</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

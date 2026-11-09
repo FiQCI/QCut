@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cutting circuits &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=0d83c195"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CuttingCircuits';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wire cuts" href="WireCuts.html" />
+    <link rel="prev" title="User guide" href="Usage.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Usage.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Cutting circuits</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/CuttingCircuits.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cutting circuits</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-needed-packages">Import needed packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-quantumcircuit-just-like-in-qiskit">Define a QuantumCircuit just like in Qiskit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insert-cuts-to-denote-where-to-cut-the-circuit">Insert cuts to denote where to cut the circuit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-cut-locations-and-split-into-independent-subcircuits">Extract cut locations and split into independent subcircuits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-observables-and-generate-experiment-circuits">Define observables and generate experiment circuits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-cut-costs">What a cut costs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cheaper-decompositions">Cheaper decompositions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cuts">Automatic cuts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-depth">In depth</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="cutting-circuits">
+<h1>Cutting circuits<a class="headerlink" href="#cutting-circuits" title="Link to this heading">#</a></h1>
+<section id="import-needed-packages">
+<h2>Import needed packages<a class="headerlink" href="#import-needed-packages" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ck</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut</span><span class="w"> </span><span class="kn">import</span> <span class="n">cut</span><span class="p">,</span> <span class="n">cutGate</span><span class="p">,</span> <span class="n">CutOptions</span><span class="p">,</span> <span class="n">find_cuts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">transpile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.circuit.library</span><span class="w"> </span><span class="kn">import</span> <span class="n">CXGate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.quantum_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsePauliOp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AerSimulator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatevectorEstimator</span> <span class="k">as</span> <span class="n">Estimator</span><span class="p">,</span> <span class="n">BackendEstimatorV2</span> <span class="k">as</span> <span class="n">BackendEstimator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">iqm.qiskit_iqm</span><span class="w"> </span><span class="kn">import</span> <span class="n">IQMFakeAdonis</span>
+</pre></div>
+</div>
+</section>
+<section id="define-a-quantumcircuit-just-like-in-qiskit">
+<h2>Define a QuantumCircuit just like in Qiskit<a class="headerlink" href="#define-a-quantumcircuit-just-like-in-qiskit" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/circ1.png" src="_images/circ1.png" />
+</section>
+<section id="insert-cuts-to-denote-where-to-cut-the-circuit">
+<h2>Insert cuts to denote where to cut the circuit<a class="headerlink" href="#insert-cuts-to-denote-where-to-cut-the-circuit" title="Link to this heading">#</a></h2>
+<p>Note that here we don’t insert any measurements. Measurements will be
+automatically handled by QCut.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">marked_circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">marked_circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">**</span><span class="n">cutGate</span><span class="p">(</span><span class="n">CXGate</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">marked_circuit</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">gates_to_decompose</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CutGate&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/circ2.png" src="_images/circ2.png" />
+<p><code class="code docutils literal notranslate"><span class="pre">cutGate()</span></code> marks a gate cut and <code class="code docutils literal notranslate"><span class="pre">cut()</span></code> a wire cut. Any two-qubit gate can
+be cut, with the decomposition derived from the gate’s KAK coordinates, so the CX above
+is a single cut rather than a CZ with fix-up gates around it. See
+<a class="reference internal" href="GateCuts.html"><span class="doc">gate cuts</span></a> and <a class="reference internal" href="WireCuts.html"><span class="doc">wire cuts</span></a> for more on
+placing them, and <a class="reference internal" href="Theory.html"><span class="doc">Theory</span></a> for where the decompositions come from.</p>
+</section>
+<section id="extract-cut-locations-and-split-into-independent-subcircuits">
+<h2>Extract cut locations and split into independent subcircuits<a class="headerlink" href="#extract-cut-locations-and-split-into-independent-subcircuits" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">marked_circuit</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we can draw our subcircuits.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/circ3.png" src="_images/circ3.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/circ4.png" src="_images/circ4.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">subcircuits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;mpl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/circ11.png" src="_images/circ11.png" />
+</section>
+<section id="define-observables-and-generate-experiment-circuits">
+<h2>Define observables and generate experiment circuits<a class="headerlink" href="#define-observables-and-generate-experiment-circuits" title="Link to this heading">#</a></h2>
+<p>Observables are given the way Qiskit’s estimator takes them: a Pauli label, a
+<code class="code docutils literal notranslate"><span class="pre">Pauli</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparsePauliOp</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparseObservable</span></code> (qiskit 2.1+), a
+<code class="code docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">coefficient}</span></code> mapping, or any nested sequence of those. The expectation
+values come back shaped like what you pass, so a list of four observables gives four
+values, in order.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IIIIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZII&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZZ&quot;</span><span class="p">]</span>
+
+<span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cut_experiment</span><span class="o">.</span><span class="n">num_groups</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">48</span></code></p>
+<p><code class="code docutils literal notranslate"><span class="pre">get_experiment_circuits()</span></code> does not modify the <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> it is given, so
+the same split can be reused for several observable sets. Both <code class="code docutils literal notranslate"><span class="pre">CutCircuit</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">CutExperiment</span></code> implement the <code class="code docutils literal notranslate"><span class="pre">assign_parameters()</span></code> function of
+<code class="code docutils literal notranslate"><span class="pre">Qiskit.QuantumCircuit</span></code>.</p>
+</section>
+<section id="what-a-cut-costs">
+<h2>What a cut costs<a class="headerlink" href="#what-a-cut-costs" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cut_circuit</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">cut_circuit</span><span class="o">.</span><span class="n">optimal_gamma</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">12.0</span> <span class="pre">9.0</span></code></p>
+<p><code class="code docutils literal notranslate"><span class="pre">gamma</span></code> is the sampling overhead of this split and <code class="code docutils literal notranslate"><span class="pre">optimal_gamma</span></code> the least
+those same cuts could cost with every decomposition available. Shot cost goes as
+<code class="code docutils literal notranslate"><span class="pre">gamma</span></code> squared. Both are closed form, so a plan can be costed before any
+experiment circuits are built, and <code class="code docutils literal notranslate"><span class="pre">CutExperiment</span></code> carries both forward.</p>
+<p>The gap here is the lone wire cut: on its own it does not communicate under the default
+<code class="code docutils literal notranslate"><span class="pre">wire_cut_communication=&quot;auto&quot;</span></code>, so it costs 4 rather than 3. Passing
+<code class="code docutils literal notranslate"><span class="pre">&quot;always&quot;</span></code> closes it and this split reaches 9.</p>
+</section>
+<section id="cheaper-decompositions">
+<h2>Cheaper decompositions<a class="headerlink" href="#cheaper-decompositions" title="Link to this heading">#</a></h2>
+<p>Cuts are not decomposed one at a time where a cheaper joint decomposition exists. All
+three of the below are on by default and can be turned off through <a class="reference internal" href="Options.html"><span class="doc">Options</span></a>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 46.0%" />
+<col style="width: 27.0%" />
+<col style="width: 27.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>turned off</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A run of gates on one qubit pair costs a single cut</p></td>
+<td><p>1 cut, gamma 1.59, 6 subexperiments</p></td>
+<td><p>2 cuts, gamma 9, 36</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parallel single-axis rotations share one decomposition
+(<a class="reference internal" href="theory/Joint_rotation_derivation.html"><span class="doc">derivation</span></a>)</p></td>
+<td><p>gamma 5.50, 30 subexperiments</p></td>
+<td><p>gamma 6.77, 36</p></td>
+</tr>
+<tr class="row-even"><td><p>A block of parallel wire cuts exchanges its measured outcome
+(<a class="reference internal" href="theory/LOCC_wire_derivation.html"><span class="doc">derivation</span></a>)</p></td>
+<td><p>gamma 7, 28 subexperiments</p></td>
+<td><p>gamma 16, 64</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A separate circuit, to show the last of those on its own. Two parallel wire cuts cost
+<code class="code docutils literal notranslate"><span class="pre">2**(n+1)</span> <span class="pre">-</span> <span class="pre">1</span></code> rather than <code class="code docutils literal notranslate"><span class="pre">4**n</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pair</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">pair</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">(),</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">block</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+<span class="n">local</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_locations_and_subcircuits</span><span class="p">(</span>
+    <span class="n">pair</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CutOptions</span><span class="p">(</span><span class="n">wire_cut_communication</span><span class="o">=</span><span class="s2">&quot;never&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">local</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span> <span class="n">local</span><span class="o">.</span><span class="n">optimal_gamma</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">7.0</span> <span class="pre">16.0</span> <span class="pre">7.0</span></code></p>
+<p>Those cuts run in waves, since one side has to be measured before the other can prepare
+what it measured. <code class="code docutils literal notranslate"><span class="pre">submit_experiments()</span></code> handles that itself.</p>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h2>
+<p><code class="code docutils literal notranslate"><span class="pre">CutOptions</span></code> is collected once and carried through the run. It covers the three
+decompositions above, the expansion strategy, sampling and the cut finder. Above 1000
+groups the experiment is sampled from the quasiprobability distribution rather than
+enumerated. Every option and its default is listed under <a class="reference internal" href="Options.html"><span class="doc">Options</span></a>.</p>
+</section>
+<section id="automatic-cuts">
+<h2>Automatic cuts<a class="headerlink" href="#automatic-cuts" title="Link to this heading">#</a></h2>
+<p>QCut comes with functionality for automatically finding good cut locations that can place both wire and gate cuts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">CutOptions</span><span class="p">(</span>
+   <span class="n">finder_num_partitions</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+   <span class="n">finder_cut_mode</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">found</span> <span class="o">=</span> <span class="n">find_cuts</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="o">.</span><span class="n">cut_locations</span><span class="p">),</span> <span class="n">found</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">9.0</span></code></p>
+<p>Here the finder reaches the <code class="code docutils literal notranslate"><span class="pre">optimal_gamma</span></code> the hand-placed cuts above did not. See
+<a class="reference internal" href="AutomaticCuts.html"><span class="doc">automatic cuts</span></a> for the finder’s own options and how it
+chooses.</p>
+</section>
+<section id="in-depth">
+<h2>In depth<a class="headerlink" href="#in-depth" title="Link to this heading">#</a></h2>
+<p>Each kind of cut has a page of its own, with its own setup.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Usage.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="WireCuts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Wire cuts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-needed-packages">Import needed packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-quantumcircuit-just-like-in-qiskit">Define a QuantumCircuit just like in Qiskit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insert-cuts-to-denote-where-to-cut-the-circuit">Insert cuts to denote where to cut the circuit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-cut-locations-and-split-into-independent-subcircuits">Extract cut locations and split into independent subcircuits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-observables-and-generate-experiment-circuits">Define observables and generate experiment circuits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-cut-costs">What a cut costs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cheaper-decompositions">Cheaper decompositions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cuts">Automatic cuts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-depth">In depth</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

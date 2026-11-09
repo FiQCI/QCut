@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QCut.primitives.estimator &#8212; QCut</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../../_static/documentation_options.js?v=0d83c195"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/QCut/primitives/estimator';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../../_static/qcut-logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.0.post1.dev4+g182feccb7" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-light" alt="QCut - Home"/>
+    <img src="../../../_static/qcut-logo-1024.png" class="logo__image only-dark pst-js-only" alt="QCut - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../GettingStarted.html">Getting started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Usage.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../CuttingCircuits.html">Cutting circuits</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../WireCuts.html">Wire cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../GateCuts.html">Gate cuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../AutomaticCuts.html">Automatic cuts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../RunningExperiments.html">Running experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Hardware.html">Running on hardware</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Options.html">Options</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Further reading</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Notebooks.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutBasicUsage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutQAOAExample.html">QAOA Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutOptionsExample.html">Cut Options Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutProbabilities.html">Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/QCutPrimitivesSimple.html">Cut Primitive example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../Theory.html">Theory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Wire_derivation.html">Wire cut QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/LOCC_wire_derivation.html">Wire cuts with classical communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/CZ_derivation.html">CZ QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/SWAP_derivation.html">SWAP QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/General_2q_derivation.html">General two-qubit QPD derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Joint_rotation_derivation.html">Joint rotation gate cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../theory/Probability_reconstruction.html">Reconstructing a probability distribution</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../QCut.html">QCut API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/cutting.html">Cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/options.html">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/transpilation.html">Transpilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/experiments.html">Experiments and execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/results.html">Results and post-processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Changelog.html">Changelog</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../Acknowledgement.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for QCut.primitives.estimator</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Estimating expectation values of cut circuits, shaped like a qiskit estimator.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_SHOTS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.execution.experiments</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_experiment_circuits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.job.cutresult</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.model.cutcircuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">CutCircuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.post_process.postprocess</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">estimate_expectation_values</span><span class="p">,</span>
+    <span class="n">estimate_standard_errors</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.primitives.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CutRunEstimate</span><span class="p">,</span>
+    <span class="n">_as_list</span><span class="p">,</span>
+    <span class="n">_CutPrimitive</span><span class="p">,</span>
+    <span class="n">_CutResult</span><span class="p">,</span>
+    <span class="n">_pair</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.primitives.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCutPrimitiveJob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCut.utils.observables</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObservablesLike</span>
+
+
+<div class="viewcode-block" id="CutEstimatorEntry">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorEntry">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CutEstimatorEntry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The expectation values of one input circuit.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: One value per observable, shaped like the observables given for the circuit.</span>
+    <span class="c1">#: A single observable gives a zero-dimensional array.</span>
+    <span class="n">expectation_values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="c1">#: An upper bound on each value&#39;s shot noise, shaped the same. See</span>
+    <span class="c1">#: :func:`QCut.estimate_standard_errors`.</span>
+    <span class="n">standard_errors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="c1">#: The raw counts the values were estimated from.</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n">RawResult</span></div>
+
+
+
+<div class="viewcode-block" id="CutEstimatorResult">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CutEstimatorResult</span><span class="p">(</span><span class="n">_CutResult</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a :class:`CutEstimator` run gives back: one entry per input circuit.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CutEstimatorResult.expectation_values">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorResult.expectation_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expectation_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every circuit&#39;s expectation values, in the order the circuits were given.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">expectation_values</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CutEstimatorResult.standard_errors">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorResult.standard_errors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">standard_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every circuit&#39;s standard errors, in the order the circuits were given.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">standard_errors</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Represent as the values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;CutEstimatorResult(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expectation_values</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="CutEstimatorJob">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorJob">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CutEstimatorJob</span><span class="p">(</span><span class="n">QCutPrimitiveJob</span><span class="p">[</span><span class="n">CutEstimatorResult</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A :class:`CutEstimator` run, whose :meth:`result` is a</span>
+<span class="sd">    :class:`CutEstimatorResult`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CutEstimatorJob.expectation_values">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorJob.expectation_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expectation_values</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for the run and return the expectation values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): the input circuit to return them for, or ``None`` for every</span>
+<span class="sd">                circuit&#39;s, in the order the circuits were given.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">expectation_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">expectation_values</span></div>
+
+
+<div class="viewcode-block" id="CutEstimatorJob.standard_errors">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimatorJob.standard_errors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">standard_errors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for the run and return the standard errors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): the input circuit to return them for, or ``None`` for every</span>
+<span class="sd">                circuit&#39;s, in the order the circuits were given.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">standard_errors</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">standard_errors</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raws</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RawResult</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">CutEstimatorResult</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CutEstimatorResult</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">CutEstimatorEntry</span><span class="p">(</span>
+                    <span class="n">estimate_expectation_values</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span>
+                    <span class="n">estimate_standard_errors</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span>
+                    <span class="n">raw</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">raw</span> <span class="ow">in</span> <span class="n">raws</span>
+            <span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CutEstimator">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CutEstimator</span><span class="p">(</span><span class="n">_CutPrimitive</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Expectation values of cut circuits, run on any backend or sampler.</span>
+
+<span class="sd">    Shaped like FiQCI-EMS&#39;s estimator: made once for a backend, then :meth:`run` with</span>
+<span class="sd">    the cut circuits and the observables to estimate on them. A cut circuit comes from</span>
+<span class="sd">    :func:`QCut.get_locations_and_subcircuits` or :func:`QCut.find_cuts`, and is run</span>
+<span class="sd">    with the options it was made with.</span>
+
+<span class="sd">    The estimator does not transpile, much as qiskit&#39;s primitives take circuits already</span>
+<span class="sd">    written for their target. For a backend with a coupling map, transpile each cut</span>
+<span class="sd">    circuit for that same backend with :func:`QCut.transpile_subcircuits` first.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        backend: the backend or V2 sampler to run on. A sampler, like a backend</span>
+<span class="sd">            without a coupling map, takes the circuits as they are.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CutEstimator.run">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimator.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">circuits</span><span class="p">:</span> <span class="n">CutCircuit</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">CutCircuit</span><span class="p">],</span>
+        <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservablesLike</span><span class="p">],</span>
+        <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
+        <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">parameter_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">run_options</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CutEstimatorJob</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Submit the circuits and return without waiting for their results.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            circuits: a cut circuit or a list of them.</span>
+<span class="sd">            observables: what to estimate, taken as qiskit&#39;s estimator takes them --</span>
+<span class="sd">                a label, a ``Pauli``, a ``SparsePauliOp``, a ``SparseObservable``, a</span>
+<span class="sd">                ``{label: coefficient}`` mapping, or a nested sequence of those. One</span>
+<span class="sd">                circuit takes them as given. With a list of circuits, give a list with</span>
+<span class="sd">                one entry per circuit, or one observable for every circuit.</span>
+<span class="sd">            shots (int): shots per experiment circuit, as in</span>
+<span class="sd">                :func:`QCut.submit_experiments`.</span>
+<span class="sd">            max_batch_size (int): the most circuits submitted in one ``run`` call. Each</span>
+<span class="sd">                input circuit is submitted in batches of its own.</span>
+<span class="sd">            parameter_values: ``{parameter or name: value}`` to bind into the circuit,</span>
+<span class="sd">                paired with the circuits the way ``observables`` is. For a sweep, list</span>
+<span class="sd">                the same circuit once per set of values.</span>
+<span class="sd">            **run_options: passed on to every ``run`` call on the backend.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CutEstimatorJob: a handle on every circuit&#39;s experiment, whose</span>
+<span class="sd">            :meth:`~CutEstimatorJob.result` gives the expectation values.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            QCutError: something other than a cut circuit was given, one is not</span>
+<span class="sd">                transpiled for this backend although it has a coupling map, or one</span>
+<span class="sd">                has parameters left unbound.</span>
+<span class="sd">            ValueError: the observables or parameter values do not have one entry per</span>
+<span class="sd">                circuit, or the observables do not fit their circuit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_experiments</span><span class="p">(</span><span class="n">circuits</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">parameter_values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CutEstimatorJob</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_submit</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">,</span> <span class="n">run_options</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CutEstimator.estimate">
+<a class="viewcode-back" href="../../../api/primitives.html#QCut.CutEstimator.estimate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">circuits</span><span class="p">:</span> <span class="n">CutCircuit</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">CutCircuit</span><span class="p">],</span>
+        <span class="n">observables</span><span class="p">:</span> <span class="n">ObservablesLike</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservablesLike</span><span class="p">],</span>
+        <span class="n">shots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SHOTS</span><span class="p">,</span>
+        <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">parameter_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CutRunEstimate</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Work out what :meth:`run` will cost with the same arguments, submitting</span>
+<span class="sd">        nothing.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CutRunEstimate: the jobs, circuits and shots of the whole run, and indexed</span>
+<span class="sd">            by circuit, each circuit&#39;s own share.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_experiments</span><span class="p">(</span><span class="n">circuits</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">parameter_values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estimate</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="n">shots</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">circuits</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">parameter_values</span><span class="p">):</span>
+        <span class="n">paired</span> <span class="o">=</span> <span class="n">_pair</span><span class="p">(</span><span class="n">circuits</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">_as_list</span><span class="p">(</span><span class="n">circuits</span><span class="p">)),</span> <span class="s2">&quot;observable&quot;</span><span class="p">)</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bound</span><span class="p">(</span><span class="n">circuits</span><span class="p">,</span> <span class="n">parameter_values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cut_circuit</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bound</span><span class="p">,</span> <span class="n">paired</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Joonas Nivala
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Joonas Nivala.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
