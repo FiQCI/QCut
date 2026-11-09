@@ -46,8 +46,8 @@ Each entry of the result belongs to one input circuit, in the order given.
 :code:`result[i].expectation_values` is shaped like that circuit's observables,
 :code:`result[i].standard_errors` bounds their shot noise as
 :func:`~QCut.estimate_standard_errors` does, and :code:`result[i].raw` is the
-:class:`~QCut.RawResult` they were estimated from. :code:`job.expectation_values(i)` and
-:code:`job.standard_errors(i)` are shortcuts for the first two.
+:class:`~QCut.RawResult` they were estimated from. :code:`job.expectation_values(i)`,
+:code:`job.standard_errors(i)`, :code:`job.raw_results()` are shortcuts for them.
 
 Reconstructing distributions
 ----------------------------
@@ -89,7 +89,8 @@ expands the whole distribution unless asked. :code:`quasi_dist()` gives a Qiskit
 
 :code:`result[i].standard_error` bounds the shot noise of each quasi-probability, see
 :ref:`probability distributions <probability-distributions>`, and
-:code:`job.standard_errors(i)` is a shortcut for it.
+:code:`job.standard_errors(i)` is a shortcut for it. The raw results are accessible from
+the job as :code:`job.raw_results()`.
 
 Binding parameters
 ------------------
@@ -149,7 +150,8 @@ The job
 The job answers for every circuit at once. :code:`job_ids()`, :code:`status()`,
 :code:`cancel()` and :code:`wait_for_final_state()` work as on a Qiskit job,
 :code:`statuses()` and :code:`partial_results()` give one entry per circuit, and
-:code:`job.jobs` holds each circuit's own :class:`~QCut.QCutJob`.
+:code:`job.jobs` holds each circuit's own :class:`~QCut.QCutJob`. It also exposes
+the raw results of the executed job as :code:`job.raw_results()`
 
 Each circuit is submitted in batches of its own, so circuits from different inputs never
 share a backend job.
