@@ -58,7 +58,7 @@ observables = ["IIIIZ", "IIZII", "ZZIII"]
 
 cut_circuit = ck.get_locations_and_subcircuits(circuit)
 # On a device with a coupling map, transpile the subcircuits for it here:
-# cut_circuit = ck.transpile_subcircuits(cut_circuit, backend)
+# cut_circuit = ck.transpile_circuits(cut_circuit, backend)
 experiment = ck.get_experiment_circuits(cut_circuit, observables)
 
 job = ck.submit_experiments(experiment, backend=AerSimulator(), shots=4096)
