@@ -301,7 +301,9 @@ def _check_width(labels, num_qubits: int | None) -> None:
             raise ValueError(
                 f"observable '{label}' spans {len(label)} qubits, but every observable "
                 "must match the number of qubits in the original uncut circuit "
-                f"({num_qubits})."
+                f"({num_qubits}). If a transpiled layout was applied to it with "
+                "apply_layout(), pass it as written for the uncut circuit instead. "
+                "QCut handles the layout itself."
             )
 
 
