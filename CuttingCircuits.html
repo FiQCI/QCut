@@ -43,7 +43,7 @@
 
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=f5722c36"></script>
+    <script src="_static/documentation_options.js?v=e18e2b5f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
     <link rel="prev" title="User guide" href="Usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.5.0.post1.dev2+g2bc3d98c5" />
+  <meta name="docsearch:version" content="2.5.0.post1.dev3+g24c831e8c" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -167,6 +167,7 @@
 <li class="toctree-l3"><a class="reference internal" href="AutomaticCuts.html">Automatic cuts</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="Observables.html">Defining observables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Transpilation.html">Transpilation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RunningExperiments.html">Running experiments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Primitives.html">Primitives</a></li>
@@ -467,7 +468,7 @@ placing them, and <a class="reference internal" href="Theory.html"><span class="
 <code class="code docutils literal notranslate"><span class="pre">Pauli</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparsePauliOp</span></code>, a <code class="code docutils literal notranslate"><span class="pre">SparseObservable</span></code> (qiskit 2.1+), a
 <code class="code docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">coefficient}</span></code> mapping, or any nested sequence of those. The expectation
 values come back shaped like what you pass, so a list of four observables gives four
-values, in order.</p>
+values, in order. See <a class="reference internal" href="Observables.html"><span class="doc">Defining observables</span></a> for more.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IIIIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZII&quot;</span><span class="p">,</span> <span class="s2">&quot;IIIZZ&quot;</span><span class="p">]</span>
 
 <span class="n">cut_experiment</span> <span class="o">=</span> <span class="n">ck</span><span class="o">.</span><span class="n">get_experiment_circuits</span><span class="p">(</span><span class="n">cut_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">)</span>
