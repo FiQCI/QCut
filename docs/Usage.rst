@@ -21,6 +21,7 @@ notebook.
    :maxdepth: 2
 
    CuttingCircuits
+   Observables
    Transpilation
    RunningExperiments
    Primitives

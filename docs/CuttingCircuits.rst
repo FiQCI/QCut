@@ -96,7 +96,7 @@ Observables are given the way Qiskit's estimator takes them: a Pauli label, a
 :code:`Pauli`, a :code:`SparsePauliOp`, a :code:`SparseObservable` (qiskit 2.1+), a
 :code:`{label: coefficient}` mapping, or any nested sequence of those. The expectation
 values come back shaped like what you pass, so a list of four observables gives four
-values, in order.
+values, in order. See :doc:`Observables` for more.
 
 .. code:: python
 
